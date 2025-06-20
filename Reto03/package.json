@@ -1,12 +1,12 @@
 {
-  "name": "03.practice-reto02-primo-checker",
+  "name": "reto03",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "types": "module",
+  "description": "Invertir una Cadena (con servidor HTTP)",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "BarryGon911",
