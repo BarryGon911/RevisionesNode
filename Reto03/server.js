@@ -5,7 +5,7 @@ const PORT = 3000;
 
 const server = http.createServer((req, res) => {
   const { method, url } = req; // Se obtiene el método y el URL del request...
-  console.log(`Request: ${method} ${$url}`);
+  console.log(`Request: ${method} ${url}`);
 
   // Manejo de rutas y requests
   
@@ -30,4 +30,4 @@ const server = http.createServer((req, res) => {
 
 // TODO : Escuchar en el puerto 3000
 server.listen(PORT);
-console.log(`Server is listening on port number: ${PORT}`);
+console.log(`Server is running on http://localhost:${PORT}`);
