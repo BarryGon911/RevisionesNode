@@ -1,17 +1,16 @@
-import express from 'express';
-import calificacionesRoutes from './calificacionesRoutes.js';
+import express from "express";
+import calificacionesRoutes from "./calificacionesRoutes.js";
 
-const router = express.Router();
-// Ruta principal que devuelve un mensaje de bienvenida
+const routes = express.Router();
 
-router.get('/', (req, res) => {
+routes.get("/", (req, res) => {
     res.json({
-        message: 'Bienvenido a la API de Calificaciones',
+        message: "Bienvenido a la API de Calificaciones",
         endpoints: [
-        'GET / - Mensaje de bienvenida',
-        'GET /calificaciones - Obtener todas las calificaciones'
+        "GET / - Mensaje de bienvenida",
+        "GET /calificaciones - Obtener todas las calificaciones"
         ]
     });
-    });
+});
 
-
+export default routes;

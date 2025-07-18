@@ -2,16 +2,19 @@
   "name": "code-challenge-contar-objeto",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "BarryGon911",
   "license": "ISC",
-  "description": "",
+  "description": "Code Challenge: Contar propiedades de un objeto",
   "dependencies": {
     "express": "^5.1.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "colors": "^1.4.0",
+    "dotenv": "^17.2.0"
   }
 }

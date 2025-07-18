@@ -3,9 +3,4 @@ const cursos = [
     { id: 2, nombre: "Historia"}
 ];
 
-
-
 export default cursos;
-
-
-

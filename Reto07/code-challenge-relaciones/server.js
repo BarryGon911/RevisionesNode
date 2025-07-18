@@ -1,7 +1,7 @@
 import express from "express";
+import routes from "./routes/index.js";
 import dotenv from "dotenv";
 import colors from "colors";
-import contarPropiedades from "./controllers/contarController.js";
 
 dotenv.config();
 
@@ -10,12 +10,7 @@ const port = process.env.PORT || 4000;// Default port if not specified by Hostin
 const app = express();
 
 app.use(express.json());
-
-app.post("/contar", contarPropiedades);
-
-app.get("/", (req, res) => {
-    res.send("Servidor funcionando");
-});
+app.use("/api", routes);
 
 app.listen(port, () => {
   console.log(colors.bgMagenta.magenta.italic.bold(`NodeJS server is running on http://localhost:${port}`));

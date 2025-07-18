@@ -4,15 +4,17 @@
    "type":"module",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "BarryGon911",
   "license": "ISC",
-  "description": "",
+  "description": "Code Challenge: Relaciones entre Entidades",
   "dependencies": {
     "express": "^5.1.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "colors": "^1.4.0",
+    "dotenv": "^17.2.0"
   }
 }
