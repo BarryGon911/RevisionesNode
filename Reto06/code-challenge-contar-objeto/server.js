@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import colors from "colors";
-import contarPropiedades from "./controllers/contarController.js";
+import { contarPropiedades } from "./controllers/contarController.js";
 
 dotenv.config();
 

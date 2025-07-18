@@ -6,7 +6,6 @@ import colors from "colors";
 dotenv.config();
 
 const port = process.env.PORT || 4000;// Default port if not specified by Hosting Provider when deploying the application
-
 const app = express();
 
 app.use(express.json());
