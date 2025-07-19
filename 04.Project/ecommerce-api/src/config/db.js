@@ -14,7 +14,7 @@ export const connectDB = async () => {
   catch (error) {
         console.error(colors.bgRed.bold.white.bold(error.message));
         process.exit(1);// Exit the process with Failure
-    }
+  }
 }
 
 export default connectDB;

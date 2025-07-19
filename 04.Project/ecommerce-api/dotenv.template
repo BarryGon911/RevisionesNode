@@ -1,3 +1,4 @@
 PORT=3000
+
 # LOCALMENTE
 MONGODB_URI=mongodb://localhost:27017/ecommerce-db/backend
