@@ -1,4 +1,4 @@
-import Product from '../models/product.js';
+import Product from "../models/product.js";
 
 async function getProducts(req, res) {
   try {
@@ -14,7 +14,7 @@ async function getProductById(req, res) {
     const id = req.params.id;
     const product = await Product.findById(id);
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ message: "Product not found" });
     }
     res.json(product);
   } catch (error) {
@@ -27,7 +27,7 @@ async function getProductByCategory(req, res) {
     const id = req.params.idCategory;
     const products = await Product.find({ category: id }).sort({ name: 1 });
     if (products.length === 0) {
-      return res.status(404).json({ message: 'No products found for this category' });
+      return res.status(404).json({ message: "No products found for this category" });
     }
     res.json(products);
   } catch (error) {
@@ -41,7 +41,7 @@ async function createProduct(req, res) {
       stock, imagesUrl, category } = req.body;
     if (!name || !description || !price || !stock
       || !imagesUrl || !category) {
-      return res.status(400).json({ error: 'All fields are required' })
+      return res.status(400).json({ error: "All fields are required" })
     }
     const newProduct = await Product.create({
       name, description, price,
@@ -60,7 +60,7 @@ async function updateProduct(req, res) {
       stock, imagesUrl, category } = req.body;
     if (!name || !description || !price || !stock
       || !imagesUrl || !category) {
-      return res.status(400).json({ error: 'All fields are required' });
+      return res.status(400).json({ error: "All fields are required" });
     }
     const updatedProduct = await Product.findByIdAndUpdate(id,
       {
@@ -71,7 +71,7 @@ async function updateProduct(req, res) {
     if (updatedProduct) {
       return res.status(200).json(updatedProduct);
     } else {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ message: "Product not found" });
     }
   } catch (error) {
     res.status(500).send({ error });
@@ -86,7 +86,7 @@ async function deleteProduct(req, res) {
     if (deletedProduct) {
       return res.status(204).send();
     } else {
-      return res.status(404).send({ message: 'Product not found' });
+      return res.status(404).send({ message: "Product not found" });
     }
   } catch (error) {
     res.status(500).json({ error });

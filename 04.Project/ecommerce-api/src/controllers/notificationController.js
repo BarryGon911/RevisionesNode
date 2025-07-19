@@ -1,8 +1,8 @@
-import Notification from '../models/notification.js';
+import Notification from "../models/notification.js";
 
 async function getNotifications(req, res) {
   try {
-    const notifications = await Notification.find().populate('user').sort({ message: 1 });
+    const notifications = await Notification.find().populate("user").sort({ message: 1 });
     res.json(notifications);
   } catch (error) {
     res.status(500).send({ error });
@@ -12,9 +12,9 @@ async function getNotifications(req, res) {
 async function getNotificationById(req, res) {
   try {
     const id = req.params.id;
-    const notification = await Notification.findById(id).populate('user');
+    const notification = await Notification.findById(id).populate("user");
     if (!notification) {
-      return res.status(404).json({ message: 'Notification not found' });
+      return res.status(404).json({ message: "Notification not found" });
     }
     res.json(notification);
   } catch (error) {
@@ -25,9 +25,9 @@ async function getNotificationById(req, res) {
 async function getNotificationByUser(req, res) {
   try {
     const userId = req.params.userId;
-    const notifications = await Notification.find({ user: userId }).populate('user').sort({ message: 1 });
+    const notifications = await Notification.find({ user: userId }).populate("user").sort({ message: 1 });
     if (notifications.length === 0) {
-      return res.status(404).json({ message: 'No notifications found for this user' });
+      return res.status(404).json({ message: "No notifications found for this user" });
     }
     res.json(notifications);
   } catch (error) {
@@ -39,7 +39,7 @@ async function createNotification(req, res) {
   try {
     const { user, message } = req.body;
     if (!user || !message) {
-      return res.status(400).json({ error: 'User and message are required' });
+      return res.status(400).json({ error: "User and message are required" });
     }
     const newNotification = await Notification.create({
       user,
@@ -47,7 +47,7 @@ async function createNotification(req, res) {
       isRead: false
     });
 
-    await newNotification.populate('user');
+    await newNotification.populate("user");
     res.status(201).json(newNotification);
   } catch (error) {
     res.status(500).send({ error });
@@ -62,12 +62,12 @@ async function updateNotification(req, res) {
     const updatedNotification = await Notification.findByIdAndUpdate(id,
       { message, isRead },
       { new: true }
-    ).populate('user');
+    ).populate("user");
 
     if (updatedNotification) {
       return res.status(200).json(updatedNotification);
     } else {
-      return res.status(404).json({ message: 'Notification not found' });
+      return res.status(404).json({ message: "Notification not found" });
     }
   } catch (error) {
     res.status(500).send({ error });
@@ -82,7 +82,7 @@ async function deleteNotification(req, res) {
     if (deletedNotification) {
       return res.status(204).send();
     } else {
-      return res.status(404).json({ message: 'Notification not found' });
+      return res.status(404).json({ message: "Notification not found" });
     }
   } catch (error) {
     res.status(500).json({ error });
@@ -96,12 +96,12 @@ async function markAsRead(req, res) {
       id,
       { isRead: true },
       { new: true }
-    ).populate('user');
+    ).populate("user");
 
     if (notification) {
       return res.status(200).json(notification);
     } else {
-      return res.status(404).json({ message: 'Notification not found' });
+      return res.status(404).json({ message: "Notification not found" });
     }
   } catch (error) {
     res.status(500).send({ error });
@@ -131,7 +131,7 @@ async function getUnreadNotificationsByUser(req, res) {
     const notifications = await Notification.find({
       user: userId,
       isRead: false
-    }).populate('user').sort({ message: 1 });
+    }).populate("user").sort({ message: 1 });
 
     res.json({
       count: notifications.length,

@@ -1,15 +1,15 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const paymentMethodSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   type: {
     type: String,
     required: true,
-    enum: ['credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash_on_delivery'],
+    enum: ["credit_card", "debit_card", "paypal", "bank_transfer", "cash_on_delivery"],
   },
   // Para tarjetas de crédito/débito
   // Primer dígito: Indica el esquema de la tarjeta (por ejemplo, 4 para Visa, 5 para Mastercard).
@@ -46,6 +46,6 @@ const paymentMethodSchema = new mongoose.Schema({
   },
 });
 
-const PaymentMethod = mongoose.model('PaymentMethod', paymentMethodSchema);
+const PaymentMethod = mongoose.model("PaymentMethod", paymentMethodSchema);
 
 export default PaymentMethod;

@@ -17,7 +17,7 @@ app.use(logger);
 app.get("/", (req, res) => {
   res.send("WELCOME!");
 });
-app.use('/api', routes);
+app.use("/api", routes);
 
 app.listen(port, () => {
   console.log(colors.bgMagenta.magenta.italic.bold(`NodeJS server is running on http://localhost:${port}`));

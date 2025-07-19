@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   displayName: {
@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address'],
+    match: [/^\S+@\S+\.\S+$/, "Please use a valid email address"],
   },
   hashPassword: {
     type: String,
@@ -18,12 +18,12 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ['admin', 'customer', 'guest'],
+    enum: ["admin", "customer", "guest"],
   },
   avatar: {
     type: String,
     required: true,
-    default: 'https://placehold.co/100x100.png',
+    default: "https://placehold.co/100x100.png",
   },
   phone: {
     type: String,
@@ -36,6 +36,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

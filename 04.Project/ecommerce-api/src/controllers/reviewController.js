@@ -1,19 +1,16 @@
 import Review from '../models/review.js';
 import Product from '../models/product.js';
 
-// Crear una nueva reseña
 export const createReview = async (req, res) => {
   try {
     const { product, rating, comment } = req.body;
-    const user = req.user.id; // Asumiendo que el usuario viene del middleware de autenticación
+    const user = req.user.id;
 
-    // Verificar si el producto existe
     const productExists = await Product.findById(product);
     if (!productExists) {
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
 
-    // Verificar si el usuario ya ha hecho una reseña de este producto
     const existingReview = await Review.findOne({ user, product });
     if (existingReview) {
       return res.status(400).json({ message: 'Ya has hecho una reseña de este producto' });
@@ -33,12 +30,12 @@ export const createReview = async (req, res) => {
       message: 'Reseña creada exitosamente',
       review
     });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al crear la reseña', error: error.message });
   }
 };
 
-// Obtener todas las reseñas
 export const getAllReviews = async (req, res) => {
   try {
     const reviews = await Review.find()
@@ -50,12 +47,12 @@ export const getAllReviews = async (req, res) => {
       count: reviews.length,
       reviews
     });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al obtener las reseñas', error: error.message });
   }
 };
 
-// Obtener reseñas por producto
 export const getReviewsByProduct = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -69,12 +66,12 @@ export const getReviewsByProduct = async (req, res) => {
       count: reviews.length,
       reviews
     });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al obtener las reseñas del producto', error: error.message });
   }
 };
 
-// Obtener reseñas por usuario
 export const getReviewsByUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -88,12 +85,12 @@ export const getReviewsByUser = async (req, res) => {
       count: reviews.length,
       reviews
     });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al obtener las reseñas del usuario', error: error.message });
   }
 };
 
-// Obtener una reseña por ID
 export const getReviewById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -110,12 +107,12 @@ export const getReviewById = async (req, res) => {
       message: 'Reseña obtenida exitosamente',
       review
     });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al obtener la reseña', error: error.message });
   }
 };
 
-// Actualizar una reseña
 export const updateReview = async (req, res) => {
   try {
     const { id } = req.params;
@@ -127,7 +124,6 @@ export const updateReview = async (req, res) => {
       return res.status(404).json({ message: 'Reseña no encontrada' });
     }
 
-    // Verificar que el usuario sea el propietario de la reseña
     if (review.user.toString() !== userId) {
       return res.status(403).json({ message: 'No tienes permisos para actualizar esta reseña' });
     }
@@ -142,12 +138,12 @@ export const updateReview = async (req, res) => {
       message: 'Reseña actualizada exitosamente',
       review: updatedReview
     });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al actualizar la reseña', error: error.message });
   }
 };
 
-// Eliminar una reseña
 export const deleteReview = async (req, res) => {
   try {
     const { id } = req.params;
@@ -158,7 +154,6 @@ export const deleteReview = async (req, res) => {
       return res.status(404).json({ message: 'Reseña no encontrada' });
     }
 
-    // Verificar que el usuario sea el propietario de la reseña
     if (review.user.toString() !== userId) {
       return res.status(403).json({ message: 'No tienes permisos para eliminar esta reseña' });
     }
@@ -168,17 +163,16 @@ export const deleteReview = async (req, res) => {
     res.status(200).json({
       message: 'Reseña eliminada exitosamente'
     });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al eliminar la reseña', error: error.message });
   }
 };
 
-// Obtener estadísticas de reseñas de un producto
 export const getProductReviewStats = async (req, res) => {
   try {
     const { productId } = req.params;
 
-      // Obtener todas las reseñas del producto
     const reviews = await Review.find({ product: productId });
 
     if (reviews.length === 0) {
@@ -190,14 +184,11 @@ export const getProductReviewStats = async (req, res) => {
       });
     }
 
-    // Calcular estadísticas con JavaScript
     const totalReviews = reviews.length;
     
-    // Calcular promedio
     const sumRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
     const averageRating = sumRatings / totalReviews;
 
-    // Contar distribución de ratings
     const ratingsCount = {};
     reviews.forEach(review => {
       const rating = review.rating;
@@ -211,7 +202,8 @@ export const getProductReviewStats = async (req, res) => {
       ratingsDistribution: ratingsCount
     });
 
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ message: 'Error al obtener las estadísticas', error: error.message });
   }
 };

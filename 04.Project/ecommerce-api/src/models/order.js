@@ -1,17 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     products: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Product',
+          ref: "Product",
           required: true,
         },
         quantity: {
@@ -27,12 +27,12 @@ const orderSchema = new mongoose.Schema(
     ],
     shippingAddress: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'ShippingAddress',
+      ref: "ShippingAddress",
       required: true,
     },
     paymentMethod: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'PaymentMethod',
+      ref: "PaymentMethod",
       required: true,
     },
     shippingCost: {
@@ -46,17 +46,17 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
-      default: 'pending',
+      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+      default: "pending",
     },
     paymentStatus: {
       type: String,
-      enum: ['pending', 'paid', 'failed', 'refunded'],
-      default: 'pending',
+      enum: ["pending", "paid", "failed", "refunded"],
+      default: "pending",
     },
   },
 );
 
-const Order = mongoose.model('Order', orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
 export default Order;
