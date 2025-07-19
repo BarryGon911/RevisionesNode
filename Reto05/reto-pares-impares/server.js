@@ -12,7 +12,6 @@ from "./utils/separarParesImpares.js";
 dotenv.config();
 
 const port = process.env.PORT || 4000;// Default port if not specified by Hosting Provider when deploying the application
-
 const app = express();
 
 app.get("/filtrar", (req, res) => {
@@ -72,5 +71,5 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   console.log(colors.bgMagenta.magenta.italic.bold(`NodeJS server is running on http://localhost:${port}`));
-  console.log(`📖 Prueba: http://localhost:${port}/filtrar?numeros=1,2,3,4,5,6`);
+  console.log(`📖 URL Test: http://localhost:${port}/filtrar?numeros=1,2,3,4,5,6`);
 });
