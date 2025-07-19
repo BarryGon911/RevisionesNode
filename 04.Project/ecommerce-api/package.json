@@ -8,9 +8,9 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "BarryGon911",
   "license": "ISC",
-  "description": "",
+  "description": "Creación del BackEnd para Ecommerce",
   "dependencies": {
     "colors": "^1.4.0",
     "dotenv": "^17.2.0",
