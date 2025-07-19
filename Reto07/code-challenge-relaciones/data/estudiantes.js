@@ -1,6 +1,6 @@
 const estudiantes = [
-    {id: 1, nombre: "Ana García"},
-    {id: 2, nombre: "Luis Pérez"}
+    {id: 1, nombre: "Luis Gerardo Montes"},
+    {id: 2, nombre: "Juan Camaney Shidon"}
 ];
 
 export default estudiantes;
