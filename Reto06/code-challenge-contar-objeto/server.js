@@ -5,7 +5,7 @@ import { contarPropiedades } from "./controllers/contarController.js";
 
 dotenv.config();
 
-const port = process.env.PORT || 4000;// Default port if not specified by Hosting Provider when deploying the application
+const port = process.env.SRV_PORT || 4000;// Default port if not specified by Hosting Provider when deploying the application
 const app = express();
 
 app.use(express.json());
@@ -17,5 +17,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(colors.bgMagenta.magenta.italic.bold(`NodeJS server is running on http://localhost:${port}`));
+  console.log(colors.bgMagenta.magenta.italic.bold(`🚀 NodeJS server is running on http://localhost:${port}`));
 });

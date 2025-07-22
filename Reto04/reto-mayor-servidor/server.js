@@ -6,7 +6,7 @@ import colors from "colors";
 
 dotenv.config();
 
-const port = process.env.PORT || 4000;// Default port if not specified by Hosting Provider when deploying the application
+const port = process.env.SRV_PORT || 4000;// Default port if not specified by Hosting Provider when deploying the application
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -39,5 +39,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, () => {
-  console.log(colors.bgMagenta.magenta.italic.bold(`NodeJS server is running on http://localhost:${port}`));
+  console.log(colors.bgMagenta.magenta.italic.bold(`🚀 NodeJS server is running on http://localhost:${port}`));
 });

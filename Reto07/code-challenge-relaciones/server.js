@@ -12,5 +12,5 @@ app.use(express.json());
 app.use("/api", routes);
 
 app.listen(port, () => {
-  console.log(colors.bgMagenta.magenta.italic.bold(`NodeJS server is running on http://localhost:${port}`));
+  console.log(colors.bgMagenta.magenta.italic.bold(`🚀 NodeJS server is running on http://localhost:${port}`));
 });
