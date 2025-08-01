@@ -1,10 +1,12 @@
 import express from "express";
-import librosRoutes from "./librosRoutes.js";
 import autoresRoutes from "./autoresRoutes.js";
+import librosRoutes from "./librosRoutes.js";
+import reseñasRoutes from "./reseñasRoutes.js";
 
 const router = express.Router();
 
-router.use(librosRoutes);
-router.use(autoresRoutes);
+router.use("/", autoresRoutes);
+router.use("/", librosRoutes);
+router.use("/", reseñasRoutes);
 
 export default router;
