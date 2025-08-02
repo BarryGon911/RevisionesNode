@@ -1,4 +1,4 @@
-# PowerShell Scripts para Control de Servicios: MongoDB & MySQL
+# PowerShell Scripts para Control de Servicios: MongoDB & MySQL (Usuarios de Windows)
 
 Este proyecto te permite administrar fácilmente los servicios de **MongoDB** y **MySQL** desde cualquier consola PowerShell en Windows, usando scripts personalizados y aliases definidos en tu perfil de PowerShell.
 
@@ -94,19 +94,14 @@ Guarda el archivo y vuelve a abrir PowerShell para aplicar los cambios.
 ## ⚙️ Agregar la Ruta `C:\Scripts` a Variables de Entorno
 
 1. Abre **Panel de Control → Sistema y Seguridad → Sistema**.
-
 2. Clic en **Configuración avanzada del sistema**.
-
 3. En la pestaña **Opciones avanzadas**, clic en **Variables de entorno**.
-
 4. En **Variables del sistema**, busca y selecciona `Path` → clic en **Editar**.
-
 5. Agrega la ruta:
 
    ```
    C:\Scripts
    ```
-
 6. Acepta los cambios y reinicia PowerShell (o reinicia la sesión).
 
 ---
@@ -131,6 +126,3 @@ Para dudas o mejoras, abre un issue o envía tus sugerencias.
 ---
 
 © 2025 - Scripts de automatización en PowerShell para entornos de desarrollo.
-
-Saludos y gracias
-
