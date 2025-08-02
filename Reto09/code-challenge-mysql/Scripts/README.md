@@ -98,7 +98,11 @@ foreach ($alias in $mysqlAliases) {
 ####################################################################################
 ```
 
-Guarda el archivo y vuelve a abrir PowerShell para aplicar los cambios.
+Guarda el archivo y vuelve a abrir PowerShell como Administrador para aplicar los cambios, o ejecuta el siguiente comado:
+
+. $PROFILE
+
+Para cargar los cambios sin reiniciar PowerShell
 
 ---
 
