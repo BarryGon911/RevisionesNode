@@ -130,7 +130,7 @@ C:\Scripts\logs\MySQLService_YYYY-MM-DD.log
 C:\Scripts\logs\MongoDBService_YYYY-MM-DD.log
 ```
 
-Los archivos con más de 7 días se eliminan automáticamente al ejecutar los scripts.
+Los archivos con más de 7 días se eliminan automáticamente al ejecutar los scripts. Si no se llegará a crear la carpeta de manera automática, por favor créala(s) de manera manual.
 
 ---
 
