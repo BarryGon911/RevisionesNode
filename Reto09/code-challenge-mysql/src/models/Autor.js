@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../config/database.js"; // o como se llame tu conexión
+import { sequelize } from "../config/database.js";
 
 const Autor = sequelize.define("Autor", {
   nombre: {
