@@ -21,6 +21,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+app.listen(port, () => {
+  console.log(`🚀 Servidor de Node ejecutándose en el en puerto: ${port}`);
 });

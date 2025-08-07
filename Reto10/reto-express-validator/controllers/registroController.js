@@ -1,9 +1,9 @@
+// Simulamos una “base de datos” en memoria
+const usuarios = [];
+
 export const registrarUsuario = (req, res) => {
   try {
     const { nombre, correo, edad, contraseña } = req.body;
-	// Aquí iría la lógica para guardar en base de datos
-    // Por ahora solo simulamos el éxito
-	
 	// Simular ID auto-incremental
     const id = usuarios.length + 1;
 	// Creamos el objeto usuario (sin la contraseña en el objeto público)
