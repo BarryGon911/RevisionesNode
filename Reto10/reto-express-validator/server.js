@@ -1,8 +1,11 @@
 import express from "express";
 import registroRoutes from "./routes/registro.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.SRV_PORT || 3000;
 
 // Middleware
 app.use(express.json());

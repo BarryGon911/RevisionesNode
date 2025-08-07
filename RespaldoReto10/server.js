@@ -7,12 +7,14 @@ dotenv.config();
 const app = express();
 const port = process.env.SRV_PORT || 3000;
 
+// Middleware
 app.use(express.json());
+
+// Routes
 app.use("/api", registroRoutes);
 
-// Middleware global de errores
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
   res.status(500).json({
     success: false,
     error: "Error interno del servidor",
