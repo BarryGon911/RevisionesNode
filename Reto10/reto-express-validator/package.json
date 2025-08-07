@@ -1,7 +1,7 @@
 {
-  "name": "reto10-express-validator",
+  "name": "reto-express-validator",
   "version": "1.0.0",
-  "description": "Implementar un sistema de registro de usuarios con validación robusta de datos usando `express-validator`. Este reto te ayudará a dominar las validaciones del lado del servidor, un aspecto crucial para la seguridad de las APIs",
+  "description": "Reto10: Registro de usuario con validaciones. Implementar un sistema de registro de usuarios con validación robusta de datos usando `express-validator`. Este reto te ayudará a dominar las validaciones del lado del servidor, un aspecto crucial para la seguridad de las APIs",
   "main": "server.js",
   "type": "module",
   "scripts": {
