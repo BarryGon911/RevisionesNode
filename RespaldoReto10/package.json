@@ -1,7 +1,7 @@
 {
   "name": "reto10-express-validator",
   "version": "1.0.0",
-  "description": "Implementar un sistema de registro de usuarios con validación robusta de datos usando `express-validator`. Este reto te ayudará a dominar las validaciones del lado del servidor, un aspecto crucial para la seguridad de las APIs.",
+  "description": "Implementar un sistema de registro de usuarios con validación robusta de datos usando `express-validator`. Este reto te ayudará a dominar las validaciones del lado del servidor, un aspecto crucial para la seguridad de las APIs",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -9,10 +9,10 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "BarryGon911",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "colors": "^1.4.0",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-validator": "^7.2.1"
   },
