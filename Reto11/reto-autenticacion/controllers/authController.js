@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import fs from "fs/promises";
 import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Leer usuarios desde JSON
 const leerUsuarios = async () => {

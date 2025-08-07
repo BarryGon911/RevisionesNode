@@ -1,12 +1,12 @@
 import express from "express";
-import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 import perfilRoutes from "./routes/perfil.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.SRV_PORT;
 
 app.use(express.json());
 
@@ -31,6 +31,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+app.listen(port, () => {
+  console.log(`🚀 Servidor de Node ejecutándose en el puerto: ${port}`);
 });
