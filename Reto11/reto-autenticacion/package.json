@@ -1,5 +1,5 @@
 {
-  "name": "reto-autenticacion",
+  "name": "reto11-autenticacion",
   "version": "1.0.0",
   "description": "Reto11: Autenticación con JWT en Express. Crear un sistema de autenticación robusto que incluya login y protección de rutas usando JWT. Este reto te enseñará los fundamentos de la autenticación en APIs REST, un concepto esencial en el desarrollo backend",
   "main": "server.js",

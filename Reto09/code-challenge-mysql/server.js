@@ -1,9 +1,9 @@
 import express from "express";
-import dotenv from "dotenv";
 import librosRoutes from "./src/routes/index.js";
 import connectDB from "./src/config/database.js";
 import colors from "colors";
 
+import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
