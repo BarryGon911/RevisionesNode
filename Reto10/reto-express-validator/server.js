@@ -1,7 +1,9 @@
 import express from "express";
 import registroRoutes from "./routes/registro.js";
-import dotenv from "dotenv";
+import colors from "colors";
 
+import dotenv from "dotenv";
+import "dotenv/config";
 dotenv.config();
 
 const app = express();
@@ -22,5 +24,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`🚀 Servidor de Node ejecutándose en el en puerto: ${port}`);
+  console.log(colors.bgMagenta.magenta.italic.bold(`🚀 Servidor ejecutándose en http://localhost:${port}`));
 });

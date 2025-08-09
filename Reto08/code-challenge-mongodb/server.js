@@ -4,6 +4,7 @@ import connectDB from "./src/config/database.js";
 import colors from "colors";
 
 import dotenv from "dotenv";
+import "dotenv/config";
 dotenv.config();
 
 const app = express();
@@ -11,7 +12,7 @@ app.use(express.json());
 
 app.use("/", rutas);
 
-const port = process.env.SRV_PORT || 4000;
+const port = process.env.SRV_PORT || 3000;
 
 // Método de Rodrigo
 

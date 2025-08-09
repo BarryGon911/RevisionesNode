@@ -1,17 +1,22 @@
 import mongoose from "mongoose";
+import colors from "colors";
+import dotenv from "dotenv";
+import "dotenv/config";
+dotenv.config();
 
-const connectDB = async () => {
+export const connectDB = async () => {
   try {
-    const uri = process.env.MONGO_URI;
-    if (!uri) throw new Error("MONGO_URI no está definido en .env");
-    await mongoose.connect(uri, {
-      // opciones recomendadas por mongoose actuales por defecto
-    });
-    console.log("MongoDB conectado");
+    const { connection } = await mongoose.connect(process.env.MONGO_URI);
+    // Construir la URL con variables de entorno
+    const url = `${connection.host}:${connection.port}/${connection.name}`;
+    console.log(colors.bgBlue.cyan.italic.bold(`🟢 MongoDB conectado exitosamente en ${url}`));
+    return "Ok"
   } catch (error) {
-    console.error("Error al conectar MongoDB:", error.message);
-    throw error;
-  }
-};
+    console.error(colors.bgRed.white.bold("🔴 Error de conexión a MongoDB:"), colors.red(error instanceof Error ? error.message : String(error))
+  );
+  // Exit the process with Failure
+  process.exit(1);
+  };
+}
 
 export default connectDB;
