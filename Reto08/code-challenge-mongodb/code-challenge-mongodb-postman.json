@@ -1,0 +1,121 @@
+{
+  "info": {
+    "name": "Code Challenge MongoDB API",
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+    "description": "Colecci\u00f3n para probar la API de libros, autores y rese\u00f1as.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener todos los libros",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/libros",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "libros"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener libro por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/libros/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "libros",
+            ":id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear libro",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Libro Ejemplo\",\n  \"a\\u00f1o\": 2023,\n  \"genero\": \"Ficci\\u00f3n\",\n  \"autorId\": \"ID_DEL_AUTOR\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/libros",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "libros"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Actualizar libro",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Libro Actualizado\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/libros/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "libros",
+            ":id"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Eliminar libro",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/libros/:id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "libros",
+            ":id"
+          ]
+        }
+      }
+    }
+  ]
+}

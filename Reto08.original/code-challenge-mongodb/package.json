@@ -1,0 +1,27 @@
+{
+  "name": "reto08-conde-challenge-mongodb",
+  "version": "1.0.0",
+  "description": "Crear una API con Express.js y MongoDB que maneje relaciones entre tres entidades: **Autores**, **Libros** y **Reseñas**. El reto consiste en implementar endpoints que trabajen con datos reales almacenados en MongoDB utilizando Mongoose.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "BarryGon911",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "helmet": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^6.3.4"
+  }
+}
