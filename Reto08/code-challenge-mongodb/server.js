@@ -15,7 +15,6 @@ app.use("/", rutas);
 const port = process.env.SRV_PORT || 3000;
 
 // Método de Rodrigo
-
 // connectDB().then(() => {
 //   app.listen(port, () => {
 //     console.log(`Servidor escuchando en puerto ${port}`);
