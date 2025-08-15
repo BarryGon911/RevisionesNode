@@ -1,4 +1,4 @@
-# Evidencia de Cumplimiento - Proyecto Backend Bienes Raíces MVC (sin Retos 08–11, MySQL)
+# Evidencia de Cumplimiento - Proyecto BackEnd Bienes Raíces MVC
 
 Este documento mapea cada criterio aplicable de **Rubrica.md** a la implementación en el código entregado.
 
@@ -62,9 +62,9 @@ Este documento mapea cada criterio aplicable de **Rubrica.md** a la implementaci
 
 ## 6. Exclusiones y Observaciones
 
-- **Retos 08, 09, 10, 11** → **No incluidos.**
+- **Retos 08, 09, 10 & 11** → **No incluídos en éste documento.**
 - **Base de datos** → Implementada con **MySQL** usando **Sequelize como ORM.**
-- **Frontend mínimo (Pug + TailwindCSS)** → No evaluado como parte de esta entrega, se priorizó funcionalidad del BackEnd.
+- **FrontEnd mínimo (Pug + TailwindCSS)** → No evaluado como parte de esta entrega, se priorizó funcionalidad del BackEnd.
 
 ---
 
