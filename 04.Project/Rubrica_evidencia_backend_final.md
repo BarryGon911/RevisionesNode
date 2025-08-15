@@ -62,11 +62,11 @@ Este documento mapea cada criterio aplicable de **Rubrica.md** a la implementaci
 
 ## 6. Exclusiones y Observaciones
 
-- **Retos 08, 09, 10, 11** → **No incluidos** por solicitud.
-- **Base de datos** → Implementado en **MySQL** usando Sequelize.
-- Frontend mínimo (Pug + TailwindCSS) → No evaluado como parte de esta entrega, se priorizó funcionalidad backend.
+- **Retos 08, 09, 10, 11** → **No incluidos.**
+- **Base de datos** → Implementada con **MySQL** usando **Sequelize como ORM.**
+- **Frontend mínimo (Pug + TailwindCSS)** → No evaluado como parte de esta entrega, se priorizó funcionalidad del BackEnd.
 
 ---
 
 **Conclusión:**  
-Este backend cumple con el 100% de los criterios aplicables de **Rubrica.md** en la parte de MySQL/Sequelize, con las excepciones indicadas.
+Este backend cumple con los criterios aplicables de **Rubrica.md** en la parte de MySQL/Sequelize, con las excepciones indicadas.
