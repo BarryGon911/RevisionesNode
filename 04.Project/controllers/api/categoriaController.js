@@ -1,4 +1,4 @@
-import { CategoriaEcom } from '../../models/index.js'
+import { CategoriaEcom } from "../../models/index.js";
 
 export const listCategorias = async (req, res, next) => {
   try {

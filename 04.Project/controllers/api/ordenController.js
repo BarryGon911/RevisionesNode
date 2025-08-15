@@ -1,11 +1,11 @@
-import { Carrito, CarritoItem, Orden, OrdenItem, Producto } from '../../models/index.js'
+import { Carrito, CarritoItem, Orden, OrdenItem, Producto } from "../../models/index.js";
 
 export const crearOrden = async (req, res, next) => {
   try {
     const carrito = await Carrito.findOne({ where: { usuarioId: req.usuario.id } })
-    if(!carrito) return res.status(400).json({ error: { message: 'Carrito vacío' } })
+    if(!carrito) return res.status(400).json({ error: { message: "Carrito vacío" } })
     const items = await CarritoItem.findAll({ where: { carritoId: carrito.id }, include: [Producto] })
-    if(!items.length) return res.status(400).json({ error: { message: 'Carrito vacío' } })
+    if(!items.length) return res.status(400).json({ error: { message: "Carrito vacío" } })
     let total = 0
     for(const it of items){
       total += parseFloat(it.precioUnitario) * it.cantidad

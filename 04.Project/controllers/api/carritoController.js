@@ -1,4 +1,4 @@
-import { Carrito, CarritoItem, Producto } from '../../models/index.js'
+import { Carrito, CarritoItem, Producto } from "../../models/index.js";
 
 export const miCarrito = async (req, res, next) => {
   try {
@@ -12,8 +12,8 @@ export const agregarItem = async (req, res, next) => {
   try {
     const { productoId, cantidad } = req.body
     const p = await Producto.findByPk(productoId)
-    if(!p) return res.status(404).json({ error: { message: 'Producto no encontrado' } })
-    if(p.stock < cantidad) return res.status(400).json({ error: { message: 'Stock insuficiente' } })
+    if(!p) return res.status(404).json({ error: { message: "Producto no encontrado" } })
+    if(p.stock < cantidad) return res.status(400).json({ error: { message: "Stock insuficiente" } })
     const carrito = await Carrito.findOrCreate({ where: { usuarioId: req.usuario.id }, defaults: { usuarioId: req.usuario.id } }).then(([c])=>c)
     const [item, created] = await CarritoItem.findOrCreate({ where: { carritoId: carrito.id, productoId: p.id }, defaults: { cantidad: cantidad||1, precioUnitario: p.precio } })
     if(!created){
@@ -27,7 +27,7 @@ export const agregarItem = async (req, res, next) => {
 export const actualizarItem = async (req, res, next) => {
   try {
     const item = await CarritoItem.findByPk(req.params.itemId)
-    if(!item) return res.status(404).json({ error: { message: 'Item no encontrado' } })
+    if(!item) return res.status(404).json({ error: { message: "Item no encontrado" } })
     const { cantidad } = req.body
     item.cantidad = cantidad
     await item.save()
@@ -38,7 +38,7 @@ export const actualizarItem = async (req, res, next) => {
 export const eliminarItem = async (req, res, next) => {
   try {
     const item = await CarritoItem.findByPk(req.params.itemId)
-    if(!item) return res.status(404).json({ error: { message: 'Item no encontrado' } })
+    if(!item) return res.status(404).json({ error: { message: "Item no encontrado" } })
     await item.destroy()
     res.status(204).send()
   } catch(e){ next(e) }
