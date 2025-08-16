@@ -118,8 +118,6 @@ Este proyecto usa las siguientes dependencias de producción y desarrollo:
 - **webpack** `^5.72.1` — (Dev) Empaquetador de JS estático.
 - **webpack-cli** `^4.9.2` — (Dev) CLI de webpack.
 
-
-
 ---
 
 ## 📝 Pasos de Uso en Desarrollo
@@ -131,5 +129,32 @@ Este proyecto usa las siguientes dependencias de producción y desarrollo:
 
 ---
 
-## 📜 Licencia
-MIT — Uso libre con fines educativos y comerciales.
+## 🧭 Rutas Principales
+- **Web (Pug)**: `/`, `/auth`, `/propiedades`  
+- **API JSON**: `/api/propiedades`
+
+> Nota: Endpoints adicionales pueden existir/variar según configuración del proyecto.
+
+---
+
+## 🔒 Seguridad
+- CSRF (`csurf`) para formularios web.
+- `bcrypt` para hash de contraseñas.
+- `express-validator` para validaciones.
+- `jsonwebtoken` para JWT (si lo habilitas en endpoints API protegidos).
+
+---
+
+## 🧪 Pruebas automatizadas con Postman
+Se incluyen **pruebas smoke** listas para importar/ejecutar:
+- **Colección**: `postman/bienesraices_mvc_smoke_tests.postman_collection.json`
+- **Environment**: `postman/bienesraices_local.postman_environment.json`
+
+**Ejecución en Postman (GUI)**
+1. Importa la colección y el environment.
+2. Selecciona el environment **BienesRaíces Local**.
+3. Ejecuta la colección (Collection Runner).
+
+**Qué validan estas pruebas**
+- `GET /` → **200** + **Content-Type: text/html**.  
+- `GET /api/propiedades` → **200** + **JSON array**; si hay elementos, el primero tiene `id`.
