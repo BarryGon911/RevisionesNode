@@ -1,13 +1,26 @@
 # Bienes Raíces MVC — Backend
 
 ## 📋 Descripción del Proyecto
-Aplicación backend para la gestión de propiedades inmobiliarias, desarrollada con **Node.js**, **Express**, **Sequelize** y **MySQL** bajo el patrón **MVC**.
+Aplicación backend para la gestión de propiedades inmobiliarias, desarrollada con **Node.js**, **Express**, **Sequelize** y **MySQL** bajo el patrón **MVC**.  
+Incluye autenticación de usuarios, roles, gestión de propiedades, subida de imágenes y endpoints API protegidos.
 
-> Este README está alineado a la **Rubrica.md**, con enfoque backend. (Retos 08–11 y MongoDB pueden revisarse en otra sesión).
+> Este README está alineado a la **Rubrica.md**, excepto por los retos 08, 09, 10 y 11, y por el uso de MySQL en lugar de MongoDB.
 
 ---
 
-## ⚙️ Requisitos
+## 📂 Estructura del Proyecto
+- **models/** — Definiciones Sequelize y relaciones.
+- **controllers/** — Lógica de negocio.
+- **routes/** — Enrutadores Express.
+- **middleware/** — Middlewares personalizados.
+- **config/** — Configuración (DB).
+- **seed/** — Datos iniciales y seeder.
+- **views/** — Plantillas Pug.
+- **public/** — Archivos estáticos.
+
+---
+
+## ⚙️ Requisitos Previos
 - Node.js v18+
 - MySQL 8+
 - npm 9+
@@ -15,7 +28,8 @@ Aplicación backend para la gestión de propiedades inmobiliarias, desarrollada 
 ---
 
 ## 📄 Variables de Entorno
-Crea un archivo `.env` en la raíz con:
+Crear `.env` en la raíz del proyecto con:
+
 ```
 BD_NOMBRE=tu_basedatos
 BD_USER=tu_usuario
@@ -34,65 +48,88 @@ npm run db:importar   # Importar datos iniciales
 npm start             # Iniciar servidor
 ```
 
-Modo desarrollo (opcional, watchers Tailwind/webpack):
+Modo desarrollo (watchers para CSS/JS con Tailwind + Webpack):
 ```bash
 npm run dev
 ```
 
 ---
 
-## 🧭 Rutas Principales
-- **Web (Pug)**: `/`, `/auth`, `/propiedades`  
-- **API JSON**: `/api/propiedades`
+## 🛠 Scripts Disponibles
+- `start` → Inicia servidor Express.
+- `server` → Modo desarrollo con nodemon.
+- `css` → Compila TailwindCSS.
+- `js` → Empaqueta JS con Webpack.
+- `dev` → Ejecuta CSS y JS en paralelo.
+- `db:importar` → Importa datos iniciales.
+- `db:eliminar` → Elimina datos de prueba.
 
-> Nota: Endpoints adicionales pueden existir/variar según configuración del proyecto.
+---
+
+## 📌 Endpoints Principales
+### Web (Pug)
+- `/` — Página principal.
+- `/auth` — Registro, login, recuperación.
+- `/propiedades` — Gestión de propiedades.
+
+### API JSON
+- `/api/propiedades` — Endpoints de propiedades.
+- `/api/mensajes` — Envío de mensajes.
+
+> Todos los endpoints protegidos requieren autenticación y permisos según rol.
 
 ---
 
 ## 🔒 Seguridad
-- CSRF (`csurf`) para formularios web.
-- `bcrypt` para hash de contraseñas.
-- `express-validator` para validaciones.
-- `jsonwebtoken` para JWT (si lo habilitas en endpoints API protegidos).
+- CSRF Protection (`csurf`)
+- Hash de contraseñas (`bcrypt`)
+- Validación de entradas (`express-validator`)
+- Autenticación con JWT (`jsonwebtoken`)
 
 ---
 
-## 🧪 Pruebas automatizadas con Postman (cumple rúbrica)
-Se incluyen **pruebas smoke** listas para importar/ejecutar:
-- **Colección**: `postman/bienesraices_mvc_smoke_tests.postman_collection.json`
-- **Environment**: `postman/bienesraices_local.postman_environment.json`
+## 📦 Dependencias
+Este proyecto usa las siguientes dependencias de producción y desarrollo:
 
-**Dónde colocarlos (compliance)**  
-> Crea la carpeta **`postman/` en la raíz** del proyecto y guarda ahí ambos archivos.
+ (para qué se usan)
 
-**Descarga aquí**  
-- Colección: [bienesraices_mvc_smoke_tests.postman_collection.json](/mnt/data/postman_exports/bienesraices_mvc_smoke_tests.postman_collection.json)
-- Environment: [bienesraices_local.postman_environment.json](/mnt/data/postman_exports/bienesraices_local.postman_environment.json)
+### Runtime (`dependencies`)
+- **bcrypt** `^5.0.1` — Hash de contraseñas (guardar contraseñas de forma segura).
+- **cookie-parser** `^1.4.6` — Lectura y parseo de cookies en las peticiones.
+- **csurf** `^1.11.0` — Protección contra ataques CSRF en formularios.
+- **dotenv** `^16.0.1` — Carga variables de entorno desde `.env`.
+- **dropzone** `^5.9.3` — (Front) Helper JS para arrastrar/soltar archivos en formularios.
+- **express** `^4.18.1` — Servidor HTTP y enrutamiento.
+- **express-validator** `^6.14.0` — Validación y saneamiento de parámetros/JSON/form-data.
+- **jsonwebtoken** `^8.5.1` — Generación y verificación de tokens JWT (autenticación).
+- **multer** `^1.4.5-lts.1` — Subida/gestión de archivos (por ejemplo imágenes).
+- **mysql2** `^2.3.3` — Driver MySQL para Sequelize.
+- **nodemailer** `^6.7.5` — Envío de correos (confirmaciones, recuperación, etc.).
+- **pug** `^3.0.2` — Motor de vistas para renderizar HTML desde plantillas.
+- **sequelize** `^6.19.0` — ORM para modelar y consultar la base de datos.
 
-**Ejecución en Postman (GUI)**
-1. Importa la colección y el environment.
-2. Selecciona el environment **BienesRaíces Local**.
-3. Ejecuta la colección (Collection Runner).
+### Desarrollo (`devDependencies`)
+- **autoprefixer** `^10.4.7` — (Dev) Añade prefijos CSS según navegadores objetivo.
+- **concurrently** `^7.2.0` — (Dev) Ejecutar procesos en paralelo (watchers).
+- **nodemon** `^2.0.16` — (Dev) Reinicio automático del servidor al cambiar archivos.
+- **postcss** `^8.4.13` — (Dev) Procesador de CSS.
+- **postcss-cli** `^9.1.0` — (Dev) CLI para PostCSS.
+- **tailwindcss** `^3.0.24` — (Dev) Framework utilitario CSS.
+- **webpack** `^5.72.1` — (Dev) Empaquetador de JS estático.
+- **webpack-cli** `^4.9.2` — (Dev) CLI de webpack.
 
-**Ejecución por CLI (Newman)**
-```bash
-# Global
-npm i -g newman
 
-# Ejecutar
-newman run postman/bienesraices_mvc_smoke_tests.postman_collection.json   -e postman/bienesraices_local.postman_environment.json
-```
-
-**Qué validan estas pruebas**
-- `GET /` → **200** + **Content-Type: text/html**.  
-- `GET /api/propiedades` → **200** + **JSON array**; si hay elementos, el primero tiene `id`.
 
 ---
 
-## 📦 Estructura
-- `models/`, `controllers/`, `routes/`, `middleware/`, `config/`, `seed/`, `views/`, `public/`
+## 📝 Pasos de Uso en Desarrollo
+1. Configurar `.env`.
+2. Instalar dependencias (`npm install`).
+3. Cargar datos (`npm run db:importar`).
+4. Arrancar servidor (`npm start`).
+5. Acceder vía navegador o cliente HTTP.
 
 ---
 
 ## 📜 Licencia
-MIT
+MIT — Uso libre con fines educativos y comerciales.
