@@ -21,8 +21,4 @@ router.post('/olvide-password', resetPassword )
 router.get('/olvide-password/:token', comprobarToken);
 router.post('/olvide-password/:token', nuevoPassword);
 
-
-
-
-
 export default router

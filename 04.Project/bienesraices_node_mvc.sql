@@ -7,7 +7,6 @@
 -- Generation Time: 2022-06-20 11:45:37.4340
 -- -------------------------------------------------------------
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -16,7 +15,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
 
 CREATE TABLE `categorias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -134,8 +132,6 @@ INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `token`, `confirmad
 (1, 'Juan', 'juan@juan.com', '$2b$10$UyVgkZl7UrJOiGxyVecKfu4i5por3rDRIYkI9PVioeVisuhsw9VxK', NULL, 1, '2022-06-04 19:09:13', '2022-06-04 19:09:13'),
 (2, 'Pablo', 'correo@correo.com', '$2b$10$VeCy5Xm8DjQDpkBpSei4juLZmPXFXZimG9f9HMWeLtZN5zEz3FLMa', '', 1, '2022-06-06 18:25:04', '2022-06-06 18:25:04'),
 (3, 'Juan Pablo', 'vendedor@vendedor.com', '$2b$10$6IgXNmFlVsoO1NYmaF1OGONYKPlqTp2I2XMoWfAsAnE6IpaXy1YxC', NULL, 1, '2022-06-17 22:34:51', '2022-06-17 22:35:16');
-
-
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

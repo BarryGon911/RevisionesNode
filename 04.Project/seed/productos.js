@@ -5,4 +5,5 @@ const productos = Array.from({length: 10}).map((_,i)=> ({
   stock: 50 - i,
   categoriaId: (i % 10) + 1
 }))
+
 export default productos

@@ -39,7 +39,4 @@
             document.querySelector('#lng').value = resultado?.latlng?.lng ?? '';
         })
     })
-
-
-
 })()

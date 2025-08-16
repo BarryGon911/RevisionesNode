@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .leaflet-container a {
-    color: #FFF;
+  color: #fff;
 }

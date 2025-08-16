@@ -1,4 +1,5 @@
 const ecom_categorias = [
+
   { nombre: 'Electrónica' },
   { nombre: 'Hogar' },
   { nombre: 'Deportes' },
@@ -9,5 +10,7 @@ const ecom_categorias = [
   { nombre: 'Automotriz' },
   { nombre: 'Jardín' },
   { nombre: 'Mascotas' }
+
 ]
+
 export default ecom_categorias
