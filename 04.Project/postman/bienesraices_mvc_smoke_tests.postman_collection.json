@@ -1,0 +1,83 @@
+{
+  "info": {
+    "name": "BienesRaices MVC – Smoke Tests",
+    "_postman_id": "bienesraices-mvc-smoke-tests",
+    "description": "Pruebas automatizadas básicas (smoke) para el proyecto Bienes Raíces MVC.\nIncluye pruebas para el endpoint JSON existente y la página raíz.\nCumple con la rúbrica: pruebas funcionales con Postman.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Home (HTML)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Content-Type HTML\", function () {",
+              "  pm.response.to.have.header(\"Content-Type\");",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "API – Listado de Propiedades (JSON)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/propiedades",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "propiedades"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Respuesta JSON válida (array)\", function () {",
+              "  let json; pm.expect(function(){ json = pm.response.json(); }).to.not.throw();",
+              "  pm.expect(Array.isArray(json)).to.be.true;",
+              "});",
+              "pm.test(\"Si hay elementos, deben tener 'id'\", function () {",
+              "  const json = pm.response.json();",
+              "  if (json.length > 0) { pm.expect(json[0]).to.have.property('id'); }",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
