@@ -1,10 +1,10 @@
 # Bienes Raíces MVC — Backend
 
 ## 📋 Descripción del Proyecto
-Aplicación backend para la gestión de propiedades inmobiliarias, desarrollada con **Node.js**, **Express**, **Sequelize** y **MySQL** bajo el patrón **MVC**.  
+Aplicación backend para la gestión de propiedades inmobiliarias, desarrollada con **NodeJS**, **ExpressJS**, **Sequelize** y **MySQL** bajo el patrón **MVC**.  
 Incluye autenticación de usuarios, roles, gestión de propiedades, subida de imágenes y endpoints API protegidos.
 
-> Este README está alineado a la **Rubrica.md**, excepto por el uso de MySQL en lugar de MongoDB.
+> Este README está alineado al documento **Rubrica.md**, excepto por el uso de MySQL en lugar de MongoDB.
 
 ---
 
