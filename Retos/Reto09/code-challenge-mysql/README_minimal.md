@@ -42,5 +42,3 @@ La API sirve en `http://localhost:3000` por defecto.
 
 ## Pruebas (Postman)
 Importa `postman_collection.json` y ejecuta las peticiones en orden. Se usan variables (`autorId`, `libroId`, `resenaId`) compartidas entre requests.
-
-> Este README **omite** todo lo no requerido por el Reto09.
