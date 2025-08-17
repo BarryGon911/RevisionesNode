@@ -45,7 +45,7 @@ curl -X POST http://localhost:3000/api/registro   -H "Content-Type: application/
 ```
 
 ## Pruebas con Postman
-Importa la colección: **Reto10.postman_collection.json** (si la estás usando). Incluye casos **exitosos** y **fallidos**:
+Importa la colección: **postman_collection.json** (si la estás usando). Incluye casos **exitosos** y **fallidos**:
 - Registro OK
 - Falla: nombre faltante
 - Falla: nombre corto
