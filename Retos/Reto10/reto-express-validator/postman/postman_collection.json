@@ -1,0 +1,301 @@
+{
+  "info": {
+    "name": "Reto10 - Express-Validator Registro",
+    "_postman_id": "reto10-rqfi05h9i4",
+    "description": "Colección para validar únicamente los requisitos del Reto10: endpoint POST /api/registro con express-validator.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "tsNombre",
+      "value": "UsuarioR10-20250817020809"
+    }
+  ],
+  "item": [
+    {
+      "name": "Registro OK",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"201 Created\", function(){ pm.expect([200,201]).to.include(pm.response.code); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=true\", function(){ pm.expect(j.success).to.be.true; });",
+              "pm.test(\"No expone contraseña\", function(){ pm.expect(j.data).to.not.have.property('contraseña'); });",
+              "pm.test(\"Devuelve nombre enviado\", function(){ pm.expect(j.data.nombre).to.include(pm.collectionVariables.get('tsNombre')); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "registro"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"{{tsNombre}}\",\n  \"correo\": \"test.r10@example.com\",\n  \"edad\": 25,\n  \"contraseña\": \"secreta1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Falla: nombre faltante",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"400 Bad Request\", function(){ pm.response.to.have.status(400); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=false\", function(){ pm.expect(j.success).to.be.false; });",
+              "pm.test(\"errors listado\", function(){ pm.expect(Array.isArray(j.errors)).to.be.true; pm.expect(j.errors.length).to.be.greaterThan(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "registro"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"correo\": \"a@a.com\",\n  \"edad\": 20,\n  \"contraseña\": \"secreta1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Falla: nombre corto (<3)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"400 Bad Request\", function(){ pm.response.to.have.status(400); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=false\", function(){ pm.expect(j.success).to.be.false; });",
+              "pm.test(\"errors listado\", function(){ pm.expect(Array.isArray(j.errors)).to.be.true; pm.expect(j.errors.length).to.be.greaterThan(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "registro"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Jo\",\n  \"correo\": \"a@a.com\",\n  \"edad\": 20,\n  \"contraseña\": \"secreta1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Falla: correo inválido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"400 Bad Request\", function(){ pm.response.to.have.status(400); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=false\", function(){ pm.expect(j.success).to.be.false; });",
+              "pm.test(\"errors listado\", function(){ pm.expect(Array.isArray(j.errors)).to.be.true; pm.expect(j.errors.length).to.be.greaterThan(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "registro"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"ValidoR10\",\n  \"correo\": \"no-es-email\",\n  \"edad\": 22,\n  \"contraseña\": \"secreta1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Falla: edad <18",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"400 Bad Request\", function(){ pm.response.to.have.status(400); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=false\", function(){ pm.expect(j.success).to.be.false; });",
+              "pm.test(\"errors listado\", function(){ pm.expect(Array.isArray(j.errors)).to.be.true; pm.expect(j.errors.length).to.be.greaterThan(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "registro"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"ValidoR10\",\n  \"correo\": \"a@a.com\",\n  \"edad\": 16,\n  \"contraseña\": \"secreta1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Falla: edad >99",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"400 Bad Request\", function(){ pm.response.to.have.status(400); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=false\", function(){ pm.expect(j.success).to.be.false; });",
+              "pm.test(\"errors listado\", function(){ pm.expect(Array.isArray(j.errors)).to.be.true; pm.expect(j.errors.length).to.be.greaterThan(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "registro"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"ValidoR10\",\n  \"correo\": \"a@a.com\",\n  \"edad\": 120,\n  \"contraseña\": \"secreta1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Falla: contraseña corta (<6)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"400 Bad Request\", function(){ pm.response.to.have.status(400); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=false\", function(){ pm.expect(j.success).to.be.false; });",
+              "pm.test(\"errors listado\", function(){ pm.expect(Array.isArray(j.errors)).to.be.true; pm.expect(j.errors.length).to.be.greaterThan(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/registro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "registro"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"ValidoR10\",\n  \"correo\": \"a@a.com\",\n  \"edad\": 20,\n  \"contraseña\": \"123\"\n}"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "info": {
+    "name": "Reto11 - Autenticación JWT (Colección Corregida)",
+    "_postman_id": "reto11-fixed",
+    "description": "Colección mínima y funcional para Reto11: login y perfil protegido con JWT. Base URL: http://localhost:3000/api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "correo",
+      "value": "juan@correo.com"
+    },
+    {
+      "key": "contrasenia",
+      "value": "123456"
+    },
+    {
+      "key": "jwt",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "POST /auth/login (obtener JWT)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"200 OK\", function(){ pm.response.to.have.status(200); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=true\", function(){ pm.expect(j.success).to.be.true; });",
+              "pm.test(\"devuelve token\", function(){ pm.expect(j.token).to.be.a('string').and.to.have.length.greaterThan(10); });",
+              "pm.collectionVariables.set(\"jwt\", j.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"correo\": \"{{correo}}\",\n  \"contraseña\": \"{{contrasenia}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "GET /perfil (protegido)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const token = pm.collectionVariables.get(\"jwt\");",
+              "pm.expect(token, \"Primero ejecuta el login para obtener token\").to.be.ok;",
+              "pm.request.headers.add({key:\"Authorization\", value:`Bearer ${token}`});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"200 OK\", function(){ pm.response.to.have.status(200); });",
+              "const j = pm.response.json();",
+              "pm.test(\"success=true\", function(){ pm.expect(j.success).to.be.true; });",
+              "pm.test(\"incluye usuario\", function(){ pm.expect(j.usuario).to.be.an('object'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/perfil",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "perfil"
+          ]
+        }
+      }
+    }
+  ]
+}
