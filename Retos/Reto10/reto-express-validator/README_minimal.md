@@ -1,4 +1,4 @@
-# Reto10 – Registro con express-validator (README mínimo corregido)
+# Reto10 – Registro con express-validator
 **Objetivo:** Cumplir **únicamente** lo relativo al Reto10: exponer `POST /api/registro` con validaciones usando **express-validator** y respuestas JSON coherentes (éxito/errores).
 
 ## Requisitos
@@ -45,12 +45,10 @@ curl -X POST http://localhost:3000/api/registro   -H "Content-Type: application/
 ```
 
 ## Pruebas con Postman
-Importa la colección: **Reto10.postman_collection.json** (si la estás usando). Incluye casos **exitosos** y **fallidos**:
+Importa la colección: **postman_collection.json** (si la estás usando). Incluye casos **exitosos** y **fallidos**:
 - Registro OK
 - Falla: nombre faltante
 - Falla: nombre corto
 - Falla: correo inválido
 - Falla: edad <18 y >99
 - Falla: contraseña corta
-
-> README intencionalmente **minimalista** para enfocarse **solo** en Reto10.

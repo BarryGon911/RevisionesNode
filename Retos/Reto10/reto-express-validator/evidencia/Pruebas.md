@@ -1,5 +1,4 @@
 # Evidencia de Pruebas – Reto10 (Registro con express-validator)
-Fecha: 2025-08-17 02:08:09
 
 ## Alcance
 Se valida **únicamente** lo pedido para el Reto10: un endpoint `POST /api/registro` con validaciones utilizando `express-validator` y respuestas JSON acordes.
