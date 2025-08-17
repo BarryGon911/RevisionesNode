@@ -5,7 +5,7 @@ Fecha: 2025-08-17 01:49:12
 ## Alcance
 
 Este documento demuestra el cumplimiento **únicamente** de los puntos del reto 8 (API con MongoDB y relaciones).
-Se usó la colección Postman: `Reto08.postman_collection.json` con la variable `baseUrl = http://localhost:3000`.
+Se usó la colección Postman: `postman_collection.json` con la variable `baseUrl = http://localhost:3000`.
 
 ## Precondiciones
 
