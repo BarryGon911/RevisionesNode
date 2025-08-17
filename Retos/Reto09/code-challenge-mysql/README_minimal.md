@@ -41,4 +41,4 @@ La API sirve en `http://localhost:3000` por defecto.
 - **DELETE** `/resenas/:id` – Eliminar reseña
 
 ## Pruebas (Postman)
-Importa `postman_collection.json` y ejecuta las peticiones en orden. Se usan variables (`autorId`, `libroId`, `resenaId`) compartidas entre requests.
+Importa **`postman_collection.json`** y ejecuta las peticiones en orden. Se usan variables (`autorId`, `libroId`, `resenaId`) compartidas entre requests.
