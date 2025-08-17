@@ -1,7 +1,5 @@
 # Evidencia de Pruebas – Reto08 (MongoDB Relaciones)
 
-Fecha: 2025-08-17 01:49:12
-
 ## Alcance
 
 Este documento demuestra el cumplimiento **únicamente** de los puntos del reto 8 (API con MongoDB y relaciones).
