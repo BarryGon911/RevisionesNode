@@ -1,4 +1,4 @@
-# Reto10 – Registro con express-validator (README mínimo corregido)
+# Reto10 – Registro con express-validator
 **Objetivo:** Cumplir **únicamente** lo relativo al Reto10: exponer `POST /api/registro` con validaciones usando **express-validator** y respuestas JSON coherentes (éxito/errores).
 
 ## Requisitos
