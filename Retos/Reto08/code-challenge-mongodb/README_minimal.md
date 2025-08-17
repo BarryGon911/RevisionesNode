@@ -41,7 +41,7 @@ node seed.js
 > Para obtener un `autorId` válido, ejecuta el seed y toma el `_id` de `autor` en la respuesta de `GET /libros`.
 
 ## Pruebas con Postman
-Importa `Reto08.postman_collection.json`. Ejecuta las 5 solicitudes en orden.  
+Importa `postman_collection.json`. Ejecuta las 5 solicitudes en orden.  
 Las pruebas automáticas verifican códigos de estado y guardan variables (`autorId`, `createdLibroId`).
 
 ## Alcance limitado
