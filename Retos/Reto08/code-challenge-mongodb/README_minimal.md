@@ -45,4 +45,4 @@ Importa `postman_collection.json`. Ejecuta las 5 solicitudes en orden.
 Las pruebas automáticas verifican códigos de estado y guardan variables (`autorId`, `createdLibroId`).
 
 ## Alcance limitado
-Este README intencionalmente **omite** elementos no requeridos por el Reto 8 (p.ej. JWT, MySQL, carrito, etc.).
+Este README intencionalmente **omite** elementos no requeridos por el Reto 8.
