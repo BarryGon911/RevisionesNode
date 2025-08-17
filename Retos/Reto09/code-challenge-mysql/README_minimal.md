@@ -1,44 +1,22 @@
-# Reto09 – API con MySQL y Relaciones (Guía mínima)
-**Objetivo:** Cumplir únicamente lo relativo al Reto09 (MySQL con Sequelize): Autores, Libros y Reseñas.
+# Reto 09 - MySQL
 
-## Requisitos
-- Node.js 18+
-- MySQL en ejecución (puerto 3306) y BD creada
-- `.env` con:
-  ```env
-  DB_HOST=localhost
-  DB_PORT=3306
-  DB_NAME=retos
-  DB_USER=root
-  DB_PASSWORD=
-  SRV_PORT=3000
-  ```
+## Instrucciones mínimas
 
-## Arranque
-```bash
-npm install
-npm run dev   # o: node server.js
-```
-La API sirve en `http://localhost:3000` por defecto.
+1. Levanta el servidor con:
+   ```bash
+   npm install
+   npm start
+   ```
 
-## Endpoints necesarios
-### Autores
-- **POST** **`/autores`** – Crear autor
-- **GET** **`/autores`** – Listar
-- **GET** **`/autores/:id`** – Detalle
-- **PUT** **`/autores/:id`** – Actualizar
-- **DELETE** **`/autores/:id`** – Eliminar
+2. Importa en Postman la colección con pruebas:
+   - `postman/reto09_postman_collection.json`
 
-### Libros
-- **POST** **`/libros`** – Crear (requiere `autorId` válido)
-- **GET** **`/libros`** – Listar
-- **GET** **`/libros/:id`** – Detalle (incluye `autor` y `resenas` si existen)
-- **PUT** **`/libros/:id`** – Actualizar
-- **DELETE** **`/libros/:id`** – Eliminar
+3. (Opcional) Si quieres ver únicamente los endpoints CRUD sin pruebas:
+   - `postman/reto09_endpoints_sin_tests.json`
 
-### Reseñas
-- **POST** **`/resenas`** – Crear reseña para un `libroId`
-- **DELETE** **`/resenas/:id`** – Eliminar reseña
+4. (Opcional) Importa el ambiente para localhost:
+   - `postman/reto09_local.postman_environment.json`
 
-## Pruebas (Postman)
-Importa **`postman_collection.json`** y ejecuta las peticiones en orden. Se usan variables (`autorId`, `libroId`, `resenaId`) compartidas entre requests.
+5. Ejecuta las pruebas en el orden indicado dentro de la colección.
+
+---

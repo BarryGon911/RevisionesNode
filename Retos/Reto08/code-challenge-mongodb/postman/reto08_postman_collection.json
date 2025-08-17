@@ -1,0 +1,258 @@
+{
+  "info": {
+    "name": "Reto08 - MongoDB Relaciones API",
+    "_postman_id": "reto08-izkh2etsw79m",
+    "description": "Colección de pruebas automatizadas para Reto08 (API Libros/Autores con MongoDB). Requiere ejecutar el seed para contar con datos iniciales.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listado de libros",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"Status 200 OK\", function () { pm.response.to.have.status(200); });",
+              "const arr = pm.response.json();",
+              "pm.test(\"Respuesta es arreglo\", function(){ pm.expect(Array.isArray(arr)).to.be.true; });",
+              "if (arr.length > 0) {",
+              "  const first = arr[0];",
+              "  const id = first._id || first.id;",
+              "  if (id) pm.collectionVariables.set(\"testLibroId\", id);",
+              "  // autor puede venir en 'autor' poblado o como 'autorId'",
+              "  const autor = first.autor && first.autor._id ? first.autor._id : first.autorId;",
+              "  if (autor) pm.collectionVariables.set(\"autorId\", autor);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/libros",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "libros"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Detalle de libro por ID",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "const id = pm.collectionVariables.get(\"testLibroId\");",
+              "pm.expect(id, \"Se esperaba tener testLibroId desde el listado previo\").to.be.ok;",
+              "pm.request.url = pm.collectionVariables.get(\"baseUrl\") + \"/libros/\" + id;"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"Status 200 OK\", function () { pm.response.to.have.status(200); });",
+              "const obj = pm.response.json();",
+              "pm.test(\"Tiene _id\", function(){ pm.expect(!!obj._id).to.be.true; });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/libros/{{testLibroId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "libros",
+            "{{testLibroId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear libro",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "const autorId = pm.collectionVariables.get(\"autorId\");",
+              "pm.expect(autorId, \"No hay autorId. Ejecuta el seed y vuelve a correr el Listado de libros.\").to.be.ok;"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"Status 201 o 200\", function () { pm.expect([200,201]).to.include(pm.response.code); });",
+              "const obj = pm.response.json();",
+              "const id = obj._id || obj.id;",
+              "if (id) pm.collectionVariables.set(\"createdLibroId\", id);",
+              "pm.test(\"Titulo coincide\", function(){ pm.expect(obj.titulo).to.include(pm.collectionVariables.get(\"tituloRandom\")); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/libros",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "libros"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"{{tituloRandom}}\",\n  \"año\": 2024,\n  \"genero\": \"Ficcion\",\n  \"autorId\": \"{{autorId}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Actualizar libro",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "const id = pm.collectionVariables.get(\"createdLibroId\");",
+              "pm.expect(id, \"No hay createdLibroId (crealo en la petición anterior)\").to.be.ok;",
+              "pm.request.url = pm.collectionVariables.get(\"baseUrl\") + \"/libros/\" + id;"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"Status 200 OK\", function () { pm.response.to.have.status(200); });",
+              "const obj = pm.response.json();",
+              "pm.test(\"Genero actualizado\", function(){ pm.expect(obj.genero).to.eql(\"Drama\"); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/libros/{{createdLibroId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "libros",
+            "{{createdLibroId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"genero\": \"Drama\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Eliminar libro",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "const id = pm.collectionVariables.get(\"createdLibroId\");",
+              "pm.expect(id, \"No hay createdLibroId (crealo en la petición de POST)\").to.be.ok;",
+              "pm.request.url = pm.collectionVariables.get(\"baseUrl\") + \"/libros/\" + id;"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "",
+              "pm.test(\"Status 200 OK\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/libros/{{createdLibroId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "libros",
+            "{{createdLibroId}}"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "testLibroId",
+      "value": ""
+    },
+    {
+      "key": "createdLibroId",
+      "value": ""
+    },
+    {
+      "key": "autorId",
+      "value": ""
+    },
+    {
+      "key": "tituloRandom",
+      "value": "Libro-Prueba-20250817014912"
+    }
+  ]
+}

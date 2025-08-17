@@ -1,45 +1,16 @@
-# Reto08 – API con MongoDB y Relaciones (Guía mínima)
-**Objetivo:** cumplir únicamente los puntos del Reto 8 (sin extras de otros retos).
+# Reto 08 - MongoDB
 
-## Requisitos
-- Node.js 18+
-- MongoDB en ejecución
-- Variables de entorno en `.env` (ejemplo):
-  ```env
-  MONGO_URI=mongodb://localhost:27017/retos
-  SRV_PORT=3000
-  ```
+## Instrucciones mínimas
 
-## Instalación y arranque
-```bash
-npm install
-npm run dev   # o: node server.js
-```
-La API escucha por defecto en `http://localhost:3000` (o `SRV_PORT`).
+1. Levanta el servidor con:
+   ```bash
+   npm install
+   npm start
+   ```
 
-## Datos de ejemplo
-Inserta datos iniciales para tener autores/libros válidos:
-```bash
-node seed.js
-```
+2. Importa en Postman la colección:
+   - `postman/reto08_postman_collection.json`
 
-## Endpoints requeridos (solo Libros)
-- **GET** `/libros` – Lista libros (incluye `autor` poblado si existe).
-- **GET** `/libros/:id` – Detalle de un libro por ID.
-- **POST** `/libros` – Crear libro. Body JSON ejemplo:
-  ```json
-  {
-    "titulo": "Libro Ejemplo",
-    "año": 2024,
-    "genero": "Ficcion",
-    "autorId": "REEMPLAZAR_POR_ID_VALIDO"
-  }
-  ```
-- **PUT** `/libros/:id` – Actualizar campos (p.ej. `genero`).
-- **DELETE** `/libros/:id` – Eliminar por ID.
+3. Ejecuta las pruebas en el orden indicado dentro de la colección.
 
-> Para obtener un `autorId` válido, ejecuta el seed y toma el `_id` de `autor` en la respuesta de `GET /libros`.
-
-## Pruebas con Postman
-Importa `postman_collection.json`. Ejecuta las 5 solicitudes en orden.  
-Las pruebas automáticas verifican códigos de estado y guardan variables (`autorId`, `createdLibroId`).
+---
