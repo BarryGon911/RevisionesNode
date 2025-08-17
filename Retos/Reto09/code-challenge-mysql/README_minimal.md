@@ -23,22 +23,22 @@ La API sirve en `http://localhost:3000` por defecto.
 
 ## Endpoints necesarios
 ### Autores
-- **POST** `/autores` – Crear autor
-- **GET** `/autores` – Listar
-- **GET** `/autores/:id` – Detalle
-- **PUT** `/autores/:id` – Actualizar
-- **DELETE** `/autores/:id` – Eliminar
+- **POST** **`/autores`** – Crear autor
+- **GET** **`/autores`** – Listar
+- **GET** **`/autores/:id`** – Detalle
+- **PUT** **`/autores/:id`** – Actualizar
+- **DELETE** **`/autores/:id`** – Eliminar
 
 ### Libros
-- **POST** `/libros` – Crear (requiere `autorId` válido)
-- **GET** `/libros` – Listar
-- **GET** `/libros/:id` – Detalle (incluye `autor` y `resenas` si existen)
-- **PUT** `/libros/:id` – Actualizar
-- **DELETE** `/libros/:id` – Eliminar
+- **POST** **`/libros`** – Crear (requiere `autorId` válido)
+- **GET** **`/libros`** – Listar
+- **GET** **`/libros/:id`** – Detalle (incluye `autor` y `resenas` si existen)
+- **PUT** **`/libros/:id`** – Actualizar
+- **DELETE** **`/libros/:id`** – Eliminar
 
 ### Reseñas
-- **POST** `/resenas` – Crear reseña para un `libroId`
-- **DELETE** `/resenas/:id` – Eliminar reseña
+- **POST** **`/resenas`** – Crear reseña para un `libroId`
+- **DELETE** **`/resenas/:id`** – Eliminar reseña
 
 ## Pruebas (Postman)
 Importa **`postman_collection.json`** y ejecuta las peticiones en orden. Se usan variables (`autorId`, `libroId`, `resenaId`) compartidas entre requests.
