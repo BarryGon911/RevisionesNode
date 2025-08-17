@@ -52,5 +52,3 @@ Importa la colección: **Reto10.postman_collection.json** (si la estás usando).
 - Falla: correo inválido
 - Falla: edad <18 y >99
 - Falla: contraseña corta
-
-> README intencionalmente **minimalista** para enfocarse **solo** en Reto10.
