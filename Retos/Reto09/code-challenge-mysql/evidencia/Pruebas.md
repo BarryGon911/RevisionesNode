@@ -1,5 +1,4 @@
 # Evidencia de Pruebas – Reto09 (MySQL con Sequelize)
-Fecha: 2025-08-17 01:58:05
 
 ## Alcance
 Este documento valida **únicamente** los puntos correspondientes al Reto09: API con MySQL y relaciones (Autores, Libros, Reseñas) usando Sequelize.

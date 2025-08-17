@@ -1,11 +1,9 @@
-# Evidencia de Pruebas – Reto08 (MongoDB Relaciones)
-
-Fecha: 2025-08-17 01:49:12
+# Evidencia de Pruebas – Reto08 (API con MongoDB y Relaciones)
 
 ## Alcance
 
 Este documento demuestra el cumplimiento **únicamente** de los puntos del reto 8 (API con MongoDB y relaciones).
-Se usó la colección Postman: `Reto08.postman_collection.json` con la variable `baseUrl = http://localhost:3000`.
+Se usó la colección Postman: `postman_collection.json` con la variable `baseUrl = http://localhost:3000`.
 
 ## Precondiciones
 
@@ -22,19 +20,23 @@ Se usó la colección Postman: `Reto08.postman_collection.json` con la variable 
 
    - **Esperado:** 200 OK, arreglo JSON.
    - **Resultado:** OK.
-2. **GET /libros/:id** – Usa `testLibroId`.
+
+3. **GET /libros/:id** – Usa `testLibroId`.
 
    - **Esperado:** 200 OK, objeto JSON con `_id`.
    - **Resultado:** OK.
-3. **POST /libros** – Crea un libro con `titulo = Libro-Prueba-<timestamp>`, `año=2024`, `genero=Ficcion`, `autorId` (obtenido del #1).
+
+5. **POST /libros** – Crea un libro con `titulo = Libro-Prueba-<timestamp>`, `año=2024`, `genero=Ficcion`, `autorId` (obtenido del #1).
 
    - **Esperado:** 201/200, retorna `_id` y campos enviados.
    - **Resultado:** OK. Se guarda `createdLibroId` para pasos siguientes.
-4. **PUT /libros/:id** – Actualiza `genero` a `Drama`.
+
+7. **PUT /libros/:id** – Actualiza `genero` a `Drama`.
 
    - **Esperado:** 200 OK y `genero="Drama"`.
    - **Resultado:** OK.
-5. **DELETE /libros/:id** – Elimina el libro creado.
+
+9. **DELETE /libros/:id** – Elimina el libro creado.
 
    - **Esperado:** 200 OK.
    - **Resultado:** OK.
