@@ -57,10 +57,6 @@ Este documento será usado durante la revisión en vivo del proyecto final.
 |                                 | Código modular, funciones separadas, uso de helpers si aplica                   |        |
 | **Presentación de la demo**     | Explicación clara del flujo                                                     |        |
 |                                 | Pruebas funcionales en vivo con Postman                                         |        |
-| **Retos requeridos**            | ✅ Reto 8 – Code Challenge: API con MongoDB y Relaciones Validator              |        |
-|                                 | ✅ Reto 9 – Code Challenge: API con MySQL y Relaciones protegida                |        |
-|                                 | ✅ Reto 10 – Reto 10: Registro de usuario con validaciones                      |        |
-|                                 | ✅ Reto 11 – Reto 11: Autenticación con JWT                                     |        |
 | **Funcionalidades adicionales** | Uso de `bcrypt` para encriptar contraseñas                                      |        |
 |                                 | Manejo de roles en modelo de usuario (admin/cliente)                            |        |
 |                                 | Documentación básica en `README.md`                                             |        |
