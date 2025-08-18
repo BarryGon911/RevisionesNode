@@ -27,9 +27,9 @@ const port = process.env.SRV_PORT || 3000;
 (async () => {
   try {
     await connectDB();
-    console.log("🟢 Conexión a la BD exitosa");
+    console.log("Conexión a la BD exitosa");
   } catch (error) {
-    console.error("🔴 La Conexión a la BD ha fallado:", error instanceof Error ? error.message : String(error));
+    console.error("La Conexión a la BD ha fallado:", error instanceof Error ? error.message : String(error));
     process.exit(1);
   }
 })();
