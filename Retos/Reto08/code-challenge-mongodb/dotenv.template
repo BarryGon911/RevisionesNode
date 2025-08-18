@@ -1,2 +1,0 @@
-MONGO_URI=mongodb://localhost:27017/biblioteca
-SRV_PORT=3000
