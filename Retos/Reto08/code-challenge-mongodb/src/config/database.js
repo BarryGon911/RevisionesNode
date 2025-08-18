@@ -9,11 +9,10 @@ export const connectDB = async () => {
     const { connection } = await mongoose.connect(process.env.MONGO_URI);
     // Construir la URL con variables de entorno
     const url = `${connection.host}:${connection.port}/${connection.name}`;
-    console.log(colors.bgBlue.cyan.italic.bold(`🟢 MongoDB conectado exitosamente en ${url}`));
+    console.log(`MongoDB conectado exitosamente en ${url}`);
     return "Ok"
   } catch (error) {
-    console.error(colors.bgRed.white.bold("🔴 Error de conexión a MongoDB:"), colors.red(error instanceof Error ? error.message : String(error))
-  );
+    console.error("Error de conexión a MongoDB:"), colors.red(error instanceof Error ? error.message : String(error));
   // Exit the process with Failure
   process.exit(1);
   };
