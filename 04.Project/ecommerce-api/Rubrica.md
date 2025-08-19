@@ -63,6 +63,10 @@ Este documento será usado durante la revisión en vivo del proyecto final.
 
 ---
 
+6. **Realiza la automatización de pruebas en Postman**
+
+---
+
 ## 📝 Notas del Revisor
 
 (Usa este espacio para observaciones importantes o recomendaciones)
