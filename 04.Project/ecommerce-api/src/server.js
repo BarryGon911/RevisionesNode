@@ -7,5 +7,5 @@ const port = process.env.PORT || 3000;
 await connectDB(process.env.MONGODB_URI);
 
 app.listen(port, () => {
-  console.log(`🚀 Servidor escuchando en http://localhost:${port}`);
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });
