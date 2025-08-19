@@ -1,55 +1,23 @@
 {
-  "name": "ecommerce-api",
+  "name": "ecommerce-api-express",
   "version": "1.0.0",
-  "description": "API de e-commerce con **Auth/JWT**, **Roles (admin/customer)**, **Products**, **Categories**, **Cart**, **Orders**, **paginación**, validación y **seeds** idempotentes.",
-  "main": ".eslintrc.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "description": "API E-commerce en Node + Express + MongoDB conforme a la Rúbrica (JWT, bcrypt, express-validator, paginación, roles).",
+  "main": "src/server.js",
   "type": "module",
-  "dependencies": {
-    "@nestjs/common": "^11.1.6",
-    "@nestjs/config": "^4.0.2",
-    "@nestjs/core": "^11.1.6",
-    "@nestjs/jwt": "^11.0.0",
-    "@nestjs/mongoose": "^11.0.3",
-    "@nestjs/passport": "^11.0.5",
-    "@nestjs/platform-express": "^11.1.6",
-    "bcrypt": "^6.0.0",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.2",
-    "cookie-parser": "^1.4.7",
-    "mongoose": "^8.17.2",
-    "passport": "^0.7.0",
-    "passport-jwt": "^4.0.1",
-    "passport-local": "^1.0.0"
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node src/seed.js"
   },
-  "devDependencies": {
-    "@nestjs/cli": "^11.0.10",
-    "@nestjs/schematics": "^11.0.7",
-    "@nestjs/testing": "^11.1.6",
-    "@types/express": "^5.0.3",
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.3.0",
-    "@types/supertest": "^6.0.3",
-    "eslint": "^9.33.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "husky": "^9.1.7",
-    "jest": "^30.0.5",
-    "prettier": "^3.6.2",
-    "rimraf": "^6.0.1",
-    "supertest": "^7.1.4",
-    "ts-jest": "^29.4.1",
-    "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.2"
+  "engines": {
+    "node": ">=18.18"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "mongoose": "8.17.0",
+    "dotenv": "17.2.1",
+    "jsonwebtoken": "9.0.2",
+    "bcrypt": "6.0.0",
+    "express-validator": "7.2.1",
+    "swagger-ui-express": "5.0.1"
   }
 }
