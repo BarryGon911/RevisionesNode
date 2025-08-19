@@ -1,65 +1,167 @@
+# ecommerce-api — NestJS + MongoDB
 
-# ecommerce-api — NestJS + MongoDB (Compliant con Rúbrica)
+API de e-commerce con **Auth/JWT**, **Roles (admin/customer)**, **Products**, **Categories**, **Cart**, **Orders**, **paginación**, validación y **seeds** idempotentes.
 
-API de e‑commerce con **Auth/JWT**, **Roles (admin/customer)**, **Products/Categories**, **Cart**, **Orders**, **paginación**, validación y seeds.
+> Proyecto pensado para cumplir la **Rubrica.md** incluida en el repo: autenticación segura, autorización por roles, CRUD protegidos, datos de ejemplo (≥10 por entidad), colección de Postman y CI (Newman).
 
-## Requisitos
-- Node 20+, npm
-- MongoDB (o `docker-compose up -d` para levantarlo)
+---
 
-## Configuración
+## 🧱 Stack
+- **NestJS** + **TypeScript**
+- **MongoDB** con **Mongoose**
+- **JWT** (estrategia Bearer) + **bcrypt**
+- **class-validator / class-transformer**
+- Postman + **Newman** (colecciones en `/postman`)
+- GitHub Actions (workflow de ejemplo en `/ci/ci-newman.yml`)
+
+---
+
+## 📂 Estructura (resumen)
+
+```
+src/
+  auth/           # /auth/register, /auth/login, /auth/me
+  users/          # CRUD usuarios, esquema User
+  products/       # CRUD productos, esquema Product
+  categories/     # CRUD categorías, esquema Category
+  cart/           # /cart + items (add/update/remove/view)
+  orders/         # /orders (crear desde carrito) y /orders/me
+  common/         # RolesGuard, Roles decorator, GetUser, paginación
+  seeds/          # seed.ts (este archivo)
+  health/         # /health
+  app.module.ts
+  main.ts
+```
+
+---
+
+## ⚙️ Configuración y ejecución
+
+1) **Variables de entorno**
 ```bash
 cp .env.example .env
-# Ajusta variables si es necesario
+# Edita si es necesario:
+# MONGODB_URI=mongodb://localhost:27017/ecommerce_api
+# JWT_SECRET=supersecretjwt
+# ADMIN_EMAIL=admin@mail.com
+# ADMIN_PASSWORD=AdminPassw0rd!
+```
+
+2) **Instalación y levantar MongoDB (opcional con Docker)**
+```bash
 npm i
-npm run seed   # Inserta admin, usuarios y datos (≥10 por entidad)
+# Si quieres usar Docker:
+docker-compose up -d
+```
+
+3) **Semillas (≥10 por entidad)**
+```bash
+npm run seed
+```
+- Crea **1 admin + 9 customers** (total 10 usuarios).
+- Crea **10 categorías** y **20 productos**.
+- Es **idempotente** (usa *upserts*): puedes ejecutarlo varias veces.
+
+4) **Correr en desarrollo**
+```bash
 npm run start:dev
 ```
 
-## Endpoints principales
+---
 
-### Auth
-- POST `/auth/register` → { access_token }
-- POST `/auth/login` → { access_token }
-- GET `/auth/me` (Bearer) → datos del token
+## 🔐 Autenticación
 
-### Categories
-- GET `/categories`
-- POST `/categories` (admin)
+- **POST** `/auth/register` – Crea usuario (customer).
+- **POST** `/auth/login` – Devuelve `{ access_token }`.
+- **GET** `/auth/me` – Requiere `Authorization: Bearer <token>`.
 
-### Products
-- GET `/products?page=1&pageSize=10`
-- GET `/products/:id`
-- POST `/products` (admin)
-- PATCH `/products/:id` (admin)
-- DELETE `/products/:id` (admin)
+> El admin inicial se toma de `ADMIN_EMAIL` y `ADMIN_PASSWORD`.
 
-### Cart (Bearer)
-- GET `/cart`
-- POST `/cart/items` { productId, quantity }
-- PATCH `/cart/items/:id` { quantity }
-- DELETE `/cart/items/:id`
+---
 
-### Orders (Bearer)
-- POST `/orders` { shippingAddress? }  → crea desde carrito, descuenta stock
-- GET `/orders/me`
+## 📦 Endpoints (resumen)
 
-## Paginación
-Formato: `{ items, total, page, pageSize }`
+### Products `/products`
+- **GET** `/products` – Lista paginada: `?page=1&pageSize=10`
+- **GET** `/products/:id`
+- **POST** `/products` *(admin)*
+- **PATCH** `/products/:id` *(admin)*
+- **DELETE** `/products/:id` *(admin)*
 
-## Postman & CI
-Importa los archivos de la carpeta raíz (ver sección de descargas en ChatGPT) y ejecuta:
+### Categories `/categories`
+- **GET** `/categories`
+- **POST** `/categories` *(admin)*
+
+### Cart `/cart`
+- **GET** `/cart` – Ver carrito del usuario autenticado
+- **POST** `/cart/items` – Añadir ítem `{ product, quantity }`
+- **PATCH** `/cart/items/:id` – Actualizar cantidad
+- **DELETE** `/cart/items/:id` – Quitar ítem
+
+### Orders `/orders`
+- **POST** `/orders` – Crea pedido desde el carrito
+- **GET** `/orders/me` – Mis pedidos
+
+### Users `/users`
+- **GET** `/users` – *(admin)* listado paginado
+- **POST** `/users` – Crear usuario
+- **PATCH** `/users/:id` – Requiere JWT (propietario o admin, según tu política)
+- **DELETE** `/users/:id` – *(admin)*
+
+---
+
+## 📑 Postman / Newman
+
+Colecciones y ambientes en `/postman`:
+- `ecommerce-api-current.postman_collection.json`
+- `ecommerce-api-rubrica-template.postman_collection.json`
+- `ecommerce-api-local.postman_environment.json`
+
+**Ejecutar Newman (local):**
 ```bash
-newman run ecommerce-api-rubrica-template.postman_collection.json -e ecommerce-api-local.postman_environment.json
+npx newman run postman/ecommerce-api-current.postman_collection.json   -e postman/ecommerce-api-local.postman_environment.json   --timeout-request 10000
 ```
 
-## Cumplimiento de Rúbrica
-- ✅ Auth con JWT + bcrypt
-- ✅ Roles admin/customer (guard)
-- ✅ CRUD Products/Categories con protección de admin
-- ✅ Cart con add/update/remove y vista del carrito
-- ✅ Orders desde carrito, descuenta stock
-- ✅ Paginación en listados clave
-- ✅ Validación (`class-validator`) y pipes globales
-- ✅ Seeds con ≥10 por entidad
-- ✅ Colección Postman y workflow de CI con Newman
+> El workflow de GitHub Actions (`/ci/ci-newman.yml`) ejemplifica cómo correr Newman en CI.
+
+---
+
+## 🧪 Paginación y Validación
+
+- Paginación por query params: `page` (1..n), `pageSize` (10 por defecto).
+- DTOs con `class-validator` (e.g., `@IsEmail`, `@MinLength`).
+- Pipes globales definidas en `main.ts` (validación y transformación).
+
+---
+
+## 🛠️ Scripts útiles
+
+```jsonc
+{
+  "seed": "ts-node -r tsconfig-paths/register src/seeds/seed.ts",
+  "start:dev": "nest start --watch",
+  "build": "nest build",
+  "start": "node dist/main.js",
+  "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+  "test": "jest"
+}
+```
+
+---
+
+## ✅ Checklist de cumplimiento (extracto)
+
+- [x] **Auth** con JWT y hash de contraseñas (`bcrypt`).
+- [x] **Roles** `admin/customer` con guard.
+- [x] **CRUD** de Products/Categories protegido para `admin`.
+- [x] **Cart** (add/update/remove/view).
+- [x] **Orders** desde carrito (descuenta stock).
+- [x] **Paginación** en listados.
+- [x] **Validación** de DTOs.
+- [x] **Seeds** con ≥10 por entidad (1 admin + 9 usuarios, 10 categorías, 20 productos).
+- [x] **Postman** + **Newman** y CI de ejemplo.
+
+---
+
+## 📄 Licencia
+MIT

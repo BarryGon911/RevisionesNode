@@ -1,45 +1,104 @@
+// src/seeds/seed.ts
+// Seed script for ecommerce-api (NestJS + MongoDB + Mongoose)
+// Creates: 1 admin + 9 customers (total 10 users), 10 categories, 20 products.
+// Idempotent: uses upserts; safe to run multiple times.
 
+import 'dotenv/config';
 import { connect, model } from 'mongoose';
-import { Schema } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-const UserSchema = new Schema({ email: {type:String, unique:true}, name: String, password: String, role: {type:String, default:'customer'} }, { timestamps: true });
-const CategorySchema = new Schema({ name: {type:String, unique:true} }, { timestamps: true });
-const ProductSchema = new Schema({ name: String, price: Number, stock: Number, category: { type: Schema.Types.ObjectId, ref: 'Category' } }, { timestamps: true });
+// Reuse app schemas to avoid duplication
+import { User, UserSchema } from '../users/schemas/user.schema';
+import { Category, CategorySchema } from '../categories/schemas/category.schema';
+import { Product, ProductSchema } from '../products/schemas/product.schema';
 
-async function run() {
-  await connect(process.env.MONGODB_URI!);
-  const User = model('User', UserSchema);
-  const Category = model('Category', CategorySchema);
-  const Product = model('Product', ProductSchema);
+async function seed() {
+  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/ecommerce_api';
+  await connect(uri);
 
-  // Admin
-  const adminPass = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'AdminPassw0rd!', 10);
-  await User.updateOne({ email: process.env.ADMIN_EMAIL || 'admin@mail.com' }, { $set: { name: 'Admin', password: adminPass, role: 'admin' } }, { upsert: true });
+  const UserModel = model<User>(User.name, UserSchema);
+  const CategoryModel = model<Category>(Category.name, CategorySchema);
+  const ProductModel = model<Product>(Product.name, ProductSchema);
 
-  // Customers
-  const custPass = await bcrypt.hash('Passw0rd!', 10);
-  await User.updateOne({ email: 'user1@mail.com' }, { $set: { name: 'User One', password: custPass, role: 'customer' } }, { upsert: true });
-  await User.updateOne({ email: 'user2@mail.com' }, { $set: { name: 'User Two', password: custPass, role: 'customer' } }, { upsert: true });
+  // --- Users (1 admin + 9 customers) ---
+  const adminEmail = (process.env.ADMIN_EMAIL || 'admin@mail.com').toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD || 'AdminPassw0rd!';
+  const adminHash = await bcrypt.hash(adminPassword, 10);
 
-  // Categories
-  const catNames = ['Mugs','T-Shirts','Stickers','Books','Hats','Bags','Posters','Keychains','Notebooks','Pens'];
-  const cats = [];
-  for (const name of catNames) {
-    const up = await Category.findOneAndUpdate({ name }, { name }, { upsert: true, new: true });
-    cats.push(up);
+  await UserModel.findOneAndUpdate(
+    { email: adminEmail },
+    { email: adminEmail, name: 'Admin', password: adminHash, role: 'admin' as any },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
+
+  const baseCustomerHash = await bcrypt.hash('Password123!', 10);
+  const customers = Array.from({ length: 9 }).map((_, i) => ({
+    email: `user${i + 1}@mail.com`,
+    name: `User ${i + 1}`,
+    password: baseCustomerHash,
+    role: 'customer' as any,
+  }));
+
+  for (const u of customers) {
+    await UserModel.findOneAndUpdate(
+      { email: u.email.toLowerCase() },
+      u,
+      { upsert: true, setDefaultsOnInsert: true }
+    );
   }
 
-  // Products (20)
-  for (let i=0;i<20;i++) {
-    const c = cats[i % cats.length];
-    const name = `Product ${i+1}`;
-    const price = 50 + i * 5;
+  // --- Categories (10) ---
+  const categoryNames = [
+    'Electronics',
+    'Books',
+    'Clothing',
+    'Home & Kitchen',
+    'Sports',
+    'Beauty',
+    'Toys',
+    'Automotive',
+    'Garden',
+    'Pets'
+  ];
+
+  const categories = [];
+  for (const name of categoryNames) {
+    const cat = await CategoryModel.findOneAndUpdate(
+      { name },
+      { name },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+    categories.push(cat);
+  }
+
+  // --- Products (20) ---
+  const products = Array.from({ length: 20 }).map((_, i) => {
+    const idx = i + 1;
+    const category = categories[i % categories.length];
+    const price = 49.99 + i * 5;
     const stock = 10 + (i % 5) * 10;
-    await Product.findOneAndUpdate({ name }, { name, price, stock, category: c._id }, { upsert: true });
+
+    return {
+      name: `Product ${idx}`,
+      price: Number(price.toFixed(2)),
+      stock,
+      category: category._id as any,
+    };
+  });
+
+  for (const p of products) {
+    await ProductModel.findOneAndUpdate(
+      { name: p.name },
+      p,
+      { upsert: true, setDefaultsOnInsert: true }
+    );
   }
 
-  console.log('Seed complete');
+  console.log('✅ Seed complete: 1 admin, 9 customers, 10 categories, 20 products.');
   process.exit(0);
 }
-run();
+
+seed().catch((err) => {
+  console.error('❌ Seed failed:', err);
+  process.exit(1);
+});
