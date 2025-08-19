@@ -55,18 +55,18 @@ Incluye comandos **cURL** y sugerencias para **Postman**. *Requisitos previos:* 
 
 ## 0) Preparación
 ```bash
-unzip ecommerce-api-express.zip
-cd ecommerce-api-express
+cd ecommerce-api
 
 # 0.1 Instalar dependencias
-npm i
+npm install
 
 # 0.2 Variables de entorno
-cp .env.example .env
-# Edita .env si usarás Atlas; por defecto:
+Cambiale el nombre al archivo .env.example a .env
+
+# Edita .env si usarás Atlas(Web) o Compass(Local); por defecto:
 # MONGODB_URI=mongodb://localhost:27017/ecommerce_api_express
-# JWT_SECRET=supersecreto_cambia_esto
-# PORT=3000
+# JWT_SECRET=supermegasecreto
+# SRV_PORT=3000
 
 # 0.3 Cargar datos de ejemplo (≥ 10 por entidad)
 npm run seed
@@ -75,8 +75,8 @@ npm run seed
 # 0.4 Levantar servidor
 npm start
 # Esperado en consola:
-# "✅ Conectado a MongoDB"
-# "🚀 Servidor escuchando en http://localhost:3000"
+# "Conectado a MongoDB"
+# "Servidor escuchando en http://localhost:3000"
 ```
 > Si `npm start` está ocupando la terminal, abre otra para ejecutar cURL.
 
@@ -288,3 +288,4 @@ La especificación documenta tags, parámetros de paginación, seguridad **JWT**
 ### Notas
 - Si no tienes `jq`, puedes omitir `| jq ...` en los comandos; la verificación se hace sobre el **status** y/o visualmente.
 - Para Atlas, cambia `MONGODB_URI` en `.env` al string de conexión correspondiente.
+
