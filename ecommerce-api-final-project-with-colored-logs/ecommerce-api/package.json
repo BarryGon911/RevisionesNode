@@ -1,0 +1,35 @@
+{
+  "name": "ecommerce-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "seed": "node seeds/seed.js"
+  },
+  "keywords": [
+    "NodeJS",
+    "ExpressJS",
+    "Bcrypt",
+    "Colors",
+    "DotEnv",
+    "Express-Validator",
+    "JSON Web Token",
+    "Mongoose",
+    "Nodemon"
+  ],
+  "author": "BarryGon911",
+  "license": "ISC",
+  "description": "Proyecto Integrador: API E-commerce en NodeJS con ExpressJS",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "colors": "^1.4.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.2",
+    "nodemon": "^3.1.10"
+  }
+}
