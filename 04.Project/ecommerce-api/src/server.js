@@ -1,29 +1,40 @@
+// src/server.js
+import dotenv from 'dotenv';
+import colors from 'colors';
 import app from './app.js';
-import express from "express";
-import colors from "colors";
-import connectDB from "./src/config/db.js";
+import connectDB from './config/db.js';
 
-import dotenv from "dotenv";
-import "dotenv/config";
-dotenv.config();
+dotenv.config(); // cargar .env una sola vez
 
-const app = express();
-app.use(express.json());
+const PORT = process.env.SRV_PORT || 3000;
 
-const port = process.env.SRV_PORT || 3000;
-
-// await connectDB(process.env.MONGODB_URI);
 (async () => {
   try {
-    await connectDB();
-    console.log("BD connection OK");
+    await connectDB(); // o: await connectDB(process.env.MONGODB_URI)
+    console.log('BD connection OK');
   } catch (error) {
-    console.error("BD connection failed:", error instanceof Error ? error.message : String(error));
+    console.error(
+      'BD connection failed:',
+      error instanceof Error ? error.message : String(error)
+    );
     process.exit(1);
   }
 })();
 
-app.listen(port, () => {
-  // console.log(`Servidor ejecutándose en http://localhost:${port}`));
-  console.log(colors.bgMagenta.magenta.italic.bold(`🚀🟢🚀 NodeJS Server running on http://localhost:${port}`));
+app.listen(PORT, () => {
+  console.log(
+    colors.bgMagenta.magenta.italic.bold(
+      `🚀🟢🚀 NodeJS Server running on http://localhost:${PORT}`
+    )
+  );
+});
+
+// (opcional) endurecer proceso
+process.on('unhandledRejection', (reason) => {
+  console.error('UNHANDLED REJECTION:', reason);
+  process.exit(1);
+});
+process.on('uncaughtException', (err) => {
+  console.error('UNCAUGHT EXCEPTION:', err);
+  process.exit(1);
 });
