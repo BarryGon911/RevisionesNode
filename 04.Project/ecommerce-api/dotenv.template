@@ -1,3 +1,0 @@
-MONGODB_URI=mongodb://localhost:27017/ecommerce-api
-JWT_SECRET=superultramegasecreto
-SRV_PORT=6000
