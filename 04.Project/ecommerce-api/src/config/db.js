@@ -6,7 +6,7 @@ dotenv.config();
 
 export const connectDB = async () => {
   try {
-    const { connection } = await mongoose.connect(process.env.MONGO_URI);
+    const { connection } = await mongoose.connect(process.env.MONGODB_URI);
     // Construir la URL con variables de entorno
     const url = `${connection.host}:${connection.port}/${connection.name}`;
     // console.log(`MongoDB successfully connected on ${url}`));
