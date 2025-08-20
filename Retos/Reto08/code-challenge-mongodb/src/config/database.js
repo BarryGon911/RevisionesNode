@@ -9,12 +9,14 @@ export const connectDB = async () => {
     const { connection } = await mongoose.connect(process.env.MONGO_URI);
     // Construir la URL con variables de entorno
     const url = `${connection.host}:${connection.port}/${connection.name}`;
-    console.log(`MongoDB conectado exitosamente en ${url}`);
+    // console.log(colors.bgBlue.cyan.bold(`MongoDB connected successfully on ${url}`));
+    console.log("🟢", colors.bgGreen.black.bold(" MongoDB successfully connected "), colors.green(`on ${url}`));
     return "Ok"
   } catch (error) {
-    console.error("Error de conexión a MongoDB:"), colors.red(error instanceof Error ? error.message : String(error));
-  // Exit the process with Failure
-  process.exit(1);
+    // console.error(colors.bgRed.bold.white.bold("Error de conexión a MongoDB:"), colors.red(error instanceof Error ? error.message : String(error)));
+    console.error("🔴", colors.bgRed.white.bold(" MongoDB connection error "), colors.red(`→ ${err instanceof Error ? err.message : String(err)}`));
+    // Exit the process with Failure
+    process.exit(1);
   };
 }
 
