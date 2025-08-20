@@ -5,14 +5,13 @@ import { setupSwagger } from './docs/swagger.js';
 const app = express();
 
 app.use(express.json());
-
 app.get('/', (req, res) => res.json({ ok: true, message: 'E-commerce API (Express)' }));
 
 setupSwagger(app);
 
 app.use('/api', routes);
 
-// Manejo de 404
+// Manejo del código 404
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });

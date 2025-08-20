@@ -15,14 +15,14 @@ const port = process.env.SRV_PORT || 3000;
 (async () => {
   try {
     await connectDB();
-    console.log(colors.bgBlue.cyan.italic.bold("🟢 Conexión a la BD exitosa"));
+    console.log(colors.bgBlue.cyan.italic.bold("🟢 DB connection OK"));
   } catch (error) {
-    console.error(colors.bgRed.white.bold("🔴 La Conexión a la BD ha fallado:"), colors.red(error instanceof Error ? error.message : String(error)));
+    console.error(colors.bgRed.white.bold("🔴 DB connection failed:"), colors.red(error instanceof Error ? error.message : String(error)));
     process.exit(1);
   }
 })();
 
 app.listen(port, () => {
-  // console.log(colors.bgMagenta.magenta.italic.bold(`🚀 Servidor ejecutándose en http://localhost:${port}`));
-  console.log(colors.bgMagenta.magenta.italic.bold(`🟢 NodeJS Server running on http://localhost:${port}`));
+  // console.log(`Servidor ejecutándose en http://localhost:${port}`));
+  console.log(colors.bgMagenta.magenta.italic.bold(`🚀🟢🚀 NodeJS Server running on http://localhost:${port}`));
 });

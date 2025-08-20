@@ -8,32 +8,21 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-
 app.use("/", rutas);
 
 const port = process.env.SRV_PORT || 3000;
 
-// Método de Rodrigo
-// connectDB().then(() => {
-//   app.listen(port, () => {
-//     console.log(`Servidor escuchando en puerto ${port}`);
-//   });
-// }).catch(err => {
-//   console.error("Fallo al conectar la DB:", err);
-//   process.exit(1);
-// });
-
 (async () => {
   try {
     await connectDB();
-    console.log("Conexión a la BD exitosa");
+    console.log("BD connection OK");
   } catch (error) {
-    console.error("La Conexión a la BD ha fallado:", error instanceof Error ? error.message : String(error));
+    console.error("BD connection failed:", error instanceof Error ? error.message : String(error));
     process.exit(1);
   }
 })();
 
 app.listen(port, () => {
-  // console.log(colors.bgMagenta.magenta.italic.bold(`🚀 Servidor ejecutándose en http://localhost:${port}`));
-  console.log(colors.bgMagenta.magenta.italic.bold(`🟢 NodeJS Server running on http://localhost:${port}`));
+  // console.log(`Servidor ejecutándose en http://localhost:${port}`));
+  console.log(colors.bgMagenta.magenta.italic.bold(`🚀🟢🚀 NodeJS Server running on http://localhost:${port}`));
 });

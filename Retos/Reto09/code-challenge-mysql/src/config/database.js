@@ -36,21 +36,3 @@ export const connectDB = async () => {
 
 export default connectDB;
 export { sequelize };
-
-// Conexión a la DB sin COLORS
-// export const connectDB = async () => {
-//   try {
-//     await sequelize.authenticate();
-//     // Construir la URL con variables de entorno
-//     const url = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
-//     console.log(`🟢 MySQL conectado exitosamente en ${url}`);
-//     await sequelize.sync();
-//   } catch (error) {
-//     console.error(
-//       "🔴 Error de conexión de MySQL:",
-//       error instanceof Error ? error.message : String(error)
-//     );
-//     // Exit the process with failure
-//     process.exit(1);
-//   }
-// };
