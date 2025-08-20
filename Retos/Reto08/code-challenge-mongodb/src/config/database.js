@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import colors from "colors";
 import dotenv from "dotenv";
-import "dotenv/config";
 dotenv.config();
 
 export const connectDB = async () => {
