@@ -16,7 +16,28 @@ const sequelize = new Sequelize (
   }
 );
 
-// // Conexión a la DB sin COLORS
+// Conexión a la DB con COLORS
+export const connectDB = async () => {
+  try {
+    await sequelize.authenticate();
+    // Construir la URL con variables de entorno
+    const url = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+    console.log(colors.bgBlue.cyan.italic.bold(`🟢 MySQL Server succesfully connected on ${url}`));
+    await sequelize.sync();
+  } catch (error) {
+    console.error(
+      colors.bgRed.white.bold("🔴 MySQL Server connection error:"),
+      colors.red(error instanceof Error ? error.message : String(error))
+    );
+    // Exit the process with Failure
+    process.exit(1);
+  }
+};
+
+export default connectDB;
+export { sequelize };
+
+// Conexión a la DB sin COLORS
 // export const connectDB = async () => {
 //   try {
 //     await sequelize.authenticate();
@@ -33,24 +54,3 @@ const sequelize = new Sequelize (
 //     process.exit(1);
 //   }
 // };
-
-// Conexión a la DB con COLORS
-export const connectDB = async () => {
-  try {
-    await sequelize.authenticate();
-    // Construir la URL con variables de entorno
-    const url = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
-    console.log(colors.bgBlue.cyan.italic.bold(`🟢 MySQL conectado exitosamente en ${url}`));
-    await sequelize.sync();
-  } catch (error) {
-    console.error(
-      colors.bgRed.white.bold("🔴 Error de conexión de MySQL:"),
-      colors.red(error instanceof Error ? error.message : String(error))
-    );
-    // Exit the process with Failure
-    process.exit(1);
-  }
-};
-
-export default connectDB;
-export { sequelize };
