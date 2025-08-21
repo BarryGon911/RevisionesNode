@@ -1,4 +1,5 @@
 CREATE database biblioteca;
+
 USE biblioteca;
 
 CREATE TABLE Autor (
