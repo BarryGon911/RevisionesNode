@@ -1,0 +1,21 @@
+diff --git a/package.json b/package.json
+--- a/package.json
++++ b/package.json
+@@
+   "scripts": {
++    "seed": "node -r dotenv/config seeds/seeds.js",
++    "db:seed:all": "node -r dotenv/config seeds/seeds.js",
++    "db:seed:clean": "node -r dotenv/config seeds/seeds.js --clean",
++    "db:seed:users": "node -r dotenv/config seeds/seedUsers.js",
++    "db:seed:categories": "node -r dotenv/config seeds/seedCategories.js",
++    "db:seed:products": "node -r dotenv/config seeds/seedProducts.js",
++    "db:seed:carts": "node -r dotenv/config seeds/seedCarts.js",
++    "db:seed:orders": "node -r dotenv/config seeds/seedOrders.js",
++
++    "db:counts": "node -r dotenv/config seeds/listCounts.js",
++    "db:products": "node -r dotenv/config seeds/listProducts.js",
++    "db:cart": "node -r dotenv/config seeds/showCart.js",
++    "db:orders": "node -r dotenv/config seeds/listOrders.js",
++
++    "db:reset": "node -r dotenv/config seeds/dbReset.js --force"
+   }
