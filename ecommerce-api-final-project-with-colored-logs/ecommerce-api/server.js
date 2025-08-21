@@ -33,7 +33,7 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
 
-// Con colors
+// Con COLORS
 app.listen(port, () => {
   // console.log(`Servidor ejecutándose en http://localhost:${port}`));
   console.log(colors.bgMagenta.magenta.italic.bold(` 🚀 🟢 🚀  NodeJS Server running on http://localhost:${port}`));
