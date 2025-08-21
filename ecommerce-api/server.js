@@ -33,11 +33,6 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
 
-// Sin COLORS
-// app.listen(port, () => {
-//   console.log(`Server running on http://localhost:${port}`);
-// });
-
 // Con COLORS
 app.listen(port, () => {
   // console.log(`Servidor ejecutándose en http://localhost:${port}`));

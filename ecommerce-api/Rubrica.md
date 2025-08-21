@@ -89,6 +89,6 @@ Este documento será usado durante la revisión en vivo del proyecto final.
 - **📅 Fecha máxima de revisión**: \***\*\22\08\2025\*\***
 - **📅 Fecha límite para completar tu proyecto Máximo puntaje 20**: \***\*\29\08\2025\*\***
 
-** Recuerda que la revisión es una oportunidad para mejorar tu proyecto y recibir retroalimentación constructiva. ¡Buena suerte! 
+** Recuerda que la revisión es una oportunidad para mejorar tu proyecto y recibir retroalimentación constructiva. ¡Buena suerte! **
 
- ** Recuerda que debes de terminar tu proyecto para poder iniciar con el último módulo del curso **
+** Recuerda que debes de terminar tu proyecto para poder iniciar con el último módulo del curso **
