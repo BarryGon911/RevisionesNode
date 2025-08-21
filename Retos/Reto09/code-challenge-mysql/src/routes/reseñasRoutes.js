@@ -1,4 +1,3 @@
-// src/routes/reseñasRoutes.js
 import express from "express";
 import {
   obtenerResenas,

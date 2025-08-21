@@ -9,9 +9,9 @@ const alter = args.has("--alter");
 const force = args.has("--force");
 
 connectDB({ sync, alter, force }).then(() => {
-  console.log("✅ Conexión finalizada.");
+  console.log("Conexión finalizada.");
   process.exit(0);
 }).catch((e) => {
-  console.error("❌ Error en app:connect:", e);
+  console.error("Error en app:connect:", e);
   process.exit(1);
 });
