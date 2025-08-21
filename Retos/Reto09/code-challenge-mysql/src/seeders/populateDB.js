@@ -1,71 +1,127 @@
+// seeders/populateDB.js
 import { sequelize } from "../config/database.js";
-import { Autor, Libro, Resena } from "../models/index.js";
+import { Autor, Libro, Usuario, Resena } from "../models/index.js";
+
+const autores = [
+  { id: 1,  nombre: "Gabriel GarcÌa M·rquez", nacionalidad: "Colombiana", fechaNacimiento: "1927-03-06" },
+  { id: 2,  nombre: "Isabel Allende",         nacionalidad: "Chilena",    fechaNacimiento: "1942-08-02" },
+  { id: 3,  nombre: "Jorge Luis Borges",      nacionalidad: "Argentina",  fechaNacimiento: "1899-08-24" },
+  { id: 4,  nombre: "Mario Vargas Llosa",     nacionalidad: "Peruana",    fechaNacimiento: "1936-03-28" },
+  { id: 5,  nombre: "Julio Cort·zar",         nacionalidad: "Argentina",  fechaNacimiento: "1914-08-26" },
+  { id: 6,  nombre: "Carlos Fuentes",         nacionalidad: "Mexicana",   fechaNacimiento: "1928-11-11" },
+  { id: 7,  nombre: "Laura Esquivel",         nacionalidad: "Mexicana",   fechaNacimiento: "1950-09-30" },
+  { id: 8,  nombre: "Juan Rulfo",             nacionalidad: "Mexicana",   fechaNacimiento: "1917-05-16" },
+  { id: 9,  nombre: "Rosario Castellanos",    nacionalidad: "Mexicana",   fechaNacimiento: "1925-05-25" },
+  { id: 10, nombre: "Elena Poniatowska",      nacionalidad: "Mexicana",   fechaNacimiento: "1932-05-19" },
+  { id: 11, nombre: "Arturo PÈrez-Reverte",   nacionalidad: "EspaÒola",   fechaNacimiento: "1951-11-25" },
+  { id: 12, nombre: "Javier MarÌas",          nacionalidad: "EspaÒola",   fechaNacimiento: "1951-09-20" },
+  { id: 13, nombre: "Carlos Ruiz ZafÛn",      nacionalidad: "EspaÒola",   fechaNacimiento: "1964-09-25" },
+  { id: 14, nombre: "Miguel de Cervantes",    nacionalidad: "EspaÒola",   fechaNacimiento: "1547-09-29" },
+  { id: 15, nombre: "Federico GarcÌa Lorca",  nacionalidad: "EspaÒola",   fechaNacimiento: "1898-06-05" },
+  { id: 16, nombre: "Ana MarÌa Matute",       nacionalidad: "EspaÒola",   fechaNacimiento: "1925-07-26" },
+  { id: 17, nombre: "Eduardo Galeano",        nacionalidad: "Uruguaya",   fechaNacimiento: "1940-09-03" },
+  { id: 18, nombre: "Roberto BolaÒo",         nacionalidad: "Chilena",    fechaNacimiento: "1953-04-28" },
+  { id: 19, nombre: "Clarice Lispector",      nacionalidad: "BrasileÒa",  fechaNacimiento: "1920-12-10" },
+  { id: 20, nombre: "Pablo Neruda",           nacionalidad: "Chilena",    fechaNacimiento: "1904-07-12" },
+];
+
+const libros = [
+  { id: 1,  titulo: "Cien AÒos de Soledad",                 genero: "Realismo M·gico", fechaPublicacion: "1967-05-30", autorId: 1  },
+  { id: 2,  titulo: "El Amor en los Tiempos del CÛlera",    genero: "Romance",         fechaPublicacion: "1985-09-05", autorId: 1  },
+  { id: 3,  titulo: "La Casa de los EspÌritus",             genero: "Realismo M·gico", fechaPublicacion: "1982-01-01", autorId: 2  },
+  { id: 4,  titulo: "Ficciones",                            genero: "Cuentos",         fechaPublicacion: "1944-01-01", autorId: 3  },
+  { id: 5,  titulo: "La Ciudad y los Perros",               genero: "FicciÛn",         fechaPublicacion: "1963-01-01", autorId: 4  },
+  { id: 6,  titulo: "Rayuela",                              genero: "FicciÛn",         fechaPublicacion: "1963-01-01", autorId: 5  },
+  { id: 7,  titulo: "La Muerte de Artemio Cruz",            genero: "FicciÛn",         fechaPublicacion: "1962-01-01", autorId: 6  },
+  { id: 8,  titulo: "Como Agua para Chocolate",             genero: "Romance",         fechaPublicacion: "1989-01-01", autorId: 7  },
+  { id: 9,  titulo: "Pedro P·ramo",                         genero: "FicciÛn",         fechaPublicacion: "1955-01-01", autorId: 8  },
+  { id: 10, titulo: "Bal˙n Can·n",                          genero: "FicciÛn",         fechaPublicacion: "1957-01-01", autorId: 9  },
+  { id: 11, titulo: "La Noche de Tlatelolco",               genero: "CrÛnica",         fechaPublicacion: "1971-01-01", autorId: 10 },
+  { id: 12, titulo: "La Reina del Sur",                     genero: "Novela Negra",    fechaPublicacion: "2002-01-01", autorId: 11 },
+  { id: 13, titulo: "CorazÛn Tan Blanco",                   genero: "FicciÛn",         fechaPublicacion: "1992-01-01", autorId: 12 },
+  { id: 14, titulo: "La Sombra del Viento",                 genero: "Misterio",        fechaPublicacion: "2001-01-01", autorId: 13 },
+  { id: 15, titulo: "Don Quijote de la Mancha",             genero: "Cl·sico",         fechaPublicacion: "1605-01-16", autorId: 14 },
+  { id: 16, titulo: "Bodas de Sangre",                      genero: "Teatro",          fechaPublicacion: "1933-01-01", autorId: 15 },
+  { id: 17, titulo: "Primera Memoria",                      genero: "FicciÛn",         fechaPublicacion: "1959-01-01", autorId: 16 },
+  { id: 18, titulo: "Las Venas Abiertas de AmÈrica Latina", genero: "Ensayo",          fechaPublicacion: "1971-01-01", autorId: 17 },
+  { id: 19, titulo: "Los Detectives Salvajes",              genero: "FicciÛn",         fechaPublicacion: "1998-01-01", autorId: 18 },
+  { id: 20, titulo: "La Hora de la Estrella",               genero: "FicciÛn",         fechaPublicacion: "1977-01-01", autorId: 19 },
+];
+
+const usuarios = [
+  { id: 1,  nombre: "Juan Camaney ShingÛn",  email: "jcamaney@mail.com",   password: "misuperpassword1" },
+  { id: 2,  nombre: "Mauricio GarcÈs El˙",   email: "mgarces@mail.com",    password: "misuperpassword2" },
+  { id: 3,  nombre: "Lupita Gonz·lez",       email: "lgonzalez@mail.com",  password: "pwd3"  },
+  { id: 4,  nombre: "Carlos MÈndez",         email: "cmendez@mail.com",    password: "pwd4"  },
+  { id: 5,  nombre: "Ana RodrÌguez",         email: "arodriguez@mail.com", password: "pwd5"  },
+  { id: 6,  nombre: "Pedro Hern·ndez",       email: "phernandez@mail.com", password: "pwd6"  },
+  { id: 7,  nombre: "MarÌa Fernanda Ruiz",   email: "mfruiz@mail.com",     password: "pwd7"  },
+  { id: 8,  nombre: "Jorge Castillo",        email: "jcastillo@mail.com",  password: "pwd8"  },
+  { id: 9,  nombre: "SofÌa Morales",         email: "smorales@mail.com",   password: "pwd9"  },
+  { id: 10, nombre: "Ricardo PÈrez",         email: "rperez@mail.com",     password: "pwd10" },
+  { id: 11, nombre: "Daniela LÛpez",         email: "dlopez@mail.com",     password: "pwd11" },
+  { id: 12, nombre: "Arturo S·nchez",        email: "asanchez@mail.com",   password: "pwd12" },
+  { id: 13, nombre: "Paola JimÈnez",         email: "pjimenez@mail.com",   password: "pwd13" },
+  { id: 14, nombre: "HÈctor Flores",         email: "hflores@mail.com",    password: "pwd14" },
+  { id: 15, nombre: "Claudia Navarro",       email: "cnavarro@mail.com",   password: "pwd15" },
+  { id: 16, nombre: "Diego Torres",          email: "dtorres@mail.com",    password: "pwd16" },
+  { id: 17, nombre: "Fernanda Salas",        email: "fsalas@mail.com",     password: "pwd17" },
+  { id: 18, nombre: "Emilio Ramos",          email: "eramos@mail.com",     password: "pwd18" },
+  { id: 19, nombre: "Ximena Ch·vez",         email: "xchavez@mail.com",    password: "pwd19" },
+  { id: 20, nombre: "Rodrigo MartÌnez",      email: "rmartinez@mail.com",  password: "pwd20" },
+];
+
+const resenas = [
+  { id: 1,  contenido: "Una obra maestra",               calificacion: 5, fecha: "2025-07-01", libroId: 1,  usuarioId: 1  },
+  { id: 2,  contenido: "Muy imaginativa",                calificacion: 5, fecha: "2025-07-10", libroId: 2,  usuarioId: 2  },
+  { id: 3,  contenido: "HipnÛtica y entraÒable",         calificacion: 4, fecha: "2025-07-12", libroId: 3,  usuarioId: 3  },
+  { id: 4,  contenido: "Brillante colecciÛn de cuentos", calificacion: 5, fecha: "2025-07-14", libroId: 4,  usuarioId: 4  },
+  { id: 5,  contenido: "Cruda y poderosa",               calificacion: 4, fecha: "2025-07-15", libroId: 5,  usuarioId: 5  },
+  { id: 6,  contenido: "Innovadora estructura narrativa",calificacion: 5, fecha: "2025-07-16", libroId: 6,  usuarioId: 6  },
+  { id: 7,  contenido: "Profunda y crÌtica",             calificacion: 4, fecha: "2025-07-18", libroId: 7,  usuarioId: 7  },
+  { id: 8,  contenido: "Tierna y deliciosa",             calificacion: 5, fecha: "2025-07-19", libroId: 8,  usuarioId: 8  },
+  { id: 9,  contenido: "PoÈtica y fantasmagÛrica",       calificacion: 5, fecha: "2025-07-21", libroId: 9,  usuarioId: 9  },
+  { id: 10, contenido: "Retrato social contundente",     calificacion: 4, fecha: "2025-07-22", libroId: 10, usuarioId: 10 },
+  { id: 11, contenido: "Testimonio imprescindible",      calificacion: 5, fecha: "2025-07-24", libroId: 11, usuarioId: 11 },
+  { id: 12, contenido: "¡gil y adictiva",                calificacion: 4, fecha: "2025-07-25", libroId: 12, usuarioId: 12 },
+  { id: 13, contenido: "Intrigante y elegante",          calificacion: 4, fecha: "2025-07-27", libroId: 13, usuarioId: 13 },
+  { id: 14, contenido: "AtmosfÈrica y emotiva",          calificacion: 5, fecha: "2025-07-28", libroId: 14, usuarioId: 14 },
+  { id: 15, contenido: "Cl·sico eterno",                 calificacion: 5, fecha: "2025-07-30", libroId: 15, usuarioId: 15 },
+  { id: 16, contenido: "Tr·gica y luminosa",             calificacion: 4, fecha: "2025-08-01", libroId: 16, usuarioId: 16 },
+  { id: 17, contenido: "Madura y sensible",              calificacion: 4, fecha: "2025-08-03", libroId: 17, usuarioId: 17 },
+  { id: 18, contenido: "Ensayo imprescindible",          calificacion: 5, fecha: "2025-08-05", libroId: 18, usuarioId: 18 },
+  { id: 19, contenido: "Vibrante y audaz",               calificacion: 5, fecha: "2025-08-07", libroId: 19, usuarioId: 19 },
+  { id: 20, contenido: "Breve y poderosa",               calificacion: 4, fecha: "2025-08-10", libroId: 20, usuarioId: 20 },
+];
 
 const poblarBaseDeDatos = async () => {
   try {
-    await sequelize.sync({ force: true }); // ‚ö†Ô∏è Esto elimina y recrea las tablas
+    await sequelize.authenticate();
 
-    // Autores
-    const gabriel = await Autor.create({
-      nombre: "Gabriel Garc√≠a M√°rquez",
-      nacionalidad: "Colombiana",
-      fechaNacimiento: "1927-03-06",
+    await sequelize.transaction(async (t) => {
+      // Desactivar FKs (MySQL/MariaDB)
+      await sequelize.query("SET FOREIGN_KEY_CHECKS = 0", { transaction: t });
+
+      // Limpiar tablas en orden seguro (o con FK off da igual el orden)
+      await Resena.truncate({ transaction: t });
+      await Libro.truncate({ transaction: t });
+      await Usuario.truncate({ transaction: t });
+      await Autor.truncate({ transaction: t });
+
+      // Reactivar FKs
+      await sequelize.query("SET FOREIGN_KEY_CHECKS = 1", { transaction: t });
+
+      // Insertar exactamente lo del SQL (con los mismos IDs)
+      await Autor.bulkCreate(autores, { validate: true, transaction: t });
+      await Usuario.bulkCreate(usuarios, { validate: true, transaction: t });
+      await Libro.bulkCreate(libros, { validate: true, transaction: t });
+      await Resena.bulkCreate(resenas, { validate: true, transaction: t });
     });
 
-    const isabel = await Autor.create({
-      nombre: "Isabel Allende",
-      nacionalidad: "Chilena",
-      fechaNacimiento: "1942-08-02",
-    });
-
-    // Libros
-    const soledad = await Libro.create({
-      titulo: "Cien A√±os de Soledad",
-      anio: 1967,
-      genero: "Realismo M√°gico",
-      autorId: gabriel.id,
-    });
-
-    const colera = await Libro.create({
-      titulo: "El Amor en los Tiempos del C√≥lera",
-      anio: 1985,
-      genero: "Romance",
-      autorId: gabriel.id,
-    });
-
-    const espiritus = await Libro.create({
-      titulo: "La Casa de los Esp√≠ritus",
-      anio: 1982,
-      genero: "Ficci√≥n",
-      autorId: isabel.id,
-    });
-
-    // Rese√±as
-    await Resena.create({
-      comentario: "Una obra maestra",
-      puntuacion: 5,
-      fecha: "2025-07-01",
-      libroId: soledad.id,
-    });
-
-    await Resena.create({
-      comentario: "Emotiva y profunda",
-      puntuacion: 4,
-      fecha: "2025-07-05",
-      libroId: colera.id,
-    });
-
-    await Resena.create({
-      comentario: "Muy imaginativa",
-      puntuacion: 5,
-      fecha: "2025-07-10",
-      libroId: espiritus.id,
-    });
-
-    console.log("‚úÖ Base de datos poblada con √©xito.");
+    console.log("? Base de datos poblada exactamente como en poblar_db.sql");
     process.exit(0);
   } catch (error) {
-    console.error("‚ùå Error al poblar la base de datos:", error);
+    console.error("? Error al poblar:", error);
     process.exit(1);
   }
 };

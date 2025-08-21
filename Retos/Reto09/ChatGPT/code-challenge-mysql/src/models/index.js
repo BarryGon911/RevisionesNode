@@ -1,9 +1,9 @@
 import Autor from "./Autor.js";
-import Libro from "./Libro.js";
-import Resena from "./Rese�a.js"; // o "./Resena.js" si renombras el archivo
 import Usuario from "./Usuario.js";
+import Libro from "./Libro.js";
+import Resena from "./Resena.js";
 
-// Autor 1-* Libro
+// Autor 1─* Libro
 Autor.hasMany(Libro, {
   as: "libros",
   foreignKey: { name: "autorId", allowNull: false },
@@ -15,7 +15,7 @@ Libro.belongsTo(Autor, {
   onDelete: "CASCADE",
 });
 
-// Libro 1-* Resena
+// Libro 1─* Resena
 Libro.hasMany(Resena, {
   as: "resenas",
   foreignKey: { name: "libroId", allowNull: false },
@@ -27,7 +27,7 @@ Resena.belongsTo(Libro, {
   onDelete: "CASCADE",
 });
 
-// Usuario 1-* Resena
+// Usuario 1─* Resena
 Usuario.hasMany(Resena, {
   as: "resenas",
   foreignKey: { name: "usuarioId", allowNull: false },
