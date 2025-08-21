@@ -31,6 +31,7 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
+
 app.listen(port, () => {
   console.log(colors.cyan(`Server running on http://localhost:${port}`))
 });
