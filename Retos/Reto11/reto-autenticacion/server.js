@@ -34,6 +34,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  // console.log(colors.bgMagenta.magenta.italic.bold(`🚀 Servidor ejecutándose en http://localhost:${port}`));
-  console.log(colors.bgMagenta.magenta.italic.bold(`🟢 NodeJS Server running on http://localhost:${port}`));
+  // console.log(`Servidor ejecutándose en http://localhost:${port}`));
+  console.log(colors.bgMagenta.magenta.italic.bold(` 🚀 🟢 🚀  NodeJS Server running on http://localhost:${port}`));
 });

@@ -15,7 +15,7 @@ const port = process.env.SRV_PORT || 3000;
 (async () => {
   try {
     await connectDB();
-    console.log(colors.bgGrey.black.bold((" 🟢  BD connection OK ")));
+    console.log(colors.bgGrey.black.bold((" 🟢  MongoBD connection is OK ")));
   } catch (error) {
     // console.error(colors.bgRed.white.bold("🔴 MongoBD connection failed:", error instanceof Error ? error.message : String(error)));
     console.error(colors.bgRed.white.bold("🔴 MongoDB connection failed", `→ ${error instanceof Error ? error.message : String(error)}`));
