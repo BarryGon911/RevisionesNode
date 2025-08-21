@@ -1,38 +1,57 @@
 import { Sequelize } from "sequelize";
-import colors from "colors";
-import dotenv from "dotenv";
 import "dotenv/config";
-dotenv.config();
 
-const sequelize = new Sequelize (
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: "mysql",
-    logging: false,
-  }
-);
+const {
+  DB_HOST,
+  DB_PORT,
+  DB_NAME,
+  DB_USER,
+  DB_PASS,       // preferido
+  DB_PASSWORD,   // compat: por si tu .env usa esta clave
+  DB_DIALECT,
+  DB_LOGGING,
+  DB_TIMEZONE,
+  DATABASE_URL,
+} = process.env;
 
-// ConexiÃ³n a la DB con COLORS
-export const connectDB = async () => {
+// logging configurable desde .env (DB_LOGGING=true)
+const logging = DB_LOGGING === "true" ? console.log : false;
+
+// Instancia única de Sequelize (respeta DATABASE_URL O variables separadas)
+export const sequelize = DATABASE_URL
+  ? new Sequelize(DATABASE_URL, {
+      logging,
+      timezone: DB_TIMEZONE || "+00:00",
+      define: { freezeTableName: true }, // nombres exactos de tablas del SQL
+    })
+  : new Sequelize(DB_NAME, DB_USER, DB_PASS || DB_PASSWORD, {
+      host: DB_HOST,
+      port: Number(DB_PORT || 3306),
+      dialect: DB_DIALECT || "mysql",
+      logging,
+      timezone: DB_TIMEZONE || "+00:00",
+      define: { freezeTableName: true }, // nombres exactos de tablas del SQL
+    });
+
+/**
+ * Conecta a la BD. Por defecto NO sincroniza (para no interferir con seeders/SQL).
+ * Puedes pasar { sync: true, alter: true } o { sync: true, force: true } en dev.
+ */
+export const connectDB = async ({ sync = false, alter = false, force = false } = {}) => {
   try {
     await sequelize.authenticate();
-    // Construir la URL con variables de entorno
-    const url = `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
-    console.log(colors.bgBlue.cyan.italic.bold(` ðŸŸ¢  MySQL succesfully connected on ${url}`));
-    await sequelize.sync();
+    const target = DATABASE_URL || `${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+    console.log(`?? MySQL conectado en ${target}`);
+
+    if (sync) {
+      if (alter && force) throw new Error("No combines --alter y --force.");
+      await sequelize.sync({ alter, force });
+      console.log("?? Sincronización completada.");
+    }
   } catch (error) {
-    console.error(
-      colors.bgRed.white.bold(" ðŸ”´  MySQL connection error:"),
-      colors.red(error instanceof Error ? error.message : String(error))
-    );
-    // Exit the process with Failure
+    console.error("?? Error de conexión MySQL:", error?.message || error);
     process.exit(1);
   }
 };
 
 export default connectDB;
-export { sequelize };
