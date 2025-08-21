@@ -38,14 +38,15 @@ src/
 ## Asociaciones (relaciones)
 
 - **Autor 1─* Libro**
+
   - `Autor.hasMany(Libro, { as: "libros", foreignKey: { name: "autorId", allowNull: false }, onDelete: "CASCADE" })`
   - `Libro.belongsTo(Autor, { as: "autor", foreignKey: { name: "autorId", allowNull: false }, onDelete: "CASCADE" })`
-
 - **Libro 1─* Resena**
+
   - `Libro.hasMany(Resena, { as: "resenas", foreignKey: { name: "libroId", allowNull: false }, onDelete: "CASCADE" })`
   - `Resena.belongsTo(Libro, { as: "libro", foreignKey: { name: "libroId", allowNull: false }, onDelete: "CASCADE" })`
-
 - **Usuario 1─* Resena**
+
   - `Usuario.hasMany(Resena, { as: "resenas", foreignKey: { name: "usuarioId", allowNull: false }, onDelete: "CASCADE" })`
   - `Resena.belongsTo(Usuario, { as: "usuario", foreignKey: { name: "usuarioId", allowNull: false }, onDelete: "CASCADE" })`
 
@@ -74,10 +75,12 @@ export { Autor, Usuario, Libro, Resena };
 ## Ejemplos de uso (include)
 
 - **Autor con sus libros**:
+
   ```js
   const autor = await Autor.findByPk(1, { include: [{ model: Libro, as: "libros" }] });
   ```
 - **Libro con su autor y reseñas (incluye usuario de cada reseña)**:
+
   ```js
   const libro = await Libro.findByPk(1, {
     include: [
@@ -87,6 +90,7 @@ export { Autor, Usuario, Libro, Resena };
   });
   ```
 - **Crear una reseña**:
+
   ```js
   await Resena.create({ contenido: "Excelente", calificacion: 5, fecha: "2025-08-20", libroId: 1, usuarioId: 2 });
   ```

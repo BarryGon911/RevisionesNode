@@ -1,57 +1,32 @@
-# 📚 Queries Librería
+# 📚 Queries Librería (README Único)
 
-Este paquete contiene un conjunto de queries SQL y un script de inserts para poblar y consultar una base de datos de **librería** con tablas de **Autores, Libros, Usuarios y Reseñas**.
+Este folder contiene **solo archivos .sql** con consultas de reporte y poblamiento para una base de datos de **librería** con tablas de **Autor, Libro, Usuario y Resena**. Incluye también un script de inserts para cargar datos de ejemplo.
 
 ## Archivos incluidos
 
-### 1. `script_inserts.sql`
-
-- Inserta **20 registros por tabla**:
-  - `Autor`
-  - `Libro`
-  - `Usuario`
-  - `Resena`
-- Los datos están relacionados entre sí (cada reseña corresponde a un usuario y un libro válidos).
-
-### 2. `query_join.sql`
-
-- Une las cuatro tablas (`Autor`, `Libro`, `Usuario`, `Resena`).
-- Devuelve las reseñas junto con:
-  - El libro reseñado
-  - Su autor
-  - El usuario que la escribió
-  - Fecha y calificación
-
-### 3. `query_top5_libros.sql`
-
-- Calcula los **5 libros con mejor promedio de calificación**.
-- Incluye cantidad de reseñas y nombre del autor.
-
-### 4. `query_resenas_autor.sql`
-
-- Lista todas las reseñas de un **autor específico** (ejemplo: *Gabriel García Márquez*).
-- Devuelve reseña, usuario, fecha y libro.
-
-### 5. `query_ranking_usuarios.sql`
-
-- Ranking de usuarios por número de reseñas escritas.
-- Muestra también el promedio de calificaciones que otorgan.
-
-### 6. `query_ranking_autores.sql`
-
-- Ranking de autores según el **promedio de calificaciones de sus libros**.
-- Incluye total de reseñas y cantidad de libros con reseñas.
+- `script_inserts.sql` — Inserta **20 registros por tabla**: `Autor`, `Libro`, `Usuario`, `Resena`. Los datos están relacionados (cada reseña pertenece a un usuario y a un libro válidos).
+- `query_join.sql` — JOIN de las cuatro tablas; devuelve cada reseña con su libro, autor, usuario, fecha y calificación.
+- `query_top5_libros.sql` — Calcula los **5 libros** con mejor promedio de calificación (incluye cantidad de reseñas y nombre del autor).
+- `query_resenas_autor.sql` — Lista reseñas de un **autor específico** (ej.: *Gabriel García Márquez*); muestra reseña, usuario, fecha y libro.
+- `query_ranking_usuarios.sql` — Ranking de usuarios por número de reseñas y **promedio de calificaciones otorgadas**.
+- `query_ranking_autores.sql` — Ranking de autores por **promedio de calificación** de sus libros; incluye total de reseñas y **cantidad de libros con reseñas**.
+- `query-table-by-table.sql` — `SELECT *` de cada tabla para exploración rápida.
 
 ## 🚀 Uso sugerido
 
-1. Ejecutar primero `script_inserts.sql` para poblar las tablas.
-2. Probar los distintos queries según lo que se desee analizar:
+1. Ejecuta primero `script_inserts.sql` para poblar las tablas.
+2. Prueba los distintos queries según lo que quieras analizar:
    - Exploración general → `query_join.sql`
    - Mejores libros → `query_top5_libros.sql`
    - Reseñas de un autor → `query_resenas_autor.sql`
    - Usuarios más activos → `query_ranking_usuarios.sql`
    - Ranking de autores → `query_ranking_autores.sql`
+   - Dump tabla por tabla → `query-table-by-table.sql`
 
----
+## ⚙️ Ejecución manual (MySQL/MariaDB)
 
-> ⚠️ Nota: si vuelves a correr los inserts varias veces, recuerda **limpiar las tablas** antes (`TRUNCATE` o `DELETE`) para evitar conflictos de IDs.
+Puedes ejecutar cualquier archivo `.sql` con el cliente de línea de comandos:
+
+```bash
+mysql -u <user> -p<password> -h <host> <database> < queries/query_ranking_autores.sql
+```

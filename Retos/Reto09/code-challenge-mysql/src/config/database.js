@@ -1,5 +1,7 @@
 import { Sequelize } from "sequelize";
+
 import "dotenv/config";
+dotenv.config();
 
 const {
   DB_HOST,
@@ -17,7 +19,7 @@ const {
 // logging configurable desde .env (DB_LOGGING=true)
 const logging = DB_LOGGING === "true" ? console.log : false;
 
-// Instancia única de Sequelize (respeta DATABASE_URL O variables separadas)
+// Instancia ï¿½nica de Sequelize (respeta DATABASE_URL O variables separadas)
 export const sequelize = DATABASE_URL
   ? new Sequelize(DATABASE_URL, {
       logging,
@@ -46,10 +48,10 @@ export const connectDB = async ({ sync = false, alter = false, force = false } =
     if (sync) {
       if (alter && force) throw new Error("No combines --alter y --force.");
       await sequelize.sync({ alter, force });
-      console.log("?? Sincronización completada.");
+      console.log("?? Sincronizaciï¿½n completada.");
     }
   } catch (error) {
-    console.error("?? Error de conexión MySQL:", error?.message || error);
+    console.error("?? Error de conexiï¿½n MySQL:", error?.message || error);
     process.exit(1);
   }
 };
