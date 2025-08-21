@@ -1,4 +1,4 @@
-import ShippingAddress from '../models/shippingAddress.js';
+import ShippingAddress from "../models/shippingAddress.js";
 
 // Crear una nueva dirección de envío
 const createShippingAddress = async (req, res, next) => {
@@ -21,16 +21,16 @@ const createShippingAddress = async (req, res, next) => {
       city,
       state,
       postalCode,
-      country: country || 'México',
+      country: country || "México",
       phone,
       isDefault: isDefault || false,
-      addressType: addressType || 'home'
+      addressType: addressType || "home"
     });
 
     await newAddress.save();
 
     res.status(201).json({
-      message: 'Shipping address created successfully',
+      message: "Shipping address created successfully",
       address: newAddress
     });
   } catch (error) {
@@ -47,7 +47,7 @@ const getUserAddresses = async (req, res, next) => {
       .sort({ isDefault: -1, _id: -1 }); // Default primero, luego más recientes
 
     res.status(200).json({
-      message: 'Addresses retrieved successfully',
+      message: "Addresses retrieved successfully",
       count: addresses.length,
       addresses
     });
@@ -65,11 +65,11 @@ const getAddressById = async (req, res, next) => {
     const address = await ShippingAddress.findOne({ _id: addressId, user: userId });
 
     if (!address) {
-      return res.status(404).json({ message: 'Address not found' });
+      return res.status(404).json({ message: "Address not found" });
     }
 
     res.status(200).json({
-      message: 'Address retrieved successfully',
+      message: "Address retrieved successfully",
       address
     });
   } catch (error) {
@@ -85,11 +85,11 @@ const getDefaultAddress = async (req, res, next) => {
     const defaultAddress = await ShippingAddress.findOne({ user: userId, isDefault: true });
 
     if (!defaultAddress) {
-      return res.status(404).json({ message: 'No default address found' });
+      return res.status(404).json({ message: "No default address found" });
     }
 
     res.status(200).json({
-      message: 'Default address retrieved successfully',
+      message: "Default address retrieved successfully",
       address: defaultAddress
     });
   } catch (error) {
@@ -107,7 +107,7 @@ const updateShippingAddress = async (req, res, next) => {
     const shippingAddress = await ShippingAddress.findOne({ _id: addressId, user: userId });
 
     if (!shippingAddress) {
-      return res.status(404).json({ message: 'Address not found' });
+      return res.status(404).json({ message: "Address not found" });
     }
 
     // Si esta dirección se marca como default, desmarcar las demás
@@ -132,7 +132,7 @@ const updateShippingAddress = async (req, res, next) => {
     await shippingAddress.save();
 
     res.status(200).json({
-      message: 'Address updated successfully',
+      message: "Address updated successfully",
       address: shippingAddress
     });
   } catch (error) {
@@ -149,7 +149,7 @@ const setDefaultAddress = async (req, res, next) => {
     const address = await ShippingAddress.findOne({ _id: addressId, user: userId });
 
     if (!address) {
-      return res.status(404).json({ message: 'Address not found' });
+      return res.status(404).json({ message: "Address not found" });
     }
 
     // Desmarcar todas las direcciones como default
@@ -163,7 +163,7 @@ const setDefaultAddress = async (req, res, next) => {
     await address.save();
 
     res.status(200).json({
-      message: 'Default address updated successfully',
+      message: "Default address updated successfully",
       address
     });
   } catch (error) {
@@ -180,13 +180,13 @@ const deleteShippingAddress = async (req, res, next) => {
     const address = await ShippingAddress.findOne({ _id: addressId, user: userId });
 
     if (!address) {
-      return res.status(404).json({ message: 'Address not found' });
+      return res.status(404).json({ message: "Address not found" });
     }
 
     await ShippingAddress.findByIdAndDelete(addressId);
 
     res.status(200).json({
-      message: 'Address deleted successfully'
+      message: "Address deleted successfully"
     });
   } catch (error) {
     next(error);

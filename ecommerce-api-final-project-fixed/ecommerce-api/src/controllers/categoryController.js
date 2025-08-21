@@ -1,4 +1,4 @@
-import Category from '../models/category.js';
+import Category from "../models/category.js";
 
 export const list = async (req, res, next) => {
   try {
@@ -10,7 +10,7 @@ export const list = async (req, res, next) => {
 export const getById = async (req, res, next) => {
   try {
     const cat = await Category.findById(req.params.id);
-    if (!cat) return res.status(404).json({ message: 'Category not found' });
+    if (!cat) return res.status(404).json({ message: "Category not found" });
     res.json(cat);
   } catch (err) { next(err); }
 };
@@ -25,7 +25,7 @@ export const create = async (req, res, next) => {
 export const update = async (req, res, next) => {
   try {
     const updated = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updated) return res.status(404).json({ message: 'Category not found' });
+    if (!updated) return res.status(404).json({ message: "Category not found" });
     res.json(updated);
   } catch (err) { next(err); }
 };
@@ -33,7 +33,7 @@ export const update = async (req, res, next) => {
 export const remove = async (req, res, next) => {
   try {
     const deleted = await Category.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: 'Category not found' });
+    if (!deleted) return res.status(404).json({ message: "Category not found" });
     res.status(204).end();
   } catch (err) { next(err); }
 };
