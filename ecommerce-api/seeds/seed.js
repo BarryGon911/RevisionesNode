@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import User from "../src/models/user.js";
@@ -6,6 +5,7 @@ import Category from "../src/models/category.js";
 import Product from "../src/models/product.js";
 import Order from "../src/models/order.js";
 
+import dotenv from "dotenv";
 dotenv.config();
 
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017";
