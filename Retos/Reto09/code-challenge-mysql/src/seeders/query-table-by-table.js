@@ -16,7 +16,8 @@ const QUERIES = {
       console.table(rows);
     }
     process.exit(0);
-  } catch (e) {
+  }
+  catch (e) {
     console.error("Error en query-table-by-table:", e);
     process.exit(1);
   }

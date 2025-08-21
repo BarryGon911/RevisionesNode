@@ -1,7 +1,7 @@
 import { sequelize } from "../config/database.js";
 import { QueryTypes } from "sequelize";
 
-const autorArg = process.argv[2] || "Gabriel García Márquez";
+const autorArg = process.argv[2] || "Gabriel Garcï¿½a Mï¿½rquez";
 
 const SQL = `
 SELECT 
@@ -27,7 +27,8 @@ ORDER BY r.fecha DESC;
     });
     console.table(rows);
     process.exit(0);
-  } catch (e) {
+  }
+  catch (e) {
     console.error("Error en query_resenas_autor:", e);
     process.exit(1);
   }

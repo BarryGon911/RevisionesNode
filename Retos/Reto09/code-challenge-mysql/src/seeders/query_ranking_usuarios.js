@@ -18,7 +18,8 @@ ORDER BY total_resenas DESC, promedio_calificacion_dada DESC;
     const rows = await sequelize.query(SQL, { type: QueryTypes.SELECT });
     console.table(rows);
     process.exit(0);
-  } catch (e) {
+  }
+  catch (e) {
     console.error("Error en query_ranking_usuarios:", e);
     process.exit(1);
   }

@@ -20,7 +20,8 @@ LIMIT 5;
     const rows = await sequelize.query(SQL, { type: QueryTypes.SELECT });
     console.table(rows);
     process.exit(0);
-  } catch (e) {
+  }
+  catch (e) {
     console.error("Error en query_top5_libros:", e);
     process.exit(1);
   }
