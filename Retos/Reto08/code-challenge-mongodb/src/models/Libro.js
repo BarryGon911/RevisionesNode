@@ -11,9 +11,8 @@ const libroSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-libroSchema.index({ titulo: 1 }, { unique: true });
+// libroSchema.index({ titulo: 1 }, { unique: true });
 
-// Compound indexes
 libroSchema.index({ genero: 1, anio: -1 });
 libroSchema.index({ autorId: 1, anio: -1 });
 

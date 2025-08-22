@@ -9,9 +9,8 @@ const usuarioSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-usuarioSchema.index({ email: 1 }, { unique: true });
+// usuarioSchema.index({ email: 1 }, { unique: true });
 
-// Unified JSON/Object transforms: expose "id", hide "_id", and hide password
 usuarioSchema.set("toJSON", {
   virtuals: true,
   transform: (doc, ret) => {

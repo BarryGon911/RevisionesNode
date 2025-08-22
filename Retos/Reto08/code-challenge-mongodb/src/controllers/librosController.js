@@ -8,7 +8,7 @@ export const obtenerLibros = async (req, res) => {
     const query = {};
     
     if (req.query.genero) query.genero = req.query.genero;
-    if (req.query.año) query.año = Number(req.query.año);
+    if (req.query.anio) query.año = Number(req.query.año);
 
     const libros = await Libro.find(query).populate("autorId");
 
