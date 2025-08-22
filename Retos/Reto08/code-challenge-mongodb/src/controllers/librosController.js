@@ -36,12 +36,12 @@ export const obtenerLibroPorId = async (req, res) => {
     const libro = await Libro.findById(id).populate("autorId");
     if (!libro) return res.status(404).json({ error: "Libro no encontrado" });
 
-    const Resenas = await Resena.find({ libroId: id }).select("-__v -createdAt -updatedAt");
+    const resena = await resena.find({ libroId: id }).select("-__v -createdAt -updatedAt");
 
     const obj = libro.toObject();
     obj.autor = obj.autorId;
     delete obj.autorId;
-    obj.Resenas = Resenas;
+    obj.resena = resena;
 
     res.json(obj);
   }
