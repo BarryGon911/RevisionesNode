@@ -37,7 +37,7 @@ export const connectDB = async ({ sync = false, alter = false, force = false } =
   try {
     await sequelize.authenticate();
     const target = DATABASE_URL || `${DB_HOST}:${DB_PORT}/${DB_NAME}`;
-    console.log(colors.bgGrey.cyan.italic.bold(` ✅  MySQL conectado en ${target}`));
+    console.log(colors.bgGreen.black.bold(`MySQL conectado en ${target}`));
 
     if (sync) {
       if (alter && force) throw new Error("No combines --alter y --force.");

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import Autor from "./src/models/Autor.js";
 import Libro from "./src/models/Libro.js";
 import Reseña from "./src/models/Reseña.js";
 
+import dotenv from "dotenv";
 dotenv.config();
 
 const seed = async () => {
