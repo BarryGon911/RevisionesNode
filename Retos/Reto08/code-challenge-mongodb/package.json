@@ -4,14 +4,14 @@
   "description": "Crear una API con Express.js y MongoDB que maneje relaciones entre tres entidades: **Autores**, **Libros** y **Reseñas**. El reto consiste en implementar endpoints que trabajen con datos reales almacenados en MongoDB utilizando Mongoose.",
   "main": "index.js",
   "type": "module",
-  "_moduleAliases": {
-    "@config": "src/config",
-    "@controllers": "src/controllers",
-    "@middlewares": "src/middlewares",
-    "@models": "src/models",
-    "@routes": "src/routes",
-    "@scripts": "src/scripts",
-    "@seeders": "src/seeders"
+  "imports": {
+    "#config": "./src/config",
+    "#controllers": "./src/controllers",
+    "#middlewares": "./src/middlewares",
+    "#models": "./src/models",
+    "#routes": "./src/routes",
+    "#scripts": "./src/scripts",
+    "#seeders": "./src/seeders"
   },
   "scripts": {
     "dev": "nodemon server.js",
@@ -30,7 +30,6 @@
     "express": "^5.1.0",
     "helmet": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
-    "module-alias": "^2.2.3",
     "mongodb": "^6.18.0",
     "mongoose": "^8.17.0",
     "nodemon": "^3.1.10"
