@@ -12,4 +12,4 @@ FROM Resena r
 JOIN Usuario u ON r.usuarioId = u.id
 JOIN Libro l   ON r.libroId   = l.id
 JOIN Autor a   ON l.autorId   = a.id
-ORDER BY r.fecha DESC;
+ORDER BY r.fecha ASC;
