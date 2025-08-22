@@ -9,8 +9,6 @@ const usuarioSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-// usuarioSchema.index({ email: 1 }, { unique: true });
-
 usuarioSchema.set("toJSON", {
   virtuals: true,
   transform: (doc, ret) => {
