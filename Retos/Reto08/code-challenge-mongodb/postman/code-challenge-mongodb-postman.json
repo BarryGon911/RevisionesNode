@@ -255,6 +255,513 @@
           }
         }
       ]
+    },
+    {
+      "name": "Autores",
+      "item": [
+        {
+          "name": "Listar autores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/autores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "const arr = pm.response.json();",
+                  "pm.test(\"es array\", () => Array.isArray(arr));",
+                  "if (arr.length) {",
+                  "  const a = arr[0];",
+                  "  pm.test(\"exponen id (sin _id)\", () => { pm.expect(a).to.have.property(\"id\"); pm.expect(a).to.not.have.property(\"_id\"); });",
+                  "  pm.collectionVariables.set(\"autorId_any\", a.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear autor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Autor de Prueba\",\n  \"nacionalidad\": \"Desconocida\",\n  \"fechaNacimiento\": \"1990-01-01\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 201\", () => pm.response.to.have.status(201));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"autor creado con id\", () => pm.expect(b).to.have.property(\"id\"));",
+                  "pm.collectionVariables.set(\"autorCreadoId\", b.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener autor por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorCreadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorCreadoId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get(\"autorCreadoId\")) { throw new Error(\"Ejecuta primero: Crear autor\"); }"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "const a = pm.response.json();",
+                  "pm.test(\"autor con id\", () => pm.expect(a).to.have.property(\"id\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar autor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorCreadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorCreadoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nacionalidad\": \"Actualizada\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get(\"autorCreadoId\")) { throw new Error(\"Ejecuta primero: Crear autor\"); }"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar autor",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorCreadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorCreadoId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get(\"autorCreadoId\")) { throw new Error(\"Ejecuta primero: Crear autor\"); }"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"mensaje\", () => pm.expect(pm.response.json().mensaje).to.match(/eliminado/i));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reseñas",
+      "item": [
+        {
+          "name": "Crear reseña",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resenas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resenas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comentario\": \"Reseña automática\",\n  \"puntuacion\": 5,\n  \"libroId\": \"{{libroId}}\",\n  \"usuarioEmail\": \"jcamaney@mail.com\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Si no hay libroId, intenta cargar de /libros",
+                  "if (!pm.collectionVariables.get(\"libroId\")) {",
+                  "  pm.sendRequest(\"{{baseUrl}}/libros\", (err, res) => {",
+                  "    if (!err) {",
+                  "      const arr = res.json();",
+                  "      if (Array.isArray(arr) && arr.length) pm.collectionVariables.set(\"libroId\", arr[0].id);",
+                  "    }",
+                  "  });",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 201\", () => pm.response.to.have.status(201));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"reseña creada con id\", () => pm.expect(b).to.have.property(\"id\"));",
+                  "pm.test(\"poblado libro y usuario\", () => { pm.expect(b.libroId).to.be.an(\"object\"); pm.expect(b.usuarioId).to.be.an(\"object\"); });",
+                  "pm.collectionVariables.set(\"resenaCreadaId\", b.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar reseñas por libro",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/resenas?libroId={{libroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resenas?libroId={{libroId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get(\"libroId\")) {",
+                  "  pm.sendRequest(\"{{baseUrl}}/libros\", (err, res) => {",
+                  "    if (!err) {",
+                  "      const arr = res.json();",
+                  "      if (Array.isArray(arr) && arr.length) pm.collectionVariables.set(\"libroId\", arr[0].id);",
+                  "    }",
+                  "  });",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "const arr = pm.response.json();",
+                  "pm.test(\"es array\", () => Array.isArray(arr));",
+                  "if (arr.length) {",
+                  "  const r = arr[0];",
+                  "  pm.test(\"tiene id y puntuacion\", () => { pm.expect(r).to.have.property(\"id\"); pm.expect(r).to.have.property(\"puntuacion\"); });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "const arr = pm.response.json();",
+                  "pm.test(\"es array\", () => Array.isArray(arr));",
+                  "if (arr.length) {",
+                  "  const u = arr[0];",
+                  "  pm.test(\"exponen id (sin _id)\", () => { pm.expect(u).to.have.property(\"id\"); pm.expect(u).to.not.have.property(\"_id\"); });",
+                  "  pm.test(\"no exponen password\", () => pm.expect(u).to.not.have.property(\"password\"));",
+                  "  pm.collectionVariables.set(\"usuarioId_any\", u.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Usuario Prueba\",\n  \"email\": \"user_139278817242096@mail.com\",\n  \"password\": \"pwd\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 201\", () => pm.response.to.have.status(201));",
+                  "const u = pm.response.json();",
+                  "pm.test(\"creado con id sin password\", () => { pm.expect(u).to.have.property(\"id\"); pm.expect(u).to.not.have.property(\"password\"); });",
+                  "pm.collectionVariables.set(\"usuarioCreadoId\", u.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioCreadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioCreadoId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get(\"usuarioCreadoId\")) { throw new Error(\"Ejecuta primero: Crear usuario\"); }"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "const u = pm.response.json();",
+                  "pm.test(\"tiene id y oculta password\", () => { pm.expect(u).to.have.property(\"id\"); pm.expect(u).to.not.have.property(\"password\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioCreadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioCreadoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"nombre\": \"Usuario Editado\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get(\"usuarioCreadoId\")) { throw new Error(\"Ejecuta primero: Crear usuario\"); }"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioCreadoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioCreadoId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get(\"usuarioCreadoId\")) { throw new Error(\"Ejecuta primero: Crear usuario\"); }"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"mensaje\", () => pm.expect(pm.response.json().mensaje).to.match(/eliminado/i));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "variable": [

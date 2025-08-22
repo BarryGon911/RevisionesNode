@@ -1,5 +1,6 @@
 import express from "express";
 import rutas from "./src/routes/index.js";
+import errorHandler from "./src/middlewares/errorHandler.js";
 import connectDB from "./src/config/database.js";
 import colors from "colors";
 
@@ -9,6 +10,9 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use("/", rutas);
+
+// Manejo de errores global
+app.use(errorHandler);
 
 const port = process.env.SRV_PORT || 3000;
 

@@ -3,17 +3,15 @@ import Libro from "../models/Libro.js";
 import Autor from "../models/Autor.js";
 import Resena from "../models/Resena.js";
 
-// Listar todos los libros con su autor (populate)
 export const obtenerLibros = async (req, res) => {
   try {
     const query = {};
-    // Filtros simples opcionales (bonus hint en README)
+    
     if (req.query.genero) query.genero = req.query.genero;
     if (req.query.año) query.año = Number(req.query.año);
 
     const libros = await Libro.find(query).populate("autorId");
 
-    // Formatear para devolver el campo 'autor' en vez de 'autorId'
     const resultado = libros.map(libro => {
       const obj = libro.toObject();
       obj.autor = obj.autorId;
@@ -28,7 +26,6 @@ export const obtenerLibros = async (req, res) => {
   }
 };
 
-// Obtener un libro por id con autor y reseñas
 export const obtenerLibroPorId = async (req, res) => {
   try {
     const { id } = req.params;
@@ -39,21 +36,21 @@ export const obtenerLibroPorId = async (req, res) => {
     const libro = await Libro.findById(id).populate("autorId");
     if (!libro) return res.status(404).json({ error: "Libro no encontrado" });
 
-    const reseñas = await Reseña.find({ libroId: id }).select("-__v -createdAt -updatedAt");
+    const Resenas = await Resena.find({ libroId: id }).select("-__v -createdAt -updatedAt");
 
     const obj = libro.toObject();
     obj.autor = obj.autorId;
     delete obj.autorId;
-    obj.reseñas = reseñas;
+    obj.Resenas = Resenas;
 
     res.json(obj);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor" });
   }
 };
 
-// Crear un nuevo libro
 export const crearLibro = async (req, res) => {
   try {
     const { titulo, año, genero, autorId } = req.body;
@@ -77,9 +74,10 @@ export const crearLibro = async (req, res) => {
     delete obj.autorId;
 
     res.status(201).json(obj);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
-    // Manejar unique constraint
+    
     if (error.code === 11000) {
       return res.status(400).json({ error: "El título ya existe" });
     }
@@ -87,7 +85,6 @@ export const crearLibro = async (req, res) => {
   }
 };
 
-// Actualizar un libro
 export const actualizarLibro = async (req, res) => {
   try {
     const { id } = req.params;
@@ -113,7 +110,8 @@ export const actualizarLibro = async (req, res) => {
     delete obj.autorId;
 
     res.json(obj);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     if (error.code === 11000) {
       return res.status(400).json({ error: "El título ya existe" });
@@ -122,7 +120,6 @@ export const actualizarLibro = async (req, res) => {
   }
 };
 
-// Eliminar un libro
 export const eliminarLibro = async (req, res) => {
   try {
     const { id } = req.params;
