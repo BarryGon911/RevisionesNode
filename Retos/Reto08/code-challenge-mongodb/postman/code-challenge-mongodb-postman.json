@@ -2,7 +2,7 @@
   "info": {
     "name": "Code Challenge MongoDB API",
     "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
-    "description": "Colecci\u00f3n para probar la API de libros, autores y rese\u00f1as.",
+    "description": "Colección para probar la API de libros, autores y reseñas.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -12,17 +12,39 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/libros",
+          "raw": "{{baseUrl}}/libros",
           "protocol": "http",
           "host": [
-            "localhost"
+            "{{baseUrl}}"
           ],
           "port": "3000",
           "path": [
             "libros"
           ]
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"responde array\", () => Array.isArray(body));",
+              "if (body.length) {",
+              "  const b = body[0];",
+              "  pm.test(\"incluye id\", () => pm.expect(b).to.have.property(\"id\"));",
+              "  pm.test(\"no incluye _id\", () => pm.expect(b).to.not.have.property(\"_id\"));",
+              "  pm.test(\"incluye año (sin anio)\", () => { pm.expect(b).to.have.property(\"año\"); pm.expect(b).to.not.have.property(\"anio\"); });",
+              "  pm.test(\"incluye autor poblado\", () => pm.expect(b).to.have.property(\"autor\"));",
+              "  pm.collectionVariables.set(\"libroId\", b.id);",
+              "  if (b.autor && b.autor.id) pm.collectionVariables.set(\"autorId\", b.autor.id);",
+              "}"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Obtener libro por ID",
@@ -30,18 +52,50 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/libros/:id",
+          "raw": "{{baseUrl}}/libros/{{libroId}}",
           "protocol": "http",
           "host": [
-            "localhost"
+            "{{baseUrl}}"
           ],
           "port": "3000",
           "path": [
             "libros",
-            ":id"
+            "{{libroId}}"
           ]
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Si no hay libroId, intenta obtener uno",
+              "if (!pm.collectionVariables.get(\"libroId\")) {",
+              "  pm.sendRequest(\"{{baseUrl}}/libros\", (err, res) => {",
+              "    if (!err) {",
+              "      const arr = res.json();",
+              "      if (Array.isArray(arr) && arr.length) pm.collectionVariables.set(\"libroId\", arr[0].id);",
+              "    }",
+              "  });",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+              "const b = pm.response.json();",
+              "pm.test(\"incluye id y año\", () => { pm.expect(b).to.have.property(\"id\"); pm.expect(b).to.have.property(\"año\"); });",
+              "pm.test(\"no incluye _id ni anio\", () => { pm.expect(b).to.not.have.property(\"_id\"); pm.expect(b).to.not.have.property(\"anio\"); });",
+              "pm.test(\"incluye autor\", () => pm.expect(b).to.have.property(\"autor\"));"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Crear libro",
@@ -55,20 +109,53 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"titulo\": \"Libro Ejemplo\",\n  \"a\\u00f1o\": 2023,\n  \"genero\": \"Ficci\\u00f3n\",\n  \"autorId\": \"ID_DEL_AUTOR\"\n}"
+          "raw": "{\n  \"titulo\": \"{{nuevoTitulo}}\",\n  \"año\": 2024,\n  \"genero\": \"Prueba\",\n  \"autorId\": \"{{autorId}}\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/libros",
+          "raw": "{{baseUrl}}/libros",
           "protocol": "http",
           "host": [
-            "localhost"
+            "{{baseUrl}}"
           ],
           "port": "3000",
           "path": [
             "libros"
           ]
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (!pm.collectionVariables.get(\"autorId\")) {",
+              "  pm.sendRequest(\"{{baseUrl}}/libros\", (err, res) => {",
+              "    if (!err) {",
+              "      const arr = res.json();",
+              "      if (Array.isArray(arr) && arr.length && arr[0].autor && arr[0].autor.id)",
+              "        pm.collectionVariables.set(\"autorId\", arr[0].autor.id);",
+              "    }",
+              "  });",
+              "}",
+              "// Generar título único para evitar duplicados",
+              "pm.collectionVariables.set(\"nuevoTitulo\", \"Libro de prueba \" + Date.now());"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status 201\", () => pm.response.to.have.status(201));",
+              "const b = pm.response.json();",
+              "pm.test(\"creado con id y año\", () => { pm.expect(b).to.have.property(\"id\"); pm.expect(b).to.have.property(\"año\", 2024); });",
+              "pm.collectionVariables.set(\"libroCreadoId\", b.id);"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Actualizar libro",
@@ -82,21 +169,49 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"titulo\": \"Libro Actualizado\"\n}"
+          "raw": "{\"genero\": \"Prueba-Edit\"}"
         },
         "url": {
-          "raw": "http://localhost:3000/libros/:id",
+          "raw": "{{baseUrl}}/libros/{{libroCreadoId}}",
           "protocol": "http",
           "host": [
-            "localhost"
+            "{{baseUrl}}"
           ],
           "port": "3000",
           "path": [
             "libros",
-            ":id"
+            "{{libroCreadoId}}"
           ]
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (!pm.collectionVariables.get(\"libroCreadoId\")) {",
+              "  throw new Error(\"Debes ejecutar primero: Crear libro\");",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+              "const b = pm.response.json();",
+              "pm.test(\"género actualizado\", () => pm.expect(b.genero).to.eql(\"Prueba-Edit\"));",
+              "pm.test(\"id y año presentes, _id/anio ausentes\", () => {",
+              "  pm.expect(b).to.have.property(\"id\"); pm.expect(b).to.have.property(\"año\");",
+              "  pm.expect(b).to.not.have.property(\"_id\"); pm.expect(b).to.not.have.property(\"anio\");",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Eliminar libro",
@@ -104,18 +219,49 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/libros/:id",
+          "raw": "{{baseUrl}}/libros/{{libroCreadoId}}",
           "protocol": "http",
           "host": [
-            "localhost"
+            "{{baseUrl}}"
           ],
           "port": "3000",
           "path": [
             "libros",
-            ":id"
+            "{{libroCreadoId}}"
           ]
         }
-      }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (!pm.collectionVariables.get(\"libroCreadoId\")) {",
+              "  throw new Error(\"Debes ejecutar primero: Crear libro\");",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"status 200\", () => pm.response.to.have.status(200));",
+              "const b = pm.response.json();",
+              "pm.test(\"mensaje de eliminado\", () => pm.expect(b.mensaje).to.match(/eliminado/i));"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
     }
   ]
 }
