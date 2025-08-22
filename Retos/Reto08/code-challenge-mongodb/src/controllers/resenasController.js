@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import Resena from "../models/Resena.js";
-import Libro from "../models/Libro.js";
-import Usuario from "../models/Usuario.js";
+import Resena from "#models/Resena.js";
+import Libro from "#models/Libro.js";
+import Usuario from "#models/Usuario.js";
 
 export const obtenerResenas = async (req, res) => {
   try {

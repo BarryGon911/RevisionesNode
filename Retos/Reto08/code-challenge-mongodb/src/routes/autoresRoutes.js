@@ -1,11 +1,5 @@
 import express from "express";
-import {
-  obtenerAutores,
-  obtenerAutorPorId,
-  crearAutor,
-  actualizarAutor,
-  eliminarAutor
-} from "../controllers/autoresController.js";
+import { obtenerAutores, obtenerAutorPorId, crearAutor, actualizarAutor, eliminarAutor } from "#controllers/autoresController.js";
 
 const router = express.Router();
 

@@ -1,17 +1,15 @@
-import librosRoutes from "./librosRoutes.js";
-import usuariosRoutes from "./usuariosRoutes.js";
-import autoresRoutes from "./autoresRoutes.js";
-import resenasRoutes from "./resenasRoutes.js";
-
 import express from "express";
+import librosRoutes from "#routes/librosRoutes.js";
+import usuariosRoutes from "#routes/usuariosRoutes.js";
+import autoresRoutes from "#routes/autoresRoutes.js";
+import resenasRoutes from "#routes/resenasRoutes.js";
+
 const router = express.Router();
 
-// Montar rutas de libros en /libros
+// Montar subrutas
 router.use("/libros", librosRoutes);
 router.use("/autores", autoresRoutes);
 router.use("/resenas", resenasRoutes);
 router.use("/usuarios", usuariosRoutes);
-router.use("/autores", autoresRoutes);
-router.use("/resenas", resenasRoutes);
 
 export default router;

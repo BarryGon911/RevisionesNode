@@ -1,11 +1,5 @@
 import express from "express";
-import {
-  obtenerUsuarios,
-  obtenerUsuarioPorId,
-  crearUsuario,
-  actualizarUsuario,
-  eliminarUsuario
-} from "../controllers/usuariosController.js";
+import { obtenerUsuarios, obtenerUsuarioPorId, crearUsuario, actualizarUsuario, eliminarUsuario } from "#controllers/usuariosController.js";
 
 const router = express.Router();
 

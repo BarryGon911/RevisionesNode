@@ -1,11 +1,5 @@
 import express from "express";
-import {
-  obtenerLibros,
-  obtenerLibroPorId,
-  crearLibro,
-  actualizarLibro,
-  eliminarLibro
-} from "../controllers/librosController.js";
+import { obtenerLibros, obtenerLibroPorId, crearLibro, actualizarLibro, eliminarLibro } from "#controllers/librosController.js";
 
 const router = express.Router();
 

@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
-import Autor from "../models/Autor.js";
-import Libro from "../models/Libro.js";
+import Autor from "#models/Autor.js";
+import Libro from "#models/Libro.js";
 
 export const obtenerAutores = async (req, res) => {
   try {
     const autores = await Autor.find();
     res.json(autores);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor" });
   }
@@ -18,21 +19,22 @@ export const obtenerAutorPorId = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID inválido" });
     }
+
     const autor = await Autor.findById(id).populate({
       path: "libros",
+      model: Libro,
       select: "titulo anio fechaPublicacion genero autorId",
     });
+
     if (!autor) return res.status(404).json({ error: "Autor no encontrado" });
-    // Ajuste: para cada libro, aplicar transforms (año) al serializar con toObject()
+
     const obj = autor.toObject();
     if (Array.isArray(obj.libros)) {
-      obj.libros = obj.libros.map(l => {
-        const lo = l.toJSON ? l.toJSON() : l;
-        return lo;
-      });
+      obj.libros = obj.libros.map((l) => (l?.toJSON ? l.toJSON() : l));
     }
     res.json(obj);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor" });
   }
@@ -50,7 +52,8 @@ export const crearAutor = async (req, res) => {
       fechaNacimiento: fechaNacimiento ? new Date(fechaNacimiento) : undefined,
     });
     res.status(201).json(autor);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor" });
   }
@@ -62,12 +65,18 @@ export const actualizarAutor = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "ID inválido" });
     }
-    const updates = req.body;
-    if (updates.fechaNacimiento) updates.fechaNacimiento = new Date(updates.fechaNacimiento);
-    const autor = await Autor.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+    const updates = { ...req.body };
+    if (updates.fechaNacimiento) {
+      updates.fechaNacimiento = new Date(updates.fechaNacimiento);
+    }
+    const autor = await Autor.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
     if (!autor) return res.status(404).json({ error: "Autor no encontrado" });
     res.json(autor);
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor" });
   }
@@ -82,7 +91,8 @@ export const eliminarAutor = async (req, res) => {
     const autor = await Autor.findByIdAndDelete(id);
     if (!autor) return res.status(404).json({ error: "Autor no encontrado" });
     res.json({ mensaje: "Autor eliminado" });
-  } catch (error) {
+  }
+  catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error del servidor" });
   }

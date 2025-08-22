@@ -1,8 +1,5 @@
 import express from "express";
-import {
-  obtenerResenas,
-  crearResena
-} from "../controllers/resenasController.js";
+import { obtenerResenas, crearResena } from "#controllers/resenasController.js";
 
 const router = express.Router();
 
