@@ -1,0 +1,490 @@
+{
+  "autores": [
+    {
+      "nombre": "Gabriel García Márquez",
+      "nacionalidad": "Colombiana",
+      "fechaNacimiento": "1927-03-06"
+    },
+    {
+      "nombre": "Isabel Allende",
+      "nacionalidad": "Chilena",
+      "fechaNacimiento": "1942-08-02"
+    },
+    {
+      "nombre": "Jorge Luis Borges",
+      "nacionalidad": "Argentina",
+      "fechaNacimiento": "1899-08-24"
+    },
+    {
+      "nombre": "Mario Vargas Llosa",
+      "nacionalidad": "Peruana",
+      "fechaNacimiento": "1936-03-28"
+    },
+    {
+      "nombre": "Julio Cortázar",
+      "nacionalidad": "Argentina",
+      "fechaNacimiento": "1914-08-26"
+    },
+    {
+      "nombre": "Carlos Fuentes",
+      "nacionalidad": "Mexicana",
+      "fechaNacimiento": "1928-11-11"
+    },
+    {
+      "nombre": "Laura Esquivel",
+      "nacionalidad": "Mexicana",
+      "fechaNacimiento": "1950-09-30"
+    },
+    {
+      "nombre": "Juan Rulfo",
+      "nacionalidad": "Mexicana",
+      "fechaNacimiento": "1917-05-16"
+    },
+    {
+      "nombre": "Rosario Castellanos",
+      "nacionalidad": "Mexicana",
+      "fechaNacimiento": "1925-05-25"
+    },
+    {
+      "nombre": "Elena Poniatowska",
+      "nacionalidad": "Mexicana",
+      "fechaNacimiento": "1932-05-19"
+    },
+    {
+      "nombre": "Arturo Pérez-Reverte",
+      "nacionalidad": "Española",
+      "fechaNacimiento": "1951-11-25"
+    },
+    {
+      "nombre": "Javier Marías",
+      "nacionalidad": "Española",
+      "fechaNacimiento": "1951-09-20"
+    },
+    {
+      "nombre": "Carlos Ruiz Zafón",
+      "nacionalidad": "Española",
+      "fechaNacimiento": "1964-09-25"
+    },
+    {
+      "nombre": "Miguel de Cervantes",
+      "nacionalidad": "Española",
+      "fechaNacimiento": "1547-09-29"
+    },
+    {
+      "nombre": "Federico García Lorca",
+      "nacionalidad": "Española",
+      "fechaNacimiento": "1898-06-05"
+    },
+    {
+      "nombre": "Ana María Matute",
+      "nacionalidad": "Española",
+      "fechaNacimiento": "1925-07-26"
+    },
+    {
+      "nombre": "Eduardo Galeano",
+      "nacionalidad": "Uruguaya",
+      "fechaNacimiento": "1940-09-03"
+    },
+    {
+      "nombre": "Roberto Bolaño",
+      "nacionalidad": "Chilena",
+      "fechaNacimiento": "1953-04-28"
+    },
+    {
+      "nombre": "Clarice Lispector",
+      "nacionalidad": "Brasileña",
+      "fechaNacimiento": "1920-12-10"
+    },
+    {
+      "nombre": "Pablo Neruda",
+      "nacionalidad": "Chilena",
+      "fechaNacimiento": "1904-07-12"
+    }
+  ],
+  "usuarios": [
+    {
+      "nombre": "Juan Camaney Shingón",
+      "email": "jcamaney@mail.com",
+      "password": "misuperpassword1"
+    },
+    {
+      "nombre": "Mauricio Garcés Elú",
+      "email": "mgarces@mail.com",
+      "password": "misuperpassword2"
+    },
+    {
+      "nombre": "Lupita González",
+      "email": "lgonzalez@mail.com",
+      "password": "pwd3"
+    },
+    {
+      "nombre": "Carlos Méndez",
+      "email": "cmendez@mail.com",
+      "password": "pwd4"
+    },
+    {
+      "nombre": "Ana Rodríguez",
+      "email": "arodriguez@mail.com",
+      "password": "pwd5"
+    },
+    {
+      "nombre": "Pedro Hernández",
+      "email": "phernandez@mail.com",
+      "password": "pwd6"
+    },
+    {
+      "nombre": "María Fernanda Ruiz",
+      "email": "mfruiz@mail.com",
+      "password": "pwd7"
+    },
+    {
+      "nombre": "Jorge Castillo",
+      "email": "jcastillo@mail.com",
+      "password": "pwd8"
+    },
+    {
+      "nombre": "Sofía Morales",
+      "email": "smorales@mail.com",
+      "password": "pwd9"
+    },
+    {
+      "nombre": "Ricardo Pérez",
+      "email": "rperez@mail.com",
+      "password": "pwd10"
+    },
+    {
+      "nombre": "Daniela López",
+      "email": "dlopez@mail.com",
+      "password": "pwd11"
+    },
+    {
+      "nombre": "Arturo Sánchez",
+      "email": "asanchez@mail.com",
+      "password": "pwd12"
+    },
+    {
+      "nombre": "Paola Jiménez",
+      "email": "pjimenez@mail.com",
+      "password": "pwd13"
+    },
+    {
+      "nombre": "Héctor Flores",
+      "email": "hflores@mail.com",
+      "password": "pwd14"
+    },
+    {
+      "nombre": "Claudia Navarro",
+      "email": "cnavarro@mail.com",
+      "password": "pwd15"
+    },
+    {
+      "nombre": "Diego Torres",
+      "email": "dtorres@mail.com",
+      "password": "pwd16"
+    },
+    {
+      "nombre": "Fernanda Salas",
+      "email": "fsalas@mail.com",
+      "password": "pwd17"
+    },
+    {
+      "nombre": "Emilio Ramos",
+      "email": "eramos@mail.com",
+      "password": "pwd18"
+    },
+    {
+      "nombre": "Ximena Chávez",
+      "email": "xchavez@mail.com",
+      "password": "pwd19"
+    },
+    {
+      "nombre": "Rodrigo Martínez",
+      "email": "rmartinez@mail.com",
+      "password": "pwd20"
+    }
+  ],
+  "libros": [
+    {
+      "titulo": "Cien Años de Soledad",
+      "genero": "Realismo Mágico",
+      "anio": 1967,
+      "autorNombre": "Gabriel García Márquez",
+      "fechaPublicacion": "1967-05-30"
+    },
+    {
+      "titulo": "El Amor en los Tiempos del Cólera",
+      "genero": "Romance",
+      "anio": 1985,
+      "autorNombre": "Gabriel García Márquez",
+      "fechaPublicacion": "1985-09-05"
+    },
+    {
+      "titulo": "La Casa de los Espíritus",
+      "genero": "Realismo Mágico",
+      "anio": 1982,
+      "autorNombre": "Isabel Allende",
+      "fechaPublicacion": "1982-01-01"
+    },
+    {
+      "titulo": "Ficciones",
+      "genero": "Cuentos",
+      "anio": 1944,
+      "autorNombre": "Jorge Luis Borges",
+      "fechaPublicacion": "1944-01-01"
+    },
+    {
+      "titulo": "La Ciudad y los Perros",
+      "genero": "Ficción",
+      "anio": 1963,
+      "autorNombre": "Mario Vargas Llosa",
+      "fechaPublicacion": "1963-01-01"
+    },
+    {
+      "titulo": "Rayuela",
+      "genero": "Ficción",
+      "anio": 1963,
+      "autorNombre": "Julio Cortázar",
+      "fechaPublicacion": "1963-01-01"
+    },
+    {
+      "titulo": "La Muerte de Artemio Cruz",
+      "genero": "Ficción",
+      "anio": 1962,
+      "autorNombre": "Carlos Fuentes",
+      "fechaPublicacion": "1962-01-01"
+    },
+    {
+      "titulo": "Como Agua para Chocolate",
+      "genero": "Romance",
+      "anio": 1989,
+      "autorNombre": "Laura Esquivel",
+      "fechaPublicacion": "1989-01-01"
+    },
+    {
+      "titulo": "Pedro Páramo",
+      "genero": "Ficción",
+      "anio": 1955,
+      "autorNombre": "Juan Rulfo",
+      "fechaPublicacion": "1955-01-01"
+    },
+    {
+      "titulo": "Balún Canán",
+      "genero": "Ficción",
+      "anio": 1957,
+      "autorNombre": "Rosario Castellanos",
+      "fechaPublicacion": "1957-01-01"
+    },
+    {
+      "titulo": "La Noche de Tlatelolco",
+      "genero": "Crónica",
+      "anio": 1971,
+      "autorNombre": "Elena Poniatowska",
+      "fechaPublicacion": "1971-01-01"
+    },
+    {
+      "titulo": "La Reina del Sur",
+      "genero": "Novela Negra",
+      "anio": 2002,
+      "autorNombre": "Arturo Pérez-Reverte",
+      "fechaPublicacion": "2002-01-01"
+    },
+    {
+      "titulo": "Corazón Tan Blanco",
+      "genero": "Ficción",
+      "anio": 1992,
+      "autorNombre": "Javier Marías",
+      "fechaPublicacion": "1992-01-01"
+    },
+    {
+      "titulo": "La Sombra del Viento",
+      "genero": "Misterio",
+      "anio": 2001,
+      "autorNombre": "Carlos Ruiz Zafón",
+      "fechaPublicacion": "2001-01-01"
+    },
+    {
+      "titulo": "Don Quijote de la Mancha",
+      "genero": "Clásico",
+      "anio": 1605,
+      "autorNombre": "Miguel de Cervantes",
+      "fechaPublicacion": "1605-01-16"
+    },
+    {
+      "titulo": "Bodas de Sangre",
+      "genero": "Teatro",
+      "anio": 1933,
+      "autorNombre": "Federico García Lorca",
+      "fechaPublicacion": "1933-01-01"
+    },
+    {
+      "titulo": "Primera Memoria",
+      "genero": "Ficción",
+      "anio": 1959,
+      "autorNombre": "Ana María Matute",
+      "fechaPublicacion": "1959-01-01"
+    },
+    {
+      "titulo": "Las Venas Abiertas de América Latina",
+      "genero": "Ensayo",
+      "anio": 1971,
+      "autorNombre": "Eduardo Galeano",
+      "fechaPublicacion": "1971-01-01"
+    },
+    {
+      "titulo": "Los Detectives Salvajes",
+      "genero": "Ficción",
+      "anio": 1998,
+      "autorNombre": "Roberto Bolaño",
+      "fechaPublicacion": "1998-01-01"
+    },
+    {
+      "titulo": "La Hora de la Estrella",
+      "genero": "Ficción",
+      "anio": 1977,
+      "autorNombre": "Clarice Lispector",
+      "fechaPublicacion": "1977-01-01"
+    }
+  ],
+  "resenas": [
+    {
+      "comentario": "Una obra maestra",
+      "puntuacion": 5,
+      "fecha": "2025-07-01",
+      "libroTitulo": "Cien Años de Soledad",
+      "usuarioEmail": "jcamaney@mail.com"
+    },
+    {
+      "comentario": "Muy imaginativa",
+      "puntuacion": 5,
+      "fecha": "2025-07-10",
+      "libroTitulo": "El Amor en los Tiempos del Cólera",
+      "usuarioEmail": "mgarces@mail.com"
+    },
+    {
+      "comentario": "Hipnótica y entrañable",
+      "puntuacion": 4,
+      "fecha": "2025-07-12",
+      "libroTitulo": "La Casa de los Espíritus",
+      "usuarioEmail": "lgonzalez@mail.com"
+    },
+    {
+      "comentario": "Brillante colección de cuentos",
+      "puntuacion": 5,
+      "fecha": "2025-07-14",
+      "libroTitulo": "Ficciones",
+      "usuarioEmail": "cmendez@mail.com"
+    },
+    {
+      "comentario": "Cruda y poderosa",
+      "puntuacion": 4,
+      "fecha": "2025-07-15",
+      "libroTitulo": "La Ciudad y los Perros",
+      "usuarioEmail": "arodriguez@mail.com"
+    },
+    {
+      "comentario": "Innovadora estructura narrativa",
+      "puntuacion": 5,
+      "fecha": "2025-07-16",
+      "libroTitulo": "Rayuela",
+      "usuarioEmail": "phernandez@mail.com"
+    },
+    {
+      "comentario": "Profunda y crítica",
+      "puntuacion": 4,
+      "fecha": "2025-07-18",
+      "libroTitulo": "La Muerte de Artemio Cruz",
+      "usuarioEmail": "mfruiz@mail.com"
+    },
+    {
+      "comentario": "Tierna y deliciosa",
+      "puntuacion": 5,
+      "fecha": "2025-07-19",
+      "libroTitulo": "Como Agua para Chocolate",
+      "usuarioEmail": "jcastillo@mail.com"
+    },
+    {
+      "comentario": "Poética y fantasmagórica",
+      "puntuacion": 5,
+      "fecha": "2025-07-21",
+      "libroTitulo": "Pedro Páramo",
+      "usuarioEmail": "smorales@mail.com"
+    },
+    {
+      "comentario": "Retrato social contundente",
+      "puntuacion": 4,
+      "fecha": "2025-07-22",
+      "libroTitulo": "Balún Canán",
+      "usuarioEmail": "rperez@mail.com"
+    },
+    {
+      "comentario": "Testimonio imprescindible",
+      "puntuacion": 5,
+      "fecha": "2025-07-24",
+      "libroTitulo": "La Noche de Tlatelolco",
+      "usuarioEmail": "dlopez@mail.com"
+    },
+    {
+      "comentario": "Ágil y adictiva",
+      "puntuacion": 4,
+      "fecha": "2025-07-25",
+      "libroTitulo": "La Reina del Sur",
+      "usuarioEmail": "asanchez@mail.com"
+    },
+    {
+      "comentario": "Intrigante y elegante",
+      "puntuacion": 4,
+      "fecha": "2025-07-27",
+      "libroTitulo": "Corazón Tan Blanco",
+      "usuarioEmail": "pjimenez@mail.com"
+    },
+    {
+      "comentario": "Atmosférica y emotiva",
+      "puntuacion": 5,
+      "fecha": "2025-07-28",
+      "libroTitulo": "La Sombra del Viento",
+      "usuarioEmail": "hflores@mail.com"
+    },
+    {
+      "comentario": "Clásico eterno",
+      "puntuacion": 5,
+      "fecha": "2025-07-30",
+      "libroTitulo": "Don Quijote de la Mancha",
+      "usuarioEmail": "cnavarro@mail.com"
+    },
+    {
+      "comentario": "Trágica y luminosa",
+      "puntuacion": 4,
+      "fecha": "2025-08-01",
+      "libroTitulo": "Bodas de Sangre",
+      "usuarioEmail": "dtorres@mail.com"
+    },
+    {
+      "comentario": "Madura y sensible",
+      "puntuacion": 4,
+      "fecha": "2025-08-03",
+      "libroTitulo": "Primera Memoria",
+      "usuarioEmail": "fsalas@mail.com"
+    },
+    {
+      "comentario": "Ensayo imprescindible",
+      "puntuacion": 5,
+      "fecha": "2025-08-05",
+      "libroTitulo": "Las Venas Abiertas de América Latina",
+      "usuarioEmail": "eramos@mail.com"
+    },
+    {
+      "comentario": "Vibrante y audaz",
+      "puntuacion": 5,
+      "fecha": "2025-08-07",
+      "libroTitulo": "Los Detectives Salvajes",
+      "usuarioEmail": "xchavez@mail.com"
+    },
+    {
+      "comentario": "Breve y poderosa",
+      "puntuacion": 4,
+      "fecha": "2025-08-10",
+      "libroTitulo": "La Hora de la Estrella",
+      "usuarioEmail": "rmartinez@mail.com"
+    }
+  ]
+}

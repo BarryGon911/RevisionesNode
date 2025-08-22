@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Libro from "../models/Libro.js";
 import Autor from "../models/Autor.js";
-import Reseña from "../models/Reseña.js";
+import Resena from "../models/Resena.js";
 
 // Listar todos los libros con su autor (populate)
 export const obtenerLibros = async (req, res) => {
