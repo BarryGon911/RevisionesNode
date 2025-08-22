@@ -1,12 +1,12 @@
 import colors from "colors";
 import express from 'express';
+import dotenv from 'dotenv';
 import routes from './src/routes/index.js';
 import dbConnection from './src/config/database.js';
 import logger from './src/middlewares/logger.js';
 import setupGlobalErrorHandlers from './src/middlewares/globalErrorHandler.js';
 import errorHandler from './src/middlewares/errorHandler.js';
 
-import dotenv from 'dotenv';
 dotenv.config();
 setupGlobalErrorHandlers();
 
@@ -33,7 +33,8 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
 
+// Con COLORS
 app.listen(port, () => {
   // console.log(`Servidor ejecutándose en http://localhost:${port}`));
-  console.log(colors.bgMagenta.magenta.italic.bold(`NodeJS Server running on http://localhost:${port}`));
+  console.log(colors.bgMagenta.magenta.italic.bold(` 🚀 🟢 🚀  NodeJS Server running on http://localhost:${port}`));
 });
