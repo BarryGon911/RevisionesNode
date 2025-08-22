@@ -1,6 +1,7 @@
 import { sequelize } from "../config/database.js";
 import { Autor, Libro, Usuario, Resena } from "../models/index.js";
 import "dotenv/config";
+dotenv.config();
 
 const main = async () => {
   const useAlter = process.argv.includes("--alter");

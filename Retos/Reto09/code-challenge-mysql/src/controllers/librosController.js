@@ -1,18 +1,17 @@
 import { Libro, Autor, Resena } from "../models/index.js";
 
-// Obtener todos los libros con su autor
 export const obtenerLibros = async (req, res) => {
   try {
     const libros = await Libro.findAll({
       include: { model: Autor, as: "autor" },
     });
     res.json(libros);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ error: "Error al obtener libros", detalle: error.message });
   }
 };
 
-// Obtener un libro por ID, con su autor y reseñas
 export const obtenerLibroPorId = async (req, res) => {
   try {
     const libro = await Libro.findByPk(req.params.id, {
@@ -23,12 +22,12 @@ export const obtenerLibroPorId = async (req, res) => {
     });
     if (!libro) return res.status(404).json({ error: "Libro no encontrado" });
     res.json(libro);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ error: "Error al obtener libro", detalle: error.message });
   }
 };
 
-// Crear un nuevo libro
 export const crearLibro = async (req, res) => {
   try {
     const libro = await Libro.create(req.body);
@@ -38,7 +37,6 @@ export const crearLibro = async (req, res) => {
   }
 };
 
-// Actualizar un libro por ID
 export const actualizarLibro = async (req, res) => {
   try {
     const libro = await Libro.findByPk(req.params.id);
@@ -46,12 +44,12 @@ export const actualizarLibro = async (req, res) => {
 
     await libro.update(req.body);
     res.json(libro);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(400).json({ error: "Error al actualizar libro", detalle: error.message });
   }
 };
 
-// Eliminar un libro por ID
 export const eliminarLibro = async (req, res) => {
   try {
     const libro = await Libro.findByPk(req.params.id);
@@ -59,7 +57,16 @@ export const eliminarLibro = async (req, res) => {
 
     await libro.destroy();
     res.json({ mensaje: "Libro eliminado" });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ error: "Error al eliminar libro", detalle: error.message });
   }
+};
+
+export default {
+  obtenerLibros,
+  obtenerLibroPorId,
+  crearLibro,
+  actualizarLibro,
+  eliminarLibro
 };

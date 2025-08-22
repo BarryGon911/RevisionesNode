@@ -5,7 +5,7 @@ import {
   crearResena,
   actualizarResena,
   eliminarResena,
-} from "../controllers/reseñasController.js";
+} from "../controllers/resenasController.js";
 
 const router = express.Router();
 

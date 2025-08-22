@@ -1,5 +1,4 @@
 import { connectDB } from "../config/database.js";
-
 import "dotenv/config";
 dotenv.config();
 

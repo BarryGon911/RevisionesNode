@@ -1,7 +1,7 @@
-import Autor from "./Autor.js";
-import Libro from "./Libro.js";
-import Resena from "./Resena.js";
-import Usuario from "./Usuario.js";
+import Autor from "../models/Autor.js";
+import Libro from "../models/Libro.js";
+import Resena from "../models/Resena.js";
+import Usuario from "../models/Usuario.js";
 
 Autor.hasMany(Libro, {
   as: "libros",

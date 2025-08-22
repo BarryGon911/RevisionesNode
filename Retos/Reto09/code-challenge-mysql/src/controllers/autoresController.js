@@ -1,8 +1,7 @@
 import Libro from "../models/Libro.js";
-import Resena from "../models/Reseña.js";
+import Resena from "../models/Resena.js";
 import Autor from "../models/Autor.js";
 
-// Crear un Nuevo Autor
 export const crearAutor = async (req, res) => {
   try {
     const { nombre, nacionalidad, fechaNacimiento } = req.body;
@@ -19,7 +18,6 @@ export const crearAutor = async (req, res) => {
   }
 };
 
-// Obtener Todos los Autores
 export const obtenerAutores = async (req, res) => {
   try {
     const autores = await Autor.findAll({
@@ -29,12 +27,12 @@ export const obtenerAutores = async (req, res) => {
       ],
     });
     res.json(autores);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ error: "Error al obtener autores", detalle: error.message });
   }
 }
 
-// Obtener Autor por ID
 export const obtenerAutorPorId = async (req, res) => {
   try {
     const autor = await Autor.findByPk(req.params.id, {
@@ -45,12 +43,12 @@ export const obtenerAutorPorId = async (req, res) => {
     });
     if (!autor) return res.status(404).json({ error: "Autor no encontrado" });
     res.json(autor);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ error: "Error al obtener autor", detalle: error.message });
   }
 }
 
-// Actualizar Autor
 export const actualizarAutor = async (req, res) => {
   try {
     const autor = await Autor.findByPk(req.params.id);
@@ -59,12 +57,12 @@ export const actualizarAutor = async (req, res) => {
     const { nombre, nacionalidad, fechaNacimiento } = req.body;
     await autor.update({ nombre, nacionalidad, fechaNacimiento });
     res.json(autor);
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ error: "Error al actualizar autor", detalle: error.message });
   }
 }
 
-// Eliminar Autor
 export const eliminarAutor = async (req, res) => {
   try {
     const autor = await Autor.findByPk(req.params.id);
@@ -72,12 +70,12 @@ export const eliminarAutor = async (req, res) => {
 
     await autor.destroy();
     res.json({ mensaje: "Autor eliminado" });
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({ error: "Error al eliminar autor", detalle: error.message });
   }
 }
 
-// Exportar Controladores
 export default {
   crearAutor,
   obtenerAutores,

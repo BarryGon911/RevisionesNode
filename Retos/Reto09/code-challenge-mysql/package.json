@@ -1,13 +1,12 @@
 {
   "name": "reto09-code-challenge-mysql",
   "version": "1.0.0",
-  "description": "Crear una API con ExpressJS y MySQL que maneje relaciones entre tres entidades: Autores, Libros y Reseñas. El reto consiste en implementar endpoints que trabajen con datos reales almacenados en MySQL utilizando Sequelize ORM.",
+  "description": "Crear una API con ExpressJS y MySQL que maneje relaciones entre tres entidades: Autores, Libros y Reseñas",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    
     "db:drop": "node src/seeders/dropSchema.js",
     "db:seed": "node src/seeders/populateDB.js",
     "db:sync": "node src/seeders/sync.js",
@@ -25,10 +24,9 @@
     "app:connect:sync": "node src/scripts/connect.js --sync",
     "app:connect:alter": "node src/scripts/connect.js --sync --alter",
     "app:connect:force": "node src/scripts/connect.js --sync --force"
-  
   },
   "keywords": [],
-  "author": "BarryGon911",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
@@ -36,7 +34,7 @@
     "express": "^5.1.0",
     "mysql2": "^3.14.3",
     "sequelize": "^6.37.7",
-        "nodemon": "^3.1.10",
+    "nodemon": "^3.1.10",
     "sequelize-cli": "^6.6.3"
   }
 }

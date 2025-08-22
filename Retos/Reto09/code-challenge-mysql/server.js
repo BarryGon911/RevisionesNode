@@ -1,5 +1,5 @@
 import express from "express";
-import librosRoutes from "./src/routes/index.js";
+import librosRoutes from "./src/routes/librosRoutes.js";
 import connectDB from "./src/config/database.js";
 import colors from "colors";
 import dotenv from "dotenv";

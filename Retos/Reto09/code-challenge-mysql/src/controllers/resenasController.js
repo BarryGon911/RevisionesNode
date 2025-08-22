@@ -1,6 +1,5 @@
 import { Resena, Libro } from "../models/index.js";
 
-// Obtener todas las reseñas
 export const obtenerResenas = async (req, res) => {
   try {
     const resenas = await Resena.findAll({
@@ -12,7 +11,6 @@ export const obtenerResenas = async (req, res) => {
   }
 };
 
-// Obtener una reseña por ID
 export const obtenerResenaPorId = async (req, res) => {
   try {
     const resena = await Resena.findByPk(req.params.id, {
@@ -25,7 +23,6 @@ export const obtenerResenaPorId = async (req, res) => {
   }
 };
 
-// Crear una nueva reseña
 export const crearResena = async (req, res) => {
   try {
     const nuevaResena = await Resena.create(req.body);
@@ -35,7 +32,6 @@ export const crearResena = async (req, res) => {
   }
 };
 
-// Actualizar una reseña
 export const actualizarResena = async (req, res) => {
   try {
     const resena = await Resena.findByPk(req.params.id);
@@ -47,7 +43,6 @@ export const actualizarResena = async (req, res) => {
   }
 };
 
-// Eliminar una reseña
 export const eliminarResena = async (req, res) => {
   try {
     const resena = await Resena.findByPk(req.params.id);
@@ -57,4 +52,12 @@ export const eliminarResena = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+export default {
+  obtenerResenas,
+  obtenerResenaPorId,
+  crearResena,
+  actualizarResena,
+  eliminarResena
 };
