@@ -1,6 +1,7 @@
 import { sequelize } from "../config/database.js";
 import { Autor, Libro, Usuario, Resena } from "../models/index.js";
-import "dotenv/config";
+
+import dotenv from "dotenv";
 dotenv.config();
 
 const main = async () => {

@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
+import colors from "colors";
 
 import dotenv from "dotenv";
-import "dotenv/config";
 dotenv.config();
 
 const {
@@ -24,7 +24,7 @@ export const sequelize = DATABASE_URL
       timezone: DB_TIMEZONE || "+00:00",
       define: { freezeTableName: true },
     })
-  : new Sequelize(DB_NAME, DB_USER, DB_PASS || DB_PASSWORD, {
+  : new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
       host: DB_HOST,
       port: Number(DB_PORT || 3306),
       dialect: DB_DIALECT || "mysql",
@@ -37,16 +37,15 @@ export const connectDB = async ({ sync = false, alter = false, force = false } =
   try {
     await sequelize.authenticate();
     const target = DATABASE_URL || `${DB_HOST}:${DB_PORT}/${DB_NAME}`;
-    console.log(`?? MySQL conectado en ${target}`);
+    console.log(colors.bgGrey.cyan.italic.bold(` ✅  MySQL conectado en ${target}`));
 
     if (sync) {
       if (alter && force) throw new Error("No combines --alter y --force.");
       await sequelize.sync({ alter, force });
-      console.log("?? Sincronización finalizada.");
+      console.log("Sincronización finalizada.");
     }
-  }
-  catch (error) {
-    console.error("?? Error de conexion a MySQL:", error?.message || error);
+  } catch (error) {
+    console.error("Error de conexión a MySQL:", error?.message || error);
     process.exit(1);
   }
 };

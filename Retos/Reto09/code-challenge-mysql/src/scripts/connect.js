@@ -1,5 +1,6 @@
 import { connectDB } from "../config/database.js";
-import "dotenv/config";
+
+import dotenv from "dotenv";
 dotenv.config();
 
 const args = new Set(process.argv.slice(2));
