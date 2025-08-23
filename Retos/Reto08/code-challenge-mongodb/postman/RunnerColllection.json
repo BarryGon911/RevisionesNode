@@ -1,0 +1,331 @@
+{
+  "info": {
+    "_postman_id": "f2f7f1b2-7e7e-4f44-9a9b-2c1f9c2c5a77",
+    "name": "Code Challenge MongoDB — Runner (Flujo CRUD end-to-end)",
+    "description": "Runner de Postman que crea Autor, Usuario y Libro; verifica GET; crea Reseña; luego actualiza y elimina todo en orden.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "autorId", "value": "" },
+    { "key": "usuarioId", "value": "" },
+    { "key": "libroId", "value": "" },
+    { "key": "resenaId", "value": "" },
+    { "key": "newAutorNombre", "value": "" },
+    { "key": "newUsuarioEmail", "value": "" },
+    { "key": "newTitulo", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Runner — Flujo CRUD end-to-end",
+      "item": [
+        {
+          "name": "1) POST /autores — crear (Runner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "name": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"{{newAutorNombre}}\",\n  \"nacionalidad\": \"Runner\",\n  \"fechaNacimiento\": \"1985-05-05\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/autores", "host": ["{{baseUrl}}"], "path": ["autores"] },
+            "description": "Crea un autor y guarda {{autorId}}"
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('newAutorNombre', 'Autor Runner ' + Date.now());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body={}; try{ body = pm.response.json(); } catch(e) {}",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Crea autor\", () => !!id);",
+                  "if (id) pm.collectionVariables.set('autorId', id);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "2) POST /usuarios — crear (Runner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "name": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Usuario Runner\",\n  \"email\": \"{{newUsuarioEmail}}\",\n  \"password\": \"pwdRunner123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] },
+            "description": "Crea un usuario y guarda {{usuarioId}}"
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('newUsuarioEmail', 'runner'+Date.now()+'@mail.com');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body={}; try{ body = pm.response.json(); } catch(e) {}",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Crea usuario\", () => !!id);",
+                  "if (id) pm.collectionVariables.set('usuarioId', id);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "3) POST /libros — crear (Runner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "name": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"{{newTitulo}}\",\n  \"anio\": 2024,\n  \"genero\": \"Ficción\",\n  \"autorId\": \"{{autorId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/libros", "host": ["{{baseUrl}}"], "path": ["libros"] },
+            "description": "Crea un libro con {{autorId}} y guarda {{libroId}}"
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('newTitulo', 'Libro Runner ' + Date.now());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body={}; try{ body = pm.response.json(); } catch(e) {}",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Crea libro\", () => !!id);",
+                  "if (id) pm.collectionVariables.set('libroId', id);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "4) GET /libros/:id — verificar (Runner)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/libros/{{libroId}}", "host": ["{{baseUrl}}"], "path": ["libros", "{{libroId}}"] },
+            "description": "Verifica que el libro exista"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "let doc={}; try{ doc = pm.response.json(); } catch(e) {}",
+                  "pm.test(\"Tiene _id y titulo\", () => !!(doc && (doc._id||doc.id) && doc.titulo));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "5) POST /resenas — crear (Runner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "name": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comentario\": \"Excelente\",\n  \"puntuacion\": 5,\n  \"fecha\": \"2025-08-23\",\n  \"libroId\": \"{{libroId}}\",\n  \"usuarioId\": \"{{usuarioId}}\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/resenas", "host": ["{{baseUrl}}"], "path": ["resenas"] },
+            "description": "Crea una reseña para {{libroId}} por {{usuarioId}} y guarda {{resenaId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body={}; try{ body = pm.response.json(); } catch(e) {}",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Crea reseña\", () => !!id);",
+                  "if (id) pm.collectionVariables.set('resenaId', id);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "6) GET /resenas/:id — verificar (Runner)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/resenas/{{resenaId}}", "host": ["{{baseUrl}}"], "path": ["resenas", "{{resenaId}}"] },
+            "description": "Verifica que la reseña exista"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "7) PUT /libros/:id — actualizar (Runner)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "name": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"genero\": \"Ensayo\",\n  \"anio\": 2025\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/libros/{{libroId}}", "host": ["{{baseUrl}}"], "path": ["libros", "{{libroId}}"] },
+            "description": "Actualiza el libro"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "8) DELETE /resenas/:id — eliminar (Runner)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/resenas/{{resenaId}}", "host": ["{{baseUrl}}"], "path": ["resenas", "{{resenaId}}"] },
+            "description": "Elimina la reseña creada"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "9) DELETE /libros/:id — eliminar (Runner)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/libros/{{libroId}}", "host": ["{{baseUrl}}"], "path": ["libros", "{{libroId}}"] },
+            "description": "Elimina el libro"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "10) DELETE /usuarios/:id — eliminar (Runner)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/usuarios/{{usuarioId}}", "host": ["{{baseUrl}}"], "path": ["usuarios", "{{usuarioId}}"] },
+            "description": "Elimina el usuario"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "11) DELETE /autores/:id — eliminar (Runner)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/autores/{{autorId}}", "host": ["{{baseUrl}}"], "path": ["autores", "{{autorId}}"] },
+            "description": "Elimina el autor"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ]
+}
