@@ -1,7 +1,7 @@
 # ✅ Proyecto Integrador: API E-commerce con Express.js
 
-API REST para e-commerce con autenticación JWT, roles, validaciones y paginación. Cumple con la rúbrica solicitada
-(funcionalidad de endpoints, relaciones, seguridad, paginación, organización por capas, demo con Postman, bcrypt, roles y documentación).
+API REST para e-commerce con autenticación JWT, roles, validaciones y paginación.
+Cumple con la rúbrica solicitada (funcionalidad de endpoints, relaciones, seguridad, paginación, organización por capas, demo con Postman, bcrypt, roles y documentación).
 
 ## Requisitos
 - Node v22.18.0
