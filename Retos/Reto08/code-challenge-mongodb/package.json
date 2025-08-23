@@ -39,6 +39,7 @@
     "#routes/*": "./src/routes/*",
     "#routes": "./src/routes/index.js",
     "#scripts/*": "./src/scripts/*",
-    "#seeders/*": "./src/seeders/*"
+    "#seeders/*": "./src/seeders/*",
+    "#utils/*": "./src/utils/*"
   }
 }

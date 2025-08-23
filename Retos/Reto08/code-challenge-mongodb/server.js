@@ -1,32 +1,44 @@
+import express from "express";
 import rutas from "#routes/index.js";
 import errorHandler from "#middlewares/errorHandler.js";
-import connectDB from "#config/database.js";
 import { normalizarAnio } from "#middlewares/normalizarAnio.js";
-import express from "express";
+import connectDB from "#config/database.js";
 
 import dotenv from "dotenv";
 dotenv.config();
 
 const port = process.env.SRV_PORT || 3000;
+const BASE_PATH = process.env.BASE_PATH || "/"; // "/" por defecto
 
 try {
   await connectDB();
   console.log("MongoDB connection is OK");
 
   const app = express();
-
   app.use(express.json());
   app.use(normalizarAnio);
 
-  app.use("/", rutas);
+  // Monta tus rutas
+  app.use(BASE_PATH, rutas);
 
+  // Manejo de errores
   app.use(errorHandler);
 
+  // Arranca y lista rutas
   app.listen(port, () => {
-    console.log(`NodeJS Server running on http://localhost:${port}`);
+    const baseShown = BASE_PATH === "/" ? "" : BASE_PATH;
+    console.log(
+      `Base URL: http://localhost:${port}${baseShown}${baseShown.endsWith("/") ? "" : "/"}`
+    );
+    import("./src/utils/routes-debug.js")
+      .then(({ printRoutes }) => {
+        printRoutes(app, { basePath: baseShown });
+      })
+      .catch((err) => {
+        console.warn("No pude imprimir rutas:", err?.message || err);
+      });
   });
-}
-catch (error) {
-  console.error("MongoDB connection failed ?"), error?.message || error;
+} catch (error) {
+  console.error("MongoDB connection failed:", error?.stack || error);
   process.exit(1);
 }
