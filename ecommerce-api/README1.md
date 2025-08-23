@@ -41,7 +41,7 @@ Parámetros `page` y `limit` (por defecto `page=1&limit=10`). Devuelve `total`, 
 - `admin`: gestiona productos, categorías y usuarios.
 - `customer`: compra productos, gestiona su carrito y órdenes.
 
-## Pruebas Postman
+## Pruebas en Postman
 Se incluye **`postman/Ecommerce.postman_collection.json`** con ejemplos listos para probar.
 
 ## Organización de carpetas
@@ -72,3 +72,4 @@ Rubrica.md
 - Rutas protegidas con `JWT` y middleware de roles.
 - Validaciones con `express-validator`.
 - Manejo de errores consistente (400–500).
+
