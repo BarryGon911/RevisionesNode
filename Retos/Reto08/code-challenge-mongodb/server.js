@@ -11,7 +11,7 @@ const port = process.env.SRV_PORT || 3000;
 
 try {
   await connectDB();
-  console.log(colors.bgGrey.black.bold("MongoDB connection is OK"));
+  console.log("MongoDB connection is OK");
 
   const app = express();
 
