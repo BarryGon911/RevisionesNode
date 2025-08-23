@@ -8,7 +8,10 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "fix-indexes:dry": "node scripts/fix-duplicate-indexes.js --dry-run",
-    "fix-indexes": "node scripts/fix-duplicate-indexes.js"
+    "fix-indexes": "node scripts/fix-duplicate-indexes.js",
+    "seed": "node src/seeders/populateDB.js",
+    "db:reset": "node src/seeders/resetAndSeed.js",
+    "db:drop": "node src/seeders/dropDatabase.js"
   },
   "keywords": [],
   "author": "",
