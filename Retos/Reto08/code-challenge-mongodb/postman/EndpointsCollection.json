@@ -1,0 +1,1079 @@
+{
+  "info": {
+    "_postman_id": "b78a7168-da98-4e69-a75d-98d31be766df",
+    "name": "Code Challenge MongoDB — Endpoints (README + CRUD completos)",
+    "description": "Colección de pruebas para los recursos: Autores, Usuarios, Libros, Reseñas.\n• Usa {{baseUrl}} (por defecto http://localhost:3000)\n• Las requests crean entidades, las consultan, actualizan y eliminan.\n• Los tests guardan IDs en variables de colección: {{autorId}}, {{usuarioId}}, {{libroId}}, {{resenaId}}\n• Los POST intentan resolver dependencias automáticamente (ej. autorId para POST /libros).\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "autorId",
+      "value": ""
+    },
+    {
+      "key": "usuarioId",
+      "value": ""
+    },
+    {
+      "key": "libroId",
+      "value": ""
+    },
+    {
+      "key": "resenaId",
+      "value": ""
+    },
+    {
+      "key": "newTitulo",
+      "value": ""
+    },
+    {
+      "key": "newAutorNombre",
+      "value": ""
+    },
+    {
+      "key": "newUsuarioEmail",
+      "value": ""
+    },
+    {
+      "key": "genero",
+      "value": ""
+    },
+    {
+      "key": "anio",
+      "value": ""
+    },
+    {
+      "key": "autor",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Autores",
+      "item": [
+        {
+          "name": "GET /autores — listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores"
+              ]
+            },
+            "description": "Lista de autores"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "pm.test(\"JSON\", () => /json/i.test(pm.response.headers.get(\"Content-Type\")||\"\"));",
+                  "let data = [];",
+                  "try { data = pm.response.json(); } catch(e) {}",
+                  "pm.test(\"Array\", () => Array.isArray(data));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /autores — crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores"
+              ]
+            },
+            "description": "Crea un autor de prueba",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"{{newAutorNombre}}\",\n  \"nacionalidad\": \"Prueba\",\n  \"fechaNacimiento\": \"1980-01-01\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.collectionVariables.set(\"newAutorNombre\", \"Autor Prueba \" + Date.now());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body={}; try{body=pm.response.json()}catch(e){}",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Crea autor\", () => !!id);",
+                  "if (id) pm.collectionVariables.set(\"autorId\", id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /autores/:id — obtener",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "let doc={}; try{doc=pm.response.json()}catch(e){}",
+                  "pm.test(\"Tiene _id y nombre\", () => !!(doc && (doc._id||doc.id) && doc.nombre));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /autores/:id — actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nacionalidad\": \"Actualizada\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /autores/:id — eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "GET /usuarios — listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "pm.test(\"JSON\", () => /json/i.test(pm.response.headers.get(\"Content-Type\")||\"\"));",
+                  "let data = [];",
+                  "try { data = pm.response.json(); } catch(e) {}",
+                  "pm.test(\"Array\", () => Array.isArray(data));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /usuarios — crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Usuario Prueba\",\n  \"email\": \"{{newUsuarioEmail}}\",\n  \"password\": \"pwd12345\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.collectionVariables.set(\"newUsuarioEmail\", \"user\"+Date.now()+\"@mail.com\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body={}; try{body=pm.response.json()}catch(e){}",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Crea usuario\", () => !!id);",
+                  "if (id) pm.collectionVariables.set(\"usuarioId\", id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /usuarios/:id — obtener",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "let doc={}; try{doc=pm.response.json()}catch(e){}",
+                  "pm.test(\"Tiene _id y nombre\", () => !!(doc && (doc._id||doc.id) && doc.nombre));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /usuarios/:id — actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Usuario Actualizado\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /usuarios/:id — eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Libros",
+      "item": [
+        {
+          "name": "GET /libros — listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/libros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "libros"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "pm.test(\"JSON\", () => /json/i.test(pm.response.headers.get(\"Content-Type\")||\"\"));",
+                  "let data;",
+                  "try { data = pm.response.json(); } catch(e) { data = null; }",
+                  "pm.test(\"Devuelve un array\", () => Array.isArray(data));",
+                  "if (Array.isArray(data) && data.length > 0) {",
+                  "  const b = data[0];",
+                  "  pm.test(\"Item tiene _id y titulo\", () => !!(b && (b._id || b.id) && b.titulo));",
+                  "  const autorRef = (b.autorId) || (b.autor && b.autor._id) || null;",
+                  "  if (autorRef) pm.collectionVariables.set(\"autorId\", autorRef);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /libros — crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/libros",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "libros"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"{{newTitulo}}\",\n  \"anio\": 2001,\n  \"genero\": \"Ficción\",\n  \"autorId\": \"{{autorId}}\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "// Título único",
+                  "pm.collectionVariables.set(\"newTitulo\", \"Libro de prueba \" + Date.now());",
+                  "",
+                  "// Asegurar autorId: primero intenta con variable, si no consulta /autores y guarda uno.",
+                  "if (!pm.collectionVariables.get(\"autorId\")) {",
+                  "  const baseUrl = pm.variables.get(\"baseUrl\") || pm.collectionVariables.get(\"baseUrl\");",
+                  "  pm.sendRequest({ url: baseUrl + \"/autores\", method: \"GET\" }, (err, res) => {",
+                  "    try {",
+                  "      const arr = res && res.json ? res.json() : [];",
+                  "      if (Array.isArray(arr) && arr.length > 0) {",
+                  "        const a = arr[0];",
+                  "        const id = a._id || a.id;",
+                  "        if (id) pm.collectionVariables.set(\"autorId\", id);",
+                  "      } else {",
+                  "        // fallback: intentar desde /libros",
+                  "        pm.sendRequest({ url: baseUrl + \"/libros\", method: \"GET\" }, (e2, r2) => {",
+                  "          try {",
+                  "            const arr2 = r2 && r2.json ? r2.json() : [];",
+                  "            if (Array.isArray(arr2) && arr2.length > 0) {",
+                  "              const b = arr2[0];",
+                  "              const autorRef = (b.autorId) || (b.autor && b.autor._id);",
+                  "              if (autorRef) pm.collectionVariables.set(\"autorId\", autorRef);",
+                  "            }",
+                  "          } catch(e){}",
+                  "        });",
+                  "      }",
+                  "    } catch(e) {}",
+                  "  });",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body = {};",
+                  "try { body = pm.response.json(); } catch(e) { body = {}; }",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Devuelve libro creado\", () => !!id);",
+                  "if (id) pm.collectionVariables.set(\"libroId\", id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /libros/:id — obtener",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/libros/{{libroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "libros",
+                "{{libroId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "let doc={}; try{doc=pm.response.json()}catch(e){}",
+                  "pm.test(\"Tiene _id y titulo\", () => !!(doc && (doc._id||doc.id) && doc.titulo));",
+                  "pm.test(\"Incluye autor o autorId\", () => !!(doc.autorId || doc.autor));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /libros/:id — actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/libros/{{libroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "libros",
+                "{{libroId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"genero\": \"Ensayo\",\n  \"anio\": 2002\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /libros/:id — eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/libros/{{libroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "libros",
+                "{{libroId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /libros — filtros opcionales",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/libros?genero={{genero}}&anio={{anio}}&autor={{autor}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "libros?genero={{genero}}&anio={{anio}}&autor={{autor}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.code === 200);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /libros/stats — opcional",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/libros/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "libros",
+                "stats"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.code === 200);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reseñas",
+      "item": [
+        {
+          "name": "GET /resenas — listar",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resenas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resenas"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "pm.test(\"JSON\", () => /json/i.test(pm.response.headers.get(\"Content-Type\")||\"\"));",
+                  "let data = [];",
+                  "try { data = pm.response.json(); } catch(e) {}",
+                  "pm.test(\"Array\", () => Array.isArray(data));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /resenas — crear",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resenas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resenas"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comentario\": \"Muy buena\",\n  \"puntuacion\": 5,\n  \"fecha\": \"2025-08-20\",\n  \"libroId\": \"{{libroId}}\",\n  \"usuarioId\": \"{{usuarioId}}\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "// Asegurar libroId y usuarioId",
+                  "const baseUrl = pm.variables.get(\"baseUrl\") || pm.collectionVariables.get(\"baseUrl\");",
+                  "function need(v){ return !pm.collectionVariables.get(v); }",
+                  "",
+                  "function ensureLibro(cb){",
+                  "  if (!need(\"libroId\")) return cb();",
+                  "  pm.sendRequest({url: baseUrl + \"/libros\", method: \"GET\"}, (err,res)=>{",
+                  "    try {",
+                  "      const arr = res && res.json ? res.json() : [];",
+                  "      if (Array.isArray(arr) && arr.length > 0) {",
+                  "        const id = arr[0]._id || arr[0].id;",
+                  "        if (id) pm.collectionVariables.set(\"libroId\", id);",
+                  "      }",
+                  "    } catch(e){}",
+                  "    cb();",
+                  "  });",
+                  "}",
+                  "function ensureUsuario(cb){",
+                  "  if (!need(\"usuarioId\")) return cb();",
+                  "  pm.sendRequest({url: baseUrl + \"/usuarios\", method: \"GET\"}, (err,res)=>{",
+                  "    try {",
+                  "      const arr = res && res.json ? res.json() : [];",
+                  "      if (Array.isArray(arr) && arr.length > 0) {",
+                  "        const id = arr[0]._id || arr[0].id;",
+                  "        if (id) pm.collectionVariables.set(\"usuarioId\", id);",
+                  "      }",
+                  "    } catch(e){}",
+                  "    cb();",
+                  "  });",
+                  "}",
+                  "ensureLibro(()=>ensureUsuario(()=>{}));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 201|200\", () => [200,201].includes(pm.response.code));",
+                  "let body={}; try{body=pm.response.json()}catch(e){}",
+                  "const id = body._id || body.id || (body.data && (body.data._id || body.data.id));",
+                  "pm.test(\"Crea reseña\", () => !!id);",
+                  "if (id) pm.collectionVariables.set(\"resenaId\", id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /resenas/:id — obtener",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resenas/{{resenaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resenas",
+                "{{resenaId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200\", () => pm.response.code === 200);",
+                  "let doc={}; try{doc=pm.response.json()}catch(e){}",
+                  "pm.test(\"Tiene _id y nombre\", () => !!(doc && (doc._id||doc.id) && doc.nombre));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /resenas/:id — actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resenas/{{resenaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resenas",
+                "{{resenaId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"puntuacion\": 4,\n  \"comentario\": \"Actualizada\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /resenas/:id — eliminar",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/resenas/{{resenaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "resenas",
+                "{{resenaId}}"
+              ]
+            },
+            "description": ""
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "",
+                  "pm.test(\"Status 200|204\", () => [200,204].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

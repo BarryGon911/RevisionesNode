@@ -18,7 +18,7 @@ async function resetAndSeed() {
   console.log('Base de datos borrada');
 
   console.log('Ejecutando seed...');
-  const result = await populateDB(); // si retornas conteos, los mostramos
+  const result = await populateDB(); // ahora sí existe como export nombrado
   if (result) console.log('Resultado del seed:', result);
 
   console.log('Reset + Seed completado');
