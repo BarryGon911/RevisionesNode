@@ -11,9 +11,9 @@ API REST para e-commerce con autenticación JWT, roles, validaciones y paginaci�
 Crea un archivo `.env` basado en `.env.example`:
 
 ```
-PORT=4000
 MONGODB_URI=mongodb://localhost:27017/ecommerce_express_api
 JWT_SECRET=cambia_este_secreto_super_seguro
+PORT=3000
 ```
 
 ## Instalación y ejecución
