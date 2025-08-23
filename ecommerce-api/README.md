@@ -1,14 +1,15 @@
 # ✅ Proyecto Integrador: API E-commerce con Express.js
 
-API REST para e-commerce con autenticación JWT, roles, validaciones y paginación. Cumple con la rúbrica solicitada.
+API REST para e-commerce con autenticación JWT, roles, validaciones y paginación. Cumple con la rúbrica solicitada
+(funcionalidad de endpoints, relaciones, seguridad, paginación, organización por capas, demo con Postman, bcrypt, roles y documentación).
 
 ## Requisitos
 - Node v22.18.0
 - MongoDB (local o Atlas)
-- `.env` configurado
+- Varaibles de entorno configuradas
 
 ## Variables de entorno
-Crea un archivo `.env` basado en `.env.example`:
+Se crea un archivo `.env` basado en `.env.example`:
 
 ```
 MONGODB_URI=mongodb://localhost:27017/ecommerce_express_api
@@ -20,7 +21,7 @@ PORT=3000
 ```bash
 npm install
 npm run seed   # Carga datos iniciales (>= 10 por entidad principal)
-npm run dev    # Levanta el servidor en http://localhost:4000
+npm run dev    # Levanta el servidor en http://localhost:3000
 ```
 
 ## Endpoints principales
@@ -31,6 +32,7 @@ npm run dev    # Levanta el servidor en http://localhost:4000
 - **Carrito** (usuario): `/api/cart`
 - **Órdenes** (usuario): `/api/orders`
 - **Docs**: `/api/docs`
+- Consulta la documentación OpenAPI en: **`/api/docs`**
 
 ## Paginación
 `?page=1&limit=10` (por defecto); respuesta incluye `total`, `page`, `pages` y `data`.
