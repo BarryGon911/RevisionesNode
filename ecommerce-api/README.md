@@ -1,4 +1,4 @@
-# E-commerce API — Express.js + MongoDB
+# ✅ Proyecto Integrador: API E-commerce con Express.js
 
 API REST para e-commerce con autenticación JWT, roles, validaciones y paginación. Cumple con la rúbrica solicitada.
 
