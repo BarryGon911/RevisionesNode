@@ -3,7 +3,7 @@
 API REST para e-commerce con autenticación JWT, roles, validaciones y paginación. Cumple con la rúbrica solicitada.
 
 ## Requisitos
-- Node 18+
+- Node v22.18.0
 - MongoDB (local o Atlas)
 - `.env` configurado
 
