@@ -1,14 +1,9 @@
-/**
- * Script para poblar MongoDB con datos reales (basado en poblar_db.sql).
- * Ejecuta: node populateDB.js
- * Requiere: MONGO_URI en .env ó usará mongodb://localhost:27017/biblioteca
- */
 import "dotenv/config.js";
 import mongoose from "mongoose";
-import Autor from "../models/\1";
-import Usuario from "../models/\1";
-import Libro from "../models/\1";
-import Resena from "../models/\1";
+import Autor from "#models/Autor.js";
+import Usuario from "#models/Usuario.js";
+import Libro from "#models/Libro.js";
+import Resena from "#/models/Resena.js";
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/biblioteca";
 
@@ -59,8 +54,8 @@ const librosSQL = [
 ];
 
 const usuariosSQL = [
-  { id: 1,  nombre: "Juan Camaney Shingón",  email: "jcamaney@mail.com",   password: "misuperpassword1" },
-  { id: 2,  nombre: "Mauricio Garcés Elú",   email: "mgarces@mail.com",    password: "misuperpassword2" },
+  { id: 1,  nombre: "Juan Camaney Shingón",  email: "jcamaney@mail.com",   password: "pwd1" },
+  { id: 2,  nombre: "Mauricio Garcés Elú",   email: "mgarces@mail.com",    password: "pwd2" },
   { id: 3,  nombre: "Lupita González",       email: "lgonzalez@mail.com",  password: "pwd3" },
   { id: 4,  nombre: "Carlos Méndez",         email: "cmendez@mail.com",    password: "pwd4" },
   { id: 5,  nombre: "Ana Rodríguez",         email: "arodriguez@mail.com", password: "pwd5" },
@@ -112,11 +107,11 @@ function yearFrom(dateStr) {
 
 async function main() {
   await mongoose.connect(MONGO_URI);
-  console.log("✅ Conectado a", MONGO_URI);
+  console.log("Conectado a", MONGO_URI);
 
   // Limpieza
   await Promise.all([Resena.deleteMany({}), Libro.deleteMany({}), Usuario.deleteMany({}), Autor.deleteMany({})]);
-  console.log("🧹 Colecciones vaciadas");
+  console.log("Colecciones vaciadas");
 
   // Insertar autores
   const autorMap = new Map();
@@ -128,7 +123,7 @@ async function main() {
     });
     autorMap.set(a.id, doc._id);
   }
-  console.log(`📝 Autores insertados: ${autorMap.size}`);
+  console.log(`Autores insertados: ${autorMap.size}`);
 
   // Insertar usuarios
   const usuarioMap = new Map();
@@ -140,9 +135,8 @@ async function main() {
     });
     usuarioMap.set(u.id, doc._id);
   }
-  console.log(`👤 Usuarios insertados: ${usuarioMap.size}`);
+  console.log(`Usuarios insertados: ${usuarioMap.size}`);
 
-  // Insertar libros (mapear autorId y convertir fechaPublicacion -> anio)
   const libroMap = new Map();
   for (const l of librosSQL) {
     const doc = await Libro.create({
@@ -153,7 +147,7 @@ async function main() {
     });
     libroMap.set(l.id, doc._id);
   }
-  console.log(`📚 Libros insertados: ${libroMap.size}`);
+  console.log(`Libros insertados: ${libroMap.size}`);
 
   // Insertar reseñas (contenido->comentario, calificacion->puntuacion)
   let countResenas = 0;
@@ -167,13 +161,13 @@ async function main() {
     });
     countResenas++;
   }
-  console.log(`⭐ Reseñas insertadas: ${countResenas}`);
+  console.log(`Reseñas insertadas: ${countResenas}`);
 
-  console.log("🎉 Poblado completo.");
+  console.log("Poblado de BD completo.");
   await mongoose.disconnect();
 }
 
 main().catch((err) => {
-  console.error("❌ Error al poblar:", err);
+  console.error("Error al poblar:", err);
   process.exit(1);
 });

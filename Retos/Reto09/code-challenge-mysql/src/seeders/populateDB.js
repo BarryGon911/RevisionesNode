@@ -48,8 +48,8 @@ const libros = [
 ];
 
 const usuarios = [
-  { id: 1,  nombre: "Juan Camaney Shingón",  email: "jcamaney@mail.com",   password: "misuperpassword1" },
-  { id: 2,  nombre: "Mauricio Garcés Elú",   email: "mgarces@mail.com",    password: "misuperpassword2" },
+  { id: 1,  nombre: "Juan Camaney Shingón",  email: "jcamaney@mail.com",   password: "pwd1" },
+  { id: 2,  nombre: "Mauricio Garcés Elú",   email: "mgarces@mail.com",    password: "pwd2" },
   { id: 3,  nombre: "Lupita González",       email: "lgonzalez@mail.com",  password: "pwd3"  },
   { id: 4,  nombre: "Carlos Méndez",         email: "cmendez@mail.com",    password: "pwd4"  },
   { id: 5,  nombre: "Ana Rodríguez",         email: "arodriguez@mail.com", password: "pwd5"  },

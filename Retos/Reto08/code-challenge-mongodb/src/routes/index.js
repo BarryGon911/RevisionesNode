@@ -6,7 +6,6 @@ import resenasRoutes from "#routes/resenasRoutes.js";
 
 const router = express.Router();
 
-// Montar subrutas
 router.use("/libros", librosRoutes);
 router.use("/autores", autoresRoutes);
 router.use("/resenas", resenasRoutes);

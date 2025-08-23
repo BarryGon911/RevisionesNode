@@ -3,7 +3,6 @@ import errorHandler from "#middlewares/errorHandler.js";
 import connectDB from "#config/database.js";
 import { normalizarAnio } from "#middlewares/normalizarAnio.js";
 import express from "express";
-import colors from "colors";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -24,10 +23,10 @@ try {
   app.use(errorHandler);
 
   app.listen(port, () => {
-    console.log(colors.bgMagenta.italic.bold(`NodeJS Server running on http://localhost:${port}`));
+    console.log(`NodeJS Server running on http://localhost:${port}`);
   });
 }
 catch (error) {
-  console.error(colors.bgRed.white.bold("MongoDB connection failed ?"), error?.message || error);
+  console.error("MongoDB connection failed ?"), error?.message || error;
   process.exit(1);
 }

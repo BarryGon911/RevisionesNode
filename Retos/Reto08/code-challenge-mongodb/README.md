@@ -7,8 +7,8 @@ Crear una API con Express.js y MongoDB que maneje relaciones entre tres entidade
 **Relación del modelo:**
 
 - Un **Autor** puede escribir múltiples **Libros**
-- Un **Libro** pertenece a un **Autor** y puede tener múltiples **Reseñas**
-- Una **Reseña** pertenece a un **Libro**
+- Un **Libro** pertenece a un **Autor** y puede tener múltiples **Resenas**
+- Una **Resena** pertenece a un **Libro**
 
 Con este reto practicarás:
 
