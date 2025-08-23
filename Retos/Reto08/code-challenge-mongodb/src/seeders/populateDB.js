@@ -1,9 +1,11 @@
-import "dotenv/config.js";
 import mongoose from "mongoose";
 import Autor from "#models/Autor.js";
 import Usuario from "#models/Usuario.js";
 import Libro from "#models/Libro.js";
 import Resena from "#/models/Resena.js";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/biblioteca";
 
