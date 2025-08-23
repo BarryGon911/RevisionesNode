@@ -41,11 +41,13 @@ Parámetros `page` y `limit` (por defecto `page=1&limit=10`). Devuelve `total`, 
 - `admin`: gestiona productos, categorías y usuarios.
 - `customer`: compra productos, gestiona su carrito y órdenes.
 
-## Postman
-Incluyo `postman/Ecommerce.postman_collection.json` con ejemplos listos para probar.
+## Pruebas Postman
+Se incluye **`postman/Ecommerce.postman_collection.json`** con ejemplos listos para probar.
 
 ## Organización de carpetas
 ```
+docs/
+postman/
 src/
   config/
   controllers/
@@ -56,8 +58,13 @@ src/
   utils/
   app.js
   server.js
-docs/
-postman/
+.env
+.env.template
+.gitignore
+package-lock.json
+package.json
+README.md
+Rubrica.md
 ```
 
 ## Notas
