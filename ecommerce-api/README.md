@@ -25,17 +25,16 @@ npm run dev    # Levanta el servidor en http://localhost:3000
 ```
 
 ## Endpoints principales
-- **Auth**: `/api/auth/register`, `/api/auth/login`
-- **Productos** (público GET; admin para POST/PUT/DELETE): `/api/products`
-- **Categorías** (público GET; admin para POST/PUT/DELETE): `/api/categories`
-- **Usuarios** (admin): `/api/users`
-- **Carrito** (usuario): `/api/cart`
-- **Órdenes** (usuario): `/api/orders`
-- **Docs**: `/api/docs`
-- Consulta la documentación OpenAPI en: **`/api/docs`**
+- **Auth**: **`/api/auth/register`**, **`/api/auth/login`**
+- **Productos** (Público GET; admin para POST/PUT/DELETE): **`/api/products`**
+- **Categorías** (Público GET; admin para POST/PUT/DELETE): **`/api/categories`**
+- **Usuarios** (Admin): **`/api/users`**
+- **Carrito** (Usuario): **`/api/cart`**
+- **Órdenes** (Usuario): **`/api/orders`**
+- **Consulta la documentación OpenAPI en:** **`/api/docs`**
 
 ## Paginación
-`?page=1&limit=10` (por defecto); respuesta incluye `total`, `page`, `pages` y `data`.
+Parámetros `page` y `limit` (por defecto `page=1&limit=10`). Devuelve `total`, `page`, `pages` y `data`.
 
 ## Roles
 - `admin`: gestiona productos, categorías y usuarios.
