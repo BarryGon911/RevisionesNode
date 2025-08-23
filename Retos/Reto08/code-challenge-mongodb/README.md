@@ -349,13 +349,13 @@ http://localhost:3000/libros/stats              // Contar por género, etc.
 
 ## 🎯 Criterios de éxito
 
-✅ Conexión exitosa a MongoDB
-✅ Modelos definidos correctamente
-✅ Relaciones funcionando con populate
-✅ CRUD completo implementado
-✅ Validaciones funcionando
-✅ Datos persistiendo correctamente
-✅ Manejo apropiado de errores
+**✅ Conexión exitosa a MongoDB**
+**✅ Modelos definidos correctamente**
+**✅ Relaciones funcionando con populate**
+**✅ CRUD completo implementado**
+**✅ Validaciones funcionando**
+**✅ Datos persistiendo correctamente**
+**✅ Manejo apropiado de errores**
 
 ---
 
