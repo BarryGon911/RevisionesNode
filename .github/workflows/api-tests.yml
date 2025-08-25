@@ -19,7 +19,6 @@ on:
         default: "4000"
         type: string
 
-# Permisos para Pages
 permissions:
   contents: read
   pages: write
@@ -29,6 +28,9 @@ jobs:
   newman-remote:
     if: ${{ inputs.mode == 'remote' }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ecommerce-api
 
     steps:
       - name: Checkout
@@ -39,10 +41,10 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+          cache-dependency-path: ecommerce-api/package.json
 
       - name: Install Newman + reporter
-        run: |
-          npm i -D newman newman-reporter-htmlextra
+        run: npm i -D newman newman-reporter-htmlextra
 
       - name: Prepare environment (override baseUrl)
         run: |
@@ -68,18 +70,20 @@ jobs:
             --delay-request 200
 
       - name: Generate Compliance
-        run: |
-          node scripts/generateCompliance.js "reports/Ecommerce-api-report.json"
+        run: node scripts/generateCompliance.js "reports/Ecommerce-api-report.json"
 
       - name: Upload reports artifact
         uses: actions/upload-artifact@v4
         with:
           name: api-test-reports
-          path: reports/
+          path: ecommerce-api/reports/
 
   newman-local:
     if: ${{ inputs.mode == 'local' }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ecommerce-api
 
     services:
       mongodb:
@@ -87,9 +91,9 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd="mongosh --eval 'db.runCommand({ ping: 1 })'" 
-          --health-interval=10s 
-          --health-timeout=5s 
+          --health-cmd="mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
           --health-retries=5
 
     env:
@@ -106,10 +110,10 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+          cache-dependency-path: ecommerce-api/package.json
 
       - name: Install project deps
-        run: |
-          npm ci || npm i
+        run: npm ci || npm i
 
       - name: Seed database (best effort)
         run: |
@@ -126,8 +130,7 @@ jobs:
           curl -fsS "http://localhost:${PORT}/api/docs" >/dev/null || (echo "API no respondió a tiempo" && tail -n 200 server.log && exit 1)
 
       - name: Install Newman + reporter
-        run: |
-          npm i -D newman newman-reporter-htmlextra
+        run: npm i -D newman newman-reporter-htmlextra
 
       - name: Prepare environment (local baseUrl)
         run: |
@@ -149,21 +152,22 @@ jobs:
             --delay-request 200
 
       - name: Generate Compliance
-        run: |
-          node scripts/generateCompliance.js "reports/Ecommerce-api-report.json"
+        run: node scripts/generateCompliance.js "reports/Ecommerce-api-report.json"
 
       - name: Upload reports artifact
         uses: actions/upload-artifact@v4
         with:
           name: api-test-reports
-          path: reports/
+          path: ecommerce-api/reports/
 
   publish-pages:
-    # Espera a que terminen ambos jobs (uno quedará 'skipped')
     needs: [newman-remote, newman-local]
-    # Publica sólo si alguno pasó en success
-    if: ${{ (needs.newman-remote.result == 'success') || (needs.newman-local.result == 'success') }}
+    if: ${{ (needs.newman-remote.result == 'success' || needs.newman-local.result == 'success') && github.repository_visibility == 'public' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -176,8 +180,11 @@ jobs:
           path: public
 
       - name: Build index.html
+        shell: bash
         run: |
-          cat > public/index.html <<'EOF'
+          mkdir -p public
+          DATE="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          cat > public/index.html <<EOF
           <!doctype html>
           <html lang="es">
           <head>
@@ -194,7 +201,7 @@ jobs:
           </head>
           <body>
             <h1>📊 Ecommerce API — Test Reports</h1>
-            <p class="muted">Última ejecución: ${new Date().toISOString()}</p>
+            <p class="muted">Última ejecución: $DATE</p>
             <div class="card">
               <h3>Reporte HTML (Newman)</h3>
               <p><a href="./Ecommerce-api-report.html">Abrir Ecommerce-api-report.html</a></p>
