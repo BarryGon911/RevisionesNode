@@ -4,20 +4,26 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "Modo de ejecuci�n: remote (usa TEST_BASEURL) o local (levanta Mongo + API)"
+        description: "Modo: remote (usa TEST_BASEURL) o local (levanta Mongo + API)"
         required: true
         default: "remote"
         type: choice
         options: [remote, local]
       baseUrl:
-        description: "S�lo para 'remote': URL completa (ej. https://dev.tuapi.com/api)"
+        description: "Sólo para 'remote': URL completa (https://dev.tuapi.com/api)"
         required: false
         type: string
       port:
-        description: "S�lo para 'local': puerto de la API"
+        description: "Sólo para 'local': puerto de la API"
         required: true
         default: "4000"
         type: string
+
+# Permisos para Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   newman-remote:
@@ -41,7 +47,6 @@ jobs:
       - name: Prepare environment (override baseUrl)
         run: |
           mkdir -p reports
-          # Toma tu environment base y sobreescribe baseUrl con TEST_BASEURL (o input baseUrl si lo pasaste)
           TARGET_URL="${{ inputs.baseUrl != '' && inputs.baseUrl || secrets.TEST_BASEURL }}"
           if [ -z "$TARGET_URL" ]; then
             echo "TEST_BASEURL no definido (secret) ni baseUrl (input)."
@@ -108,28 +113,17 @@ jobs:
 
       - name: Seed database (best effort)
         run: |
-          # Intenta usar scripts que ya tienes; si no existen, intenta los comandos directos
-          if npm run -s unseed:all >/dev/null 2>&1; then
-            npm run unseed:all
-          else
-            node --env-file=.env src/seeders/unseed.js --all || true
-          fi
-          if npm run -s seed >/dev/null 2>&1; then
-            npm run seed
-          else
-            node --env-file=.env src/seeders/seed.js || true
-          fi
+          if npm run -s unseed:all >/dev/null 2>&1; then npm run unseed:all; else node --env-file=.env src/seeders/unseed.js --all || true; fi
+          if npm run -s seed >/dev/null 2>&1; then npm run seed; else node --env-file=.env src/seeders/seed.js || true; fi
 
       - name: Start API
         run: |
-          # Inicia tu servidor en background
           nohup node src/server.js > server.log 2>&1 &
-          # Espera a que responda
           for i in {1..60}; do
             curl -fsS "http://localhost:${PORT}/api/docs" >/dev/null && break
             sleep 2
           done
-          curl -fsS "http://localhost:${PORT}/api/docs" >/dev/null || (echo "API no respondi� a tiempo" && tail -n 200 server.log && exit 1)
+          curl -fsS "http://localhost:${PORT}/api/docs" >/dev/null || (echo "API no respondió a tiempo" && tail -n 200 server.log && exit 1)
 
       - name: Install Newman + reporter
         run: |
@@ -163,3 +157,65 @@ jobs:
         with:
           name: api-test-reports
           path: reports/
+
+  publish-pages:
+    # Espera a que terminen ambos jobs (uno quedará 'skipped')
+    needs: [newman-remote, newman-local]
+    # Publica sólo si alguno pasó en success
+    if: ${{ (needs.newman-remote.result == 'success') || (needs.newman-local.result == 'success') }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download reports artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-test-reports
+          path: public
+
+      - name: Build index.html
+        run: |
+          cat > public/index.html <<'EOF'
+          <!doctype html>
+          <html lang="es">
+          <head>
+            <meta charset="utf-8">
+            <title>Ecommerce API — Test Reports</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+              body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; padding: 2rem; line-height: 1.6; }
+              h1 { margin-top: 0; }
+              a { text-decoration: none; }
+              .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem 1.25rem; margin: 0.75rem 0; }
+              .muted { color: #6b7280; }
+            </style>
+          </head>
+          <body>
+            <h1>📊 Ecommerce API — Test Reports</h1>
+            <p class="muted">Última ejecución: ${new Date().toISOString()}</p>
+            <div class="card">
+              <h3>Reporte HTML (Newman)</h3>
+              <p><a href="./Ecommerce-api-report.html">Abrir Ecommerce-api-report.html</a></p>
+            </div>
+            <div class="card">
+              <h3>Compliance (Markdown)</h3>
+              <p><a href="./Compliance-Postman.md">Abrir Compliance-Postman.md</a></p>
+            </div>
+            <div class="card">
+              <h3>Reporte JSON (Newman)</h3>
+              <p><a href="./Ecommerce-api-report.json">Descargar JSON</a></p>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
