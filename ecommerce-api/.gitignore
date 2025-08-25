@@ -42,7 +42,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-.env
 package-lock.json
 /mongodbinfo
 
@@ -115,8 +114,6 @@ web_modules/
 
 # dotenv environment variable files
 .env
-.env.*
-!.env.example
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
