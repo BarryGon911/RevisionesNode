@@ -37,7 +37,7 @@ Este documento resume el grado de cumplimiento del proyecto frente a la rúbrica
 
 > Con la colección “Full Runner MAX” y controladores robustos de carrito/órdenes, el número de fallos cae si el admin puede iniciar sesión.
 
-## 🛠️ Recomendaciones de cierre
+## 🛠️ Recomendaciones para los hallazgos de errores
 - Alinear `ADMIN_EMAIL/ADMIN_PASSWORD` de `.env` con usuario admin existente (o ejecutar script `ensureAdmin.js`).
 - En OpenAPI, usar `servers: [ { url: "/api" } ]` para evitar puerto fijo.
 - Normalizar respuestas del carrito (200/201 y 200/204 según acción) y documentarlo.
@@ -45,4 +45,3 @@ Este documento resume el grado de cumplimiento del proyecto frente a la rúbrica
 
 ---
 
-> Archivo generado automáticamente a partir del estado del .zip y observaciones de pruebas.
