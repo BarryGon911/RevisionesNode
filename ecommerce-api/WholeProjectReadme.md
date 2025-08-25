@@ -1,6 +1,5 @@
 # 🛒 Ecommerce API — Whole Project README
 
-> Documentación integral del proyecto. Generado automáticamente el **2025-08-25 20:33:35**.
 
 ## ✨ Descripción
 API de comercio electrónico basada en **Express.js** y **MongoDB (Mongoose)** con autenticación **JWT**, validaciones con **express-validator**, paginación y documentación **OpenAPI/Swagger**.
@@ -82,18 +81,24 @@ ADMIN_PASSWORD="password123"
 ## ▶️ Scripts de NPM
 ```json
 {
-  "dev": "node --env-file=.env src/server.js",
-  "start": "node src/server.js",
-  "seed": "node --env-file=.env src/seeders/seed.js",
-  "lint": "echo \"(Tip) Add ESLint if needed\""
-}
-```
-
-Sugeridos (si no existen aún):
-```json
-{
-  "seed:admin": "node --env-file=.env src/seeders/ensureAdmin.js",
-  "test:api:report": "node postman/run-tests-and-log.js --open"
+    "dev": "node --env-file=.env src/server.js",
+    "start": "node src/server.js",
+    
+    "unseed:all": "node --env-file=.env src/seeders/unseed.js --all",
+    "unseed:only": "node --env-file=.env src/seeders/unseed.js --only=users,products",
+    "unseed:except": "node --env-file=.env src/seeders/unseed.js --except=orders,carts",
+    "unseed:drop": "node --env-file=.env src/seeders/unseed.js --drop-db",
+    
+    "seed": "node --env-file=.env src/seeders/seed.js",
+    "seed:admin": "node --env-file=.env src/seeders/ensureAdmin.js",
+    
+    "reset:db": "npm run unseed:all && npm run seed",
+    "reset:drop": "npm run unseed:drop && npm run seed",
+    
+    "lint": "echo \"(Tip) Add ESLint if needed\"",
+    
+    "test:api": "node postman/run-tests-and-log.js",
+    "test:api:report": "node postman/run-tests-and-log.js --open"
 }
 ```
 
