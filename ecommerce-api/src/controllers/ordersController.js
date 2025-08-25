@@ -1,6 +1,6 @@
-import Order from '#models/Order.js';
-import Cart from '#models/Cart.js';
-import Product from '#models/Product.js';
+import Order from "#models/Order.js";
+import Cart from "#models/Cart.js";
+import Product from "#models/Product.js";
 
 // Normaliza el id del usuario desde req.user
 const getUserId = (user) => (user?.id || user?._id);
@@ -11,12 +11,12 @@ const getUserId = (user) => (user?.id || user?._id);
  * - Si no, toma los items del carrito del usuario.
  * - Valida existencia de productos y cantidades.
  * - Calcula total y crea la orden.
- * - Limpia el carrito después de crear la orden.
+ * - Limpia el carrito despuï¿½s de crear la orden.
  */
 export const createOrder = async (req, res, next) => {
   try {
     const userId = getUserId(req.user);
-    if (!userId) return res.status(401).json({ error: 'No autenticado' });
+    if (!userId) return res.status(401).json({ error: "No autenticado" });
 
     // 1) Construir items (desde body o desde el carrito)
     let items = Array.isArray(req.body?.items) ? req.body.items : null;
@@ -31,13 +31,13 @@ export const createOrder = async (req, res, next) => {
         .filter((i) => i.product && Number.isFinite(i.quantity) && i.quantity > 0);
 
       if (!items.length) {
-        return res.status(400).json({ error: 'Items inválidos' });
+        return res.status(400).json({ error: "Items invï¿½lidos" });
       }
     } else {
       // Tomar del carrito
       const cart = await Cart.findOne({ user: userId });
       if (!cart || !cart.items?.length) {
-        return res.status(400).json({ error: 'No hay items para ordenar' });
+        return res.status(400).json({ error: "No hay items para ordenar" });
       }
       items = cart.items.map((i) => ({
         product: i.product,
@@ -53,7 +53,7 @@ export const createOrder = async (req, res, next) => {
     );
 
     if (products.length !== productIds.length) {
-      return res.status(400).json({ error: 'Algún producto no existe' });
+      return res.status(400).json({ error: "Algï¿½n producto no existe" });
     }
 
     const priceMap = Object.fromEntries(
@@ -67,8 +67,8 @@ export const createOrder = async (req, res, next) => {
       price: priceMap[String(i.product)],
     }));
 
-    if (orderItems.some((i) => typeof i.price !== 'number')) {
-      return res.status(400).json({ error: 'No se pudo determinar el precio de un producto' });
+    if (orderItems.some((i) => typeof i.price !== "number")) {
+      return res.status(400).json({ error: "No se pudo determinar el precio de un producto" });
     }
 
     const total = orderItems.reduce((acc, i) => acc + i.price * i.quantity, 0);
@@ -78,7 +78,7 @@ export const createOrder = async (req, res, next) => {
       user: userId,
       items: orderItems,
       total,
-      status: 'created',
+      status: "created",
     });
 
     // 5) (Opcional recomendado) Vaciar carrito
@@ -96,14 +96,14 @@ export const createOrder = async (req, res, next) => {
 
 /**
  * GET /orders
- * - Lista las órdenes del usuario autenticado con populate de productos
+ * - Lista las Ordenes del usuario autenticado con populate de productos
  */
 export const listMyOrders = async (req, res, next) => {
   try {
     const userId = getUserId(req.user);
-    if (!userId) return res.status(401).json({ error: 'No autenticado' });
+    if (!userId) return res.status(401).json({ error: "No autenticado" });
 
-    const orders = await Order.find({ user: userId }).populate('items.product');
+    const orders = await Order.find({ user: userId }).populate("items.product");
     return res.json(orders);
   } catch (e) {
     return next(e);

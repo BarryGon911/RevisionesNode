@@ -1,3 +1,4 @@
+import connectDB from "#config/db.js";
 import mongoose from "mongoose";
 import User from "#models/User.js";
 import Category from "#models/Category.js";
@@ -8,15 +9,11 @@ import Order from "#models/Order.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-import * as DB from "#config/db.js";
-const connectDB = DB.connectDB || DB.default;
-
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
 async function seed() {
   await connectDB();
-
-  // Limpieza de Colecciones
+  
   await Promise.all([
     User.deleteMany({}),
     Category.deleteMany({}),
@@ -24,61 +21,32 @@ async function seed() {
     Cart.deleteMany({}),
     Order.deleteMany({})
   ]);
-
-  // 1) Usuario Admin desde .env
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@superman.com";
-  const adminPassword = process.env.ADMIN_PASSWORD || "passwordAdmin123";
-
-  let admin = await User.findOne({ email: adminEmail });
-  if (!admin) {
-    admin = await User.create({
-      name: "Admin",
-      email: adminEmail,
-      password: adminPassword,
-      role: "admin"
-    });
-    console.log("Admin creado:", adminEmail);
-  }
-  else if (admin.role !== "admin") {
-    admin.role = "admin";
-    await admin.save();
-    console.log("Usuario promovido a admin:", adminEmail);
-  }
-  else {
-    console.log("Admin existente:", adminEmail);
-  }
-
-  // 2) Se crean usuarios de ejemplo
-  const baseUsers = [
-    { name: "Ana Luisa Gómez",    email: "ana@example.com",    password: "password123" },
-    { name: "Luis Alcántara",   email: "luis@example.com",   password: "password123" },
-    { name: "María José Luna",  email: "maria@example.com",  password: "password123" },
-    { name: "Carlos Jaúregui", email: "carlos@example.com", password: "password123" },
-    { name: "Sofía Vergara",  email: "sofia@example.com",  password: "password123" },
-    { name: "Diego Verdaguer",  email: "diego@example.com",  password: "password123" },
-    { name: "Lucía Méndez",  email: "lucia@example.com",  password: "password123" },
-    { name: "Jorge Saldaña",  email: "jorge@example.com",  password: "password123" },
-    { name: "Elena Del Campo",  email: "elena@example.com",  password: "password123" },
-    { name: "Pablo Neruda",  email: "pablo@example.com",  password: "password123" },
-    { name: "Martha Higareda",  email: "marta@example.com",  password: "password123" }
+  
+  const usersData = [
+    { name: "Admin", email: "admin@example.com", password: "password123", role: "admin" },
+    { name: "Ana", email: "ana@example.com", password: "password123" },
+    { name: "Luis", email: "luis@example.com", password: "password123" },
+    { name: "María", email: "maria@example.com", password: "password123" },
+    { name: "Carlos", email: "carlos@example.com", password: "password123" },
+    { name: "Sofía", email: "sofia@example.com", password: "password123" },
+    { name: "Diego", email: "diego@example.com", password: "password123" },
+    { name: "Lucía", email: "lucia@example.com", password: "password123" },
+    { name: "Jorge", email: "jorge@example.com", password: "password123" },
+    { name: "Elena", email: "elena@example.com", password: "password123" },
+    { name: "Pablo", email: "pablo@example.com", password: "password123" },
+    { name: "Marta", email: "marta@example.com", password: "password123" }
   ];
-
-  // Evita colisión si ADMIN_EMAIL coincide con alguno de los usuarios del paso anterior 2)
-  const usersData = baseUsers.filter(u => u.email !== adminEmail);
-
+  
   const users = await User.insertMany(usersData);
-  // Para carritos/órdenes no-admin
-  const nonAdminUsers = users;
+  const nonAdminUsers = users.filter(u => u.role !== "admin");
 
-  // 3) Categorías (>=10)
   const categories = await Category.insertMany(
     Array.from({ length: 10 }).map((_, i) => ({
       name: `Categoría ${(i + 1).toString().padStart(2, "0")}`,
       description: `Descripción de la categoría ${(i + 1).toString().padStart(2, "0")}`
     }))
   );
-
-  // 4) Productos (>=20)
+  
   const products = await Product.insertMany(
     Array.from({ length: 20 }).map((_, i) => ({
       name: `Producto ${(i + 1).toString().padStart(2, "0")}`,
@@ -88,29 +56,25 @@ async function seed() {
       category: pick(categories)._id
     }))
   );
-
-  // 5) Carritos (10 usuarios no-admin, 3 items)
-  await Cart.insertMany(
+  
+  const carts = await Cart.insertMany(
     nonAdminUsers.slice(0, 10).map(u => {
-      const itemCount = 1 + Math.floor(Math.random() * 3);
+      const itemCount = 1 + Math.floor(Math.random() * 3); // 1..3 items
       const items = Array.from({ length: itemCount }).map(() => {
         const p = pick(products);
-        const quantity = 1 + Math.floor(Math.random() * 3);
+        const quantity = 1 + Math.floor(Math.random() * 3); // 1..3
         return { product: p._id, quantity };
       });
       return { user: u._id, items };
     })
   );
-
-  // 6) Órdenes (10 órdenes, 3 items cada una)
+  
   const ordersData = [];
   for (let i = 0; i < 10; i++) {
-    
     const user = pick(nonAdminUsers);
     const itemCount = 1 + Math.floor(Math.random() * 3);
     const items = [];
     let total = 0;
-    
     for (let j = 0; j < itemCount; j++) {
       const p = pick(products);
       const quantity = 1 + Math.floor(Math.random() * 2);
@@ -119,10 +83,8 @@ async function seed() {
     }
     ordersData.push({ user: user._id, items, total });
   }
-  
   await Order.insertMany(ordersData);
 
-  // 7) Resumen
   console.log("Seed completo");
   console.log({
     users: await User.countDocuments(),
@@ -132,6 +94,28 @@ async function seed() {
     orders: await Order.countDocuments(),
   });
   
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@example.com";
+  const adminPassword = process.env.ADMIN_PASSWORD || "password123";
+  let admin = await User.findOne({ email: adminEmail });
+  
+  if (!admin) {
+    admin = await User.create({
+    name: "Admin",
+    email: adminEmail,
+    password: adminPassword,
+    role: "admin"
+  });
+  console.log("✓ Admin creado:", adminEmail);
+  }
+  else if (admin.role !== "admin") {
+    admin.role = "admin";
+    await admin.save();
+    console.log("✓ Usuario promovido a admin:", adminEmail);
+  }
+  else {
+    console.log("✓ Admin existente:", adminEmail);
+  }
+
   await mongoose.disconnect();
   process.exit(0);
 }

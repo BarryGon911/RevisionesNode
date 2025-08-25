@@ -1,32 +1,32 @@
-import mongoose from 'mongoose';
-import connectDB from '#config/db.js';
-import User from '#models/User.js';
-import Category from '#models/Category.js';
-import Product from '#models/Product.js';
-import Cart from '#models/Cart.js';
-import Order from '#models/Order.js';
+import mongoose from "mongoose";
+import connectDB from "#config/db.js";
+import User from "#models/User.js";
+import Category from "#models/Category.js";
+import Product from "#models/Product.js";
+import Cart from "#models/Cart.js";
+import Order from "#models/Order.js";
 
 import dotenv from "dotenv";
 dotenv.config();
 
-const isProd = (process.env.NODE_ENV || '').toLowerCase() === 'production';
+const isProd = (process.env.NODE_ENV || "").toLowerCase() === "production";
 const argv = process.argv.slice(2);
 
 const hasFlag = (f) => argv.includes(f);
 const getFlagValue = (prefix) => {
-  const found = argv.find(a => a.startsWith(prefix + '='));
-  return found ? found.split('=').slice(1).join('=').trim() : null;
+  const found = argv.find(a => a.startsWith(prefix + "="));
+  return found ? found.split("=").slice(1).join("=").trim() : null;
 };
 
-if (isProd && !hasFlag('--force')) {
-  console.error('Seguridad: NODE_ENV=production. Agrega --force si realmente deseas limpiar.');
+if (isProd && !hasFlag("--force")) {
+  console.error("Seguridad: NODE_ENV=production. Agrega --force si realmente deseas limpiar.");
   process.exit(1);
 }
 
-const dropDb = hasFlag('--drop-db');
-const onlyArg = getFlagValue('--only');
-const exceptArg = getFlagValue('--except');
-const doAll = hasFlag('--all') || (!onlyArg && !exceptArg && !dropDb);
+const dropDb = hasFlag("--drop-db");
+const onlyArg = getFlagValue("--only");
+const exceptArg = getFlagValue("--except");
+const doAll = hasFlag("--all") || (!onlyArg && !exceptArg && !dropDb);
 
 const modelMap = {
   users: User,
@@ -37,8 +37,8 @@ const modelMap = {
 };
 
 function parseList(v) {
-  return (v || '')
-    .split(',')
+  return (v || "")
+    .split(",")
     .map(s => s.trim().toLowerCase())
     .filter(Boolean);
 }
@@ -50,7 +50,7 @@ function resolveTargets() {
     const list = parseList(onlyArg);
     const invalid = list.filter(k => !modelMap[k]);
     if (invalid.length) {
-      throw new Error(`Colección(es) inválida(s) en --only: ${invalid.join(', ')}`);
+      throw new Error(`Colección(es) inválida(s) en --only: ${invalid.join(", ")}`);
     }
     return list;
   }
@@ -59,7 +59,7 @@ function resolveTargets() {
     const excl = parseList(exceptArg);
     const invalid = excl.filter(k => !modelMap[k]);
     if (invalid.length) {
-      throw new Error(`Colección(es) inválida(s) en --except: ${invalid.join(', ')}`);
+      throw new Error(`Colección(es) inválida(s) en --except: ${invalid.join(", ")}`);
     }
     targets = targets.filter(k => !excl.includes(k));
   }
@@ -79,7 +79,7 @@ async function main() {
 
   const targets = resolveTargets();
   if (!targets.length) {
-    console.log('No hay colecciones objetivo (revisa tus flags).');
+    console.log("No hay colecciones objetivo (revisa tus flags).");
     await mongoose.disconnect();
     process.exit(0);
   }
@@ -105,15 +105,15 @@ async function main() {
     after[key] = await Model.countDocuments();
   }
 
-  console.log('Resumen:');
+  console.log("Resumen:");
   for (const key of targets) {
-    console.log(`   ${key.padEnd(11, ' ')}: ${String(before[key]).padStart(4)} → ${String(after[key]).padStart(4)}`);
+    console.log(`   ${key.padEnd(11, " ")}: ${String(before[key]).padStart(4)} → ${String(after[key]).padStart(4)}`);
   }
   await mongoose.disconnect();
   process.exit(0);
 }
 
 main().catch((err) => {
-  console.error('Error en unseed:', err);
+  console.error("Error en unseed:", err);
   mongoose.disconnect().finally(() => process.exit(1));
 });

@@ -1,5 +1,3 @@
-# scripts/run-api-tests.ps1
-# Ejecuta Newman con reportes HTML y JSON y genera Compliance-Postman.md
 param(
   [string]$Collection = "Ecommerce.baseUrl.fullrunner.max.postman_collection.json",
   [string]$Env = "Ecommerce.baseUrl.environment.json",

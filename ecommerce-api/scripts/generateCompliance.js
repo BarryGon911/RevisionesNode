@@ -1,28 +1,21 @@
-// scripts/generateCompliance.js
-// Usage:
-//   node scripts/generateCompliance.js reports/Ecommerce-api-report.json
-// Produces:
-//   reports/Compliance-Postman.md
+import fs from "fs";
+import path from "path";
 
-import fs from 'fs';
-import path from 'path';
-
-const inputPath = process.argv[2] || 'reports/Ecommerce-api-report.json';
-const outDir = 'reports';
-const outPath = path.join(outDir, 'Compliance-Postman.md');
+const inputPath = process.argv[2] || "reports/Ecommerce-api-report.json";
+const outDir = "reports";
+const outPath = path.join(outDir, "Compliance-Postman.md");
 
 if (!fs.existsSync(inputPath)) {
-  console.error(`❌ No se encontró el archivo JSON de Newman: ${inputPath}`);
+  console.error(`No se encontró el archivo JSON de Newman: ${inputPath}`);
   process.exit(1);
 }
 
-const data = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
+const data = JSON.parse(fs.readFileSync(inputPath, "utf8"));
 
 // Helpers
-const pad = (n) => String(n).padStart(3, ' ');
-const now = () => new Date().toISOString().replace('T',' ').replace('Z',' UTC');
+const pad = (n) => String(n).padStart(3, " ");
+const now = () => new Date().toISOString().replace("T"," ").replace("Z"," UTC");
 
-// Aggregate
 let totalRequests = 0;
 let totalAssertions = 0;
 let failedAssertions = 0;
@@ -30,11 +23,10 @@ let failedAssertions = 0;
 const failures = [];     // [{name, assertion, error, itemName, folder}]
 const perFolder = {};    // folder -> { requests, assertions, failed }
 
-// Track rubric checks via assertion names we included in the runner
 let rubric = {
-  categories10: { name: 'Categorías >= 10', passed: false },
-  products10:   { name: 'Productos >= 10', passed: false },
-  users10:      { name: 'Usuarios >= 10', passed: false }
+  categories10: { name: "Categorías >= 10", passed: false },
+  products10:   { name: "Productos >= 10", passed: false },
+  users10:      { name: "Usuarios >= 10", passed: false }
 };
 
 function ensureFolderStat(folder) {
@@ -43,7 +35,7 @@ function ensureFolderStat(folder) {
 }
 
 (data.run.executions || []).forEach(exec => {
-  const folder = (exec.item && exec.item.name) ? (exec.item.name) : 'root';
+  const folder = (exec.item && exec.item.name) ? (exec.item.name) : "root";
   const st = ensureFolderStat(folder);
   st.requests++;
   totalRequests++;
@@ -63,19 +55,19 @@ function ensureFolderStat(folder) {
         error: a.error && (a.error.message || a.error.test || JSON.stringify(a.error)),
         folder
       });
-    } else {
-      // detect rubric assertions by exact names used in the runner
-      if (a.assertion.includes('>= 10 categorías')) rubric.categories10.passed = true;
-      if (a.assertion.includes('>= 10 productos'))  rubric.products10.passed   = true;
-      if (a.assertion.includes('>= 10 usuarios'))   rubric.users10.passed      = true;
+    }
+    else {
+      if (a.assertion.includes(">= 10 categorías")) rubric.categories10.passed = true;
+      if (a.assertion.includes(">= 10 productos"))  rubric.products10.passed   = true;
+      if (a.assertion.includes(">= 10 usuarios"))   rubric.users10.passed      = true;
     }
   });
 });
 
 const passCount = totalAssertions - failedAssertions;
 
-// Build Markdown
-let md = '';
+// Se crea el documento Markdown
+let md = "";
 md += `# Compliance-Postman\\n\\n`;
 md += `Fecha: ${now()}\\n\\n`;
 md += `## Resumen\\n`;
@@ -91,9 +83,9 @@ Object.entries(perFolder).forEach(([folder, st]) => {
 md += `\\n`;
 
 md += `## Rúbrica (mínimos 10)\\n`;
-md += `- Categorías ≥ 10: **${rubric.categories10.passed ? 'OK' : 'FALTA'}**\\n`;
-md += `- Productos ≥ 10: **${rubric.products10.passed ? 'OK' : 'FALTA'}**\\n`;
-md += `- Usuarios ≥ 10: **${rubric.users10.passed ? 'OK' : 'FALTA'}**\\n\\n`;
+md += `- Categorías ≥ 10: **${rubric.categories10.passed ? "OK" : "FALTA"}**\\n`;
+md += `- Productos ≥ 10: **${rubric.products10.passed ? "OK" : "FALTA"}**\\n`;
+md += `- Usuarios ≥ 10: **${rubric.users10.passed ? "OK" : "FALTA"}**\\n\\n`;
 
 if (failures.length) {
   md += `## Fallos detallados (${failures.length})\\n`;
@@ -105,10 +97,10 @@ if (failures.length) {
   });
 } else {
   md += `## Fallos detallados\\n`;
-  md += `No hubo aserciones fallidas. ✅\\n\\n`;
+  md += `No hubo aserciones fallidas.\\n\\n`;
 }
 
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-fs.writeFileSync(outPath, md, 'utf8');
+fs.writeFileSync(outPath, md, "utf8");
 
-console.log('✅ Compliance generado:', outPath);
+console.log("Documento Compliance generado:", outPath);

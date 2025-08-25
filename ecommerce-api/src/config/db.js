@@ -1,14 +1,3 @@
-// SI FUNCIONA
-// import mongoose from 'mongoose';
-
-// export default async function connectDB() {
-//   const uri = process.env.MONGODB_URI;
-//   if (!uri) throw new Error('MONGODB_URI is not set');
-//   await mongoose.connect(uri, { autoIndex: true });
-//   console.log('MongoDB connected');
-// }
-
-// src/config/db.js
 import mongoose from "mongoose";
 import colors from "colors";
 
@@ -43,3 +32,15 @@ export default async function connectDB() {
     throw error;
   }
 }
+
+// Opción más sencilla y funcional
+// import mongoose from "mongoose";
+
+// export default async function connectDB() {
+//   const uri = process.env.MONGODB_URI;
+//   if (!uri) throw new Error("MONGODB_URI is not set");
+//   await mongoose.connect(uri, { autoIndex: true });
+//   console.log("MongoDB connected");
+// }
+
+// src/config/db.js
