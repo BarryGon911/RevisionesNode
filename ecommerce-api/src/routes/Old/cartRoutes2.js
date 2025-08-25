@@ -14,65 +14,77 @@ const paramToBodyProductId = (req, _res, next) => {
 };
 
 // GET /cart (usuario)
-router.get("/", auth(["customer", "admin"]), getMyCart);
+router.get(
+  "/",
+  auth(["customer", "admin"]),
+  getMyCart
+);
 
 // POST /cart (agregar item)  { productId, quantity }
 router.post(
   "/",
   auth(["customer", "admin"]),
-  [body("productId").isMongoId(), body("quantity").isInt({ min: 1 })],
+  [ body("productId").isMongoId(), body("quantity").isInt({ min: 1 }) ],
   validate,
   addToCart
 );
 
-// PUT /cart (actualizar cantidad)  { productId, quantity }  (ruta original)
+// PUT /cart (actualizar cantidad)  { productId, quantity }
 router.put(
   "/",
   auth(["customer", "admin"]),
-  [body("productId").isMongoId(), body("quantity").isInt({ min: 1 })],
+  [ body("productId").isMongoId(), body("quantity").isInt({ min: 1 }) ],
   validate,
   updateCartItem
 );
 
-// PATCH /cart/:productId  { quantity }
 router.patch(
   "/:productId",
   auth(["customer", "admin"]),
-  [param("productId").isMongoId(), body("quantity").isInt({ min: 1 })],
+  [
+    param("productId").isMongoId(),
+    body("quantity").isInt({ min: 1 })
+  ],
   validate,
   paramToBodyProductId,
   updateCartItem
 );
 
-// PATCH /cart/items/:productId  { quantity } (alias)
 router.patch(
   "/items/:productId",
   auth(["customer", "admin"]),
-  [param("productId").isMongoId(), body("quantity").isInt({ min: 1 })],
+  [
+    param("productId").isMongoId(),
+    body("quantity").isInt({ min: 1 })
+  ],
   validate,
   paramToBodyProductId,
   updateCartItem
 );
 
-// DELETE /cart/item/:productId  (ruta original)
+// DELETE /cart/item/:productId
 router.delete(
   "/item/:productId",
   auth(["customer", "admin"]),
-  [param("productId").isMongoId()],
+  [ param("productId").isMongoId() ],
   validate,
   removeFromCart
 );
 
-// DELETE /cart/:productId  (alias)
+// ALIAS: DELETE /cart/:productId
 router.delete(
   "/:productId",
   auth(["customer", "admin"]),
-  [param("productId").isMongoId()],
+  [ param("productId").isMongoId() ],
   validate,
   removeFromCart
 );
 
-// DELETE /cart/clear  (vaciar carrito)
-router.delete("/clear", auth(["customer", "admin"]), clearCart);
+// DELETE /cart/clear (vaciar carrito)
+router.delete(
+  "/clear",
+  auth(["customer", "admin"]),
+  clearCart
+);
 
 export default router;

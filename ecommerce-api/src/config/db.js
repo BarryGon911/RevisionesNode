@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import colors from "colors";
 
-export default async function connectDB() {
-  // Usa la variable documentada (MONGODB_URI). Acepta MONGO_URI como fallback.
+export async function connectDB(options = {}) {
   const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
 
   if (!uri) {
@@ -11,36 +10,41 @@ export default async function connectDB() {
     throw new Error(msg);
   }
 
+  // Si ya hay conexión abierta, reutilizarla
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
+  }
+
   try {
-    const { connection } = await mongoose.connect(uri, {
+    const conn = await mongoose.connect(uri, {
       autoIndex: true,
       // serverSelectionTimeoutMS: 10000,
+      ...options
     });
 
-    const url = `${connection.host}:${connection.port}/${connection.name}`;
-    console.log(
-      colors.bgGreen.black.bold("MongoDB successfully connected", `on ${url}`)
-    );
+    const { host, port, name } = conn.connection;
+    const url = `${host}:${port}/${name}`;
+    console.log(colors.bgGreen.black.bold(`MongoDB successfully connected on ${url}`));
 
-    return connection;
-  }
-  catch (error) {
+    return conn.connection;
+  } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
-    console.error(
-      colors.bgRed.white.bold("MongoDB connection error", `→ ${reason}`)
-    );
+    console.error(colors.bgRed.white.bold(`MongoDB connection error → ${reason}`));
     throw error;
   }
 }
 
-// Opción más sencilla y funcional
-// import mongoose from "mongoose";
+export async function disconnectDB() {
+  try {
+    if (mongoose.connection.readyState !== 0) {
+      await mongoose.connection.close();
+      console.log(colors.bgYellow.black.bold("MongoDB connection closed"));
+    }
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    console.error(colors.bgRed.white.bold(`Error closing MongoDB connection → ${reason}`));
+    throw error;
+  }
+}
 
-// export default async function connectDB() {
-//   const uri = process.env.MONGODB_URI;
-//   if (!uri) throw new Error("MONGODB_URI is not set");
-//   await mongoose.connect(uri, { autoIndex: true });
-//   console.log("MongoDB connected");
-// }
-
-// src/config/db.js
+export default connectDB;
