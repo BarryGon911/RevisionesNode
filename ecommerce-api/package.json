@@ -25,8 +25,8 @@
     "reset:db": "npm run unseed:all && npm run seed",
     "reset:drop": "npm run unseed:drop && npm run seed",
     "lint": "echo \"(Tip) Add ESLint if needed\"",
-    "test:api": "node postman/env-from-dotenv.js && newman run postman/Ecommerce.baseUrl.fullrunner.max.postman_collection.json -e reports/env.runtime.json -r cli,htmlextra,json --reporter-htmlextra-export reports/Ecommerce-api-report.html --reporter-htmlextra-title 'Ecommerce API Test Report' --reporter-json-export reports/Ecommerce-api-report.json --delay-request 200",
-    "test:api:report": "npm run test:api && node postman/generateCompliance.js reports/Ecommerce-api-report.json && node postman/open-report.js"
+    "test:api": "node postman/run-tests-and-log.js",
+    "test:api:report": "node postman/run-tests-and-log.js --open"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
