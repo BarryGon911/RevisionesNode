@@ -1,4 +1,4 @@
-# ✅ Rúbrica de Revisión – Proyecto Integrador: API E-commerce con Express.js
+# ✅ Rúbrica de Revisión – Proyecto Integrador: API E-commerce con ExpressJS
 
 Este documento será usado durante la revisión en vivo del proyecto final.
 
