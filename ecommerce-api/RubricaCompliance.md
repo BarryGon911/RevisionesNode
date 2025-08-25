@@ -4,7 +4,7 @@ Este documento resume el grado de cumplimiento del proyecto frente a la rúbrica
 
 ## 📦 Contexto
 - Nombre del paquete: **ecommerce-express-api**
-- OpenAPI: **sí** — servers actuales: [{"url": "http://localhost:4000/api"}]
+- OpenAPI: **sí** — servers actuales: [{"url": "http://localhost:3000/api"}]
 - Rúbrica en repo: **sí**
 
 ## 📋 Checklist (resumen)
