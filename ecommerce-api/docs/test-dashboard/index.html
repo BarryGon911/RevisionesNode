@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Ecommerce API — Test Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>📊 Ecommerce API — Test Dashboard</h1>
+    <div class="actions">
+      <button id="runBtn">▶ Run tests</button>
+      <button id="refreshBtn">⟳ Refresh</button>
+      <span id="status"></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="cards">
+      <div class="card">
+        <h2>Resumen</h2>
+        <ul>
+          <li>Requests: <strong id="requests">–</strong></li>
+          <li>Aserciones: <strong id="assertions">–</strong></li>
+          <li>Pasadas: <strong id="passed">–</strong></li>
+          <li>Falladas: <strong id="failed">–</strong></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Rúbrica (mínimos 10)</h2>
+        <ul class="rubric">
+          <li>Categorías ≥ 10: <span id="rubCat" class="badge">–</span></li>
+          <li>Productos ≥ 10: <span id="rubProd" class="badge">–</span></li>
+          <li>Usuarios ≥ 10: <span id="rubUser" class="badge">–</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Enlaces</h2>
+        <ul>
+          <li><a href="/api/test-reports/reports/Ecommerce-api-report.html" target="_blank">Reporte HTML (Newman)</a></li>
+          <li><a href="/api/test-reports/reports/Ecommerce-api-report.json" target="_blank">Reporte JSON</a></li>
+          <li><a href="/api/test-reports/reports/Compliance-Postman.md" target="_blank">Compliance (Markdown)</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Fallos</h2>
+      <div id="failures">–</div>
+    </section>
+
+    <section class="card">
+      <h2>Compliance (render)</h2>
+      <div id="compliance" class="md"></div>
+    </section>
+  </main>
+
+  <footer>
+    <small>Actualizado: <span id="updated">–</span></small>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
