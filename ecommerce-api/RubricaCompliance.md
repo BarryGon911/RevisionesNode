@@ -1,4 +1,4 @@
-# ✅ RubricaCmpliance.md — Cumplimiento de Rúbrica
+# ✅ RubricaCompliance.md — Cumplimiento de Rúbrica
 
 Este documento resume el grado de cumplimiento del proyecto frente a la rúbrica de evaluación y enumera hallazgos/fallas observadas durante la ejecución de pruebas.
 
