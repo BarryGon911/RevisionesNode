@@ -159,11 +159,14 @@ jobs:
           path: reports/
 
   publish-pages:
-    # Espera a que terminen ambos jobs (uno quedará 'skipped')
     needs: [newman-remote, newman-local]
-    # Publica sólo si alguno pasó en success
-    if: ${{ (needs.newman-remote.result == 'success') || (needs.newman-local.result == 'success') }}
+    # Publica sólo si alguno de los tests pasó y el repo es público
+    if: ${{ (needs.newman-remote.result == 'success' || needs.newman-local.result == 'success') && github.repository_visibility == 'public' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -176,8 +179,11 @@ jobs:
           path: public
 
       - name: Build index.html
+        shell: bash
         run: |
-          cat > public/index.html <<'EOF'
+          mkdir -p public
+          DATE="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          cat > public/index.html <<EOF
           <!doctype html>
           <html lang="es">
           <head>
@@ -194,7 +200,7 @@ jobs:
           </head>
           <body>
             <h1>📊 Ecommerce API — Test Reports</h1>
-            <p class="muted">Última ejecución: ${new Date().toISOString()}</p>
+            <p class="muted">Última ejecución: $DATE</p>
             <div class="card">
               <h3>Reporte HTML (Newman)</h3>
               <p><a href="./Ecommerce-api-report.html">Abrir Ecommerce-api-report.html</a></p>
