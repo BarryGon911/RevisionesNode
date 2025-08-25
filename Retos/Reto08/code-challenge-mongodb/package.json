@@ -11,7 +11,12 @@
     "fix-indexes": "node scripts/fix-duplicate-indexes.js",
     "seed": "node src/seeders/populateDB.js",
     "db:reset": "node src/seeders/resetAndSeed.js",
-    "db:drop": "node src/seeders/dropDatabase.js"
+    "db:drop": "node src/seeders/dropDatabase.js",
+    "newman:runner": "npx newman run postman/RunnerCollection.json -e postman/Reto08.postman_environment.json --delay-request 100 --verbose",
+    "newman:cleanup": "npx newman run postman/RunnerCleanupCollection.json -e postman/Reto08.postman_environment.json --delay-request 100 --verbose",
+    "newman:runner:html": "npx newman run postman/RunnerCollection.json -e postman/Reto08.postman_environment.json -r htmlextra --reporter-htmlextra-export out/newman/runner-report.html",
+    "newman:cleanup:html": "npx newman run postman/RunnerCleanupCollection.json -e postman/Reto08.postman_environment.json -r htmlextra --reporter-htmlextra-export out/newman/cleanup-report.html",
+    "newman:all": "npm run newman:runner && npm run newman:cleanup"
   },
   "keywords": [],
   "author": "",

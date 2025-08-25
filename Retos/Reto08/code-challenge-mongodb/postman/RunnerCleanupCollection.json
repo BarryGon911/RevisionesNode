@@ -1,0 +1,138 @@
+{
+  "info": {
+    "_postman_id": "8f3a1f3b-1e54-4a2d-9a6d-9d0e2b9ea001",
+    "name": "Code Challenge MongoDB — Runner Cleanup (/resenas)",
+    "description": "Elimina (si existen) los recursos creados por el Runner: resena, libro, usuario, autor.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/...." },
+    { "key": "autorId", "value": "" },
+    { "key": "usuarioId", "value": "" },
+    { "key": "libroId", "value": "" },
+    { "key": "resenaId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Cleanup — eliminar en orden",
+      "item": [
+        {
+          "name": "DELETE /resenas/:id — (si existe)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/resenas/{{resenaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["resenas", "{{resenaId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "if (!pm.collectionVariables.get('resenaId')) postman.setNextRequest('DELETE /libros/:id — (si existe)');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200|204|404', () => [200,204,404].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /libros/:id — (si existe)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/libros/{{libroId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["libros", "{{libroId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "if (!pm.collectionVariables.get('libroId')) postman.setNextRequest('DELETE /usuarios/:id — (si existe)');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200|204|404', () => [200,204,404].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /usuarios/:id — (si existe)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "{{usuarioId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "if (!pm.collectionVariables.get('usuarioId')) postman.setNextRequest('DELETE /autores/:id — (si existe)');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200|204|404', () => [200,204,404].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /autores/:id — (si existe)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["autores", "{{autorId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "if (!pm.collectionVariables.get('autorId')) postman.setNextRequest(null);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200|204|404', () => [200,204,404].includes(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

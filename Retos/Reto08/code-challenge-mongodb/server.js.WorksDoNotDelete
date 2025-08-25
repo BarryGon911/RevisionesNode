@@ -3,13 +3,13 @@ import rutas from "#routes/index.js";
 import errorHandler from "#middlewares/errorHandler.js";
 import { normalizarAnio } from "#middlewares/normalizarAnio.js";
 import connectDB from "#config/database.js";
-import pkg from "./package.json" assert { type: "json" };// Para /version (Node ESM soporta JSON modules)
 
 import dotenv from "dotenv";
 dotenv.config();
 
 const port = process.env.SRV_PORT || process.env.PORT || 3000;
 
+// Normaliza BASE_PATH: siempre empieza con "/", sin dobles barras ni "/" final (excepto "/")
 function normalizeBasePath(p) {
   let s = (p || "/").trim();
   if (!s.startsWith("/")) s = "/" + s;
@@ -28,47 +28,31 @@ try {
   app.use(express.json());
   app.use(normalizarAnio);
 
-  // ---- Endpoints de salud/versión (antes de montar las rutas)
-  const base = BASE_PATH === "/" ? "" : BASE_PATH;
-
-  app.get(`${base}/health`, (req, res) => {
-    res.status(200).json({
-      ok: true,
-      uptimeSec: Math.round(process.uptime()),
-      timestamp: new Date().toISOString(),
-      env: process.env.NODE_ENV || "development",
-    });
-  });
-
-  app.get(`${base}/version`, (req, res) => {
-    res.json({
-      name: pkg.name || "app",
-      version: pkg.version || "1.0.0",
-    });
-  });
-  
-  // Rutas del proyecto bajo el prefijo configurado
+  // Monta tus rutas bajo el prefijo configurado
   app.use(BASE_PATH, rutas);
-  app.use(errorHandler);
-  
-  // Arranque e Impresión de rutas
-  app.listen(port, () => {
-    console.log(`Base URL: http://localhost:${port}${BASE_PATH === "/" ? "/" : BASE_PATH + "/"}`);
 
+  // Manejo de errores (siempre al final)
+  app.use(errorHandler);
+
+  // Arranque + impresión de rutas
+  app.listen(port, () => {
+    const trailingSlash = BASE_PATH === "/" ? "/" : BASE_PATH + "/";
+    console.log(`Base URL: http://localhost:${port}${trailingSlash}`);
+
+    // Import dinámico del debugger (ruta relativa para evitar alias extra)
     import("./src/utils/routes-debug.js")
       .then(({ printRoutes }) => {
         printRoutes({
           app,
-          router: rutas,     // fallback al router montado
-          basePath: BASE_PATH,
+          router: rutas,          // fallback directo al router montado
+          basePath: BASE_PATH     // pasa el prefijo normalizado (incluye "/...." si así lo definiste)
         });
       })
       .catch((err) => {
         console.warn("No pude imprimir rutas:", err?.message || err);
       });
   });
-}
-catch (error) {
+} catch (error) {
   console.error("MongoDB connection failed:", error?.stack || error);
   process.exit(1);
 }

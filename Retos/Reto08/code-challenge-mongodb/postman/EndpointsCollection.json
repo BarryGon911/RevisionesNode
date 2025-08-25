@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "a2a1f3e8-7e34-4b8a-8d7d-bf0a9d9f0e01",
     "name": "Code Challenge MongoDB — Endpoints (hardcoded /resenas)",
-    "description": "Colección de pruebas para Autores, Usuarios, Libros y Reseñas.\n• Usa {{baseUrl}} (ej. http://localhost:3000/....)\n• IDs se guardan en variables de colección.\n• Filtros opcionales en GET /libros.",
+    "description": "Coleccion de pruebas para Autores, Usuarios, Libros y Reseñas.\n• Usa {{baseUrl}} (ej. http://localhost:3000/....)\n• IDs se guardan en variables de colección.\n• Filtros opcionales en GET /libros.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
