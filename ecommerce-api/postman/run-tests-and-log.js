@@ -2,6 +2,8 @@
 // Pipeline: env-from-dotenv -> verificación de colección -> newman (html/json)
 // -> generateCompliance -> (opcional) open-report
 // Con log acumulado y rotación (5MB o 7 días).
+// Fallback: si la colección está vacía y se ejecuta con --open, abre el último
+// reporte disponible (dashboard/HTML) antes de abortar.
 
 import fs from 'fs';
 import path from 'path';
@@ -17,8 +19,8 @@ const REPORTS_DIR = path.join(ROOT, 'reports');
 const LOGS_DIR = path.join(REPORTS_DIR, 'logs');
 const LOG_FILE = path.join(LOGS_DIR, 'reports.log');
 
-const MAX_BYTES = 5 * 1024 * 1024;
-const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+const MAX_BYTES = 5 * 1024 * 1024;                 // 5 MB
+const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;        // 7 días
 
 const COLLECTION = path.join(ROOT, 'postman', 'Ecommerce.baseUrl.fullrunner.max.postman_collection.json');
 const ENV_FROM_DOTENV = path.join(ROOT, 'postman', 'env-from-dotenv.js');
@@ -137,6 +139,11 @@ function countRequests(node) {
       `   Motivo: ${col.err}`,
       `   Revisa la ruta o el nombre del archivo.`
     ]);
+    // Fallback: abre dashboard/HTML si se pidió --open
+    if (SHOULD_OPEN && fs.existsSync(OPEN_SCRIPT)) {
+      appendLog('↪ Intentando abrir el último reporte disponible (aunque no haya nueva corrida)…');
+      await runNode(OPEN_SCRIPT, []);
+    }
     appendLog('✖ Abortando ejecución para evitar reporte en ceros.');
     process.exitCode = 1;
     return;
@@ -155,6 +162,11 @@ function countRequests(node) {
       '   - Importa la colección en Postman y revisa que veas todas las carpetas',
       '   - Vuelve a pegar el contenido completo de la colección (no sólo un item)',
     ]);
+    // Fallback: abre dashboard/HTML si se pidió --open
+    if (SHOULD_OPEN && fs.existsSync(OPEN_SCRIPT)) {
+      appendLog('↪ Intentando abrir el último reporte disponible (aunque no haya nueva corrida)…');
+      await runNode(OPEN_SCRIPT, []);
+    }
     appendLog('✖ Abortando ejecución para evitar reporte en ceros.');
     process.exitCode = 1;
     return;
@@ -231,7 +243,6 @@ function countRequests(node) {
   const failed = summaryForExit?.run?.stats?.assertions?.failed ?? 0;
   process.exitCode = failed > 0 ? 1 : 0;
 })();
-
 
 
 // ÉSTA OPCIÓN, MEDIO SIRVE
