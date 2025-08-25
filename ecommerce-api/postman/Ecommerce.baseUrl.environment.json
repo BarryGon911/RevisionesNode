@@ -1,0 +1,17 @@
+{
+  "name": "Ecommerce — Dev (baseUrl)",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000/api",
+      "enabled": true
+    },
+    {
+      "key": "token",
+      "value": "",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-08-25T07:29:47.767760Z"
+}

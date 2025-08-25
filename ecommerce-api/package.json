@@ -24,7 +24,9 @@
     "seed": "node --env-file=.env src/seeders/seed.js",
     "reset:db": "npm run unseed:all && npm run seed",
     "reset:drop": "npm run unseed:drop && npm run seed",
-    "lint": "echo \"(Tip) Add ESLint if needed\""
+    "lint": "echo \"(Tip) Add ESLint if needed\"",
+    "test:api": "newman run postman/Ecommerce.baseUrl.fullrunner.max.postman_collection.json -e postman/Ecommerce.baseUrl.environment.json -r cli,htmlextra,json --reporter-htmlextra-export reports/Ecommerce-api-report.html --reporter-htmlextra-title 'Ecommerce API Test Report' --reporter-json-export reports/Ecommerce-api-report.json --delay-request 200",
+    "test:api:report": "npm run test:api && node scripts/generateCompliance.js reports/Ecommerce-api-report.json"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

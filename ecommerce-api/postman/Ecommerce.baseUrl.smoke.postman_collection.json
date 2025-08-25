@@ -1,0 +1,195 @@
+{
+  "info": {
+    "name": "Ecommerce API — Smoke Runner (baseUrl)",
+    "_postman_id": "8fbd5831-6053-4e57-a469-0aad2fdef836",
+    "description": "Runner mínimo para smoke tests: registro dinámico, login y GET products.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Smoke (Public/Auth minimal)",
+      "item": [
+        {
+          "name": "Register (random user)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"SmokeUser\",\n  \"email\": \"{{new_email}}\",\n  \"password\": \"password123\",\n  \"role\": \"customer\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201 Created', function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "pm.expect(json).to.have.property('user');",
+                  "pm.environment.set('new_user_email', pm.environment.get('new_email'));"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('new_email', `smoke+${Date.now()}@example.com`);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login (new user)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{new_email}}\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', function () { pm.response.to.have.status(200); });",
+                  "let json = {}; try { json = pm.response.json(); } catch(e) {}",
+                  "pm.expect(json).to.have.property('token');",
+                  "pm.environment.set('userToken', json.token);",
+                  "// opcionalmente, setea token por defecto para otras requests:",
+                  "pm.environment.set('token', json.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', function () { pm.response.to.have.status(200); });",
+                  "let json = {}; try { json = pm.response.json(); } catch(e) {}",
+                  "let items = Array.isArray(json) ? json : (json.data || []);",
+                  "pm.test('Respuesta con array de productos', function () { pm.expect(items).to.be.an('array'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin (optional)",
+      "item": [
+        {
+          "name": "Login (admin)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', function () { pm.response.to.have.status(200); });",
+                  "let json = {}; try { json = pm.response.json(); } catch(e) {}",
+                  "pm.expect(json).to.have.property('token');",
+                  "pm.environment.set('adminToken', json.token);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": []
+}

@@ -1,0 +1,165 @@
+name: API Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Modo de ejecución: remote (usa TEST_BASEURL) o local (levanta Mongo + API)"
+        required: true
+        default: "remote"
+        type: choice
+        options: [remote, local]
+      baseUrl:
+        description: "Sólo para 'remote': URL completa (ej. https://dev.tuapi.com/api)"
+        required: false
+        type: string
+      port:
+        description: "Sólo para 'local': puerto de la API"
+        required: true
+        default: "4000"
+        type: string
+
+jobs:
+  newman-remote:
+    if: ${{ inputs.mode == 'remote' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Newman + reporter
+        run: |
+          npm i -D newman newman-reporter-htmlextra
+
+      - name: Prepare environment (override baseUrl)
+        run: |
+          mkdir -p reports
+          # Toma tu environment base y sobreescribe baseUrl con TEST_BASEURL (o input baseUrl si lo pasaste)
+          TARGET_URL="${{ inputs.baseUrl != '' && inputs.baseUrl || secrets.TEST_BASEURL }}"
+          if [ -z "$TARGET_URL" ]; then
+            echo "TEST_BASEURL no definido (secret) ni baseUrl (input)."
+            exit 1
+          fi
+          cat postman/Ecommerce.baseUrl.environment.json \
+            | node -e "let env=require('fs').readFileSync(0,'utf8'); env=JSON.parse(env); env.values=env.values.map(v=>v.key==='baseUrl'?({...v,value:'$TARGET_URL'}):v); console.log(JSON.stringify(env,null,2));" \
+            > reports/env.runtime.json
+          cat reports/env.runtime.json
+
+      - name: Run Newman
+        run: |
+          npx newman run "postman/Ecommerce.baseUrl.fullrunner.max.postman_collection.json" \
+            -e "reports/env.runtime.json" \
+            -r cli,htmlextra,json \
+            --reporter-htmlextra-export "reports/Ecommerce-api-report.html" \
+            --reporter-htmlextra-title "Ecommerce API Test Report" \
+            --reporter-json-export "reports/Ecommerce-api-report.json" \
+            --delay-request 200
+
+      - name: Generate Compliance
+        run: |
+          node scripts/generateCompliance.js "reports/Ecommerce-api-report.json"
+
+      - name: Upload reports artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-reports
+          path: reports/
+
+  newman-local:
+    if: ${{ inputs.mode == 'local' }}
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.runCommand({ ping: 1 })'" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
+
+    env:
+      PORT: ${{ inputs.port }}
+      MONGODB_URI: mongodb://localhost:27017/ecommerce_express_api
+      JWT_SECRET: testsecret
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install project deps
+        run: |
+          npm ci || npm i
+
+      - name: Seed database (best effort)
+        run: |
+          # Intenta usar scripts que ya tienes; si no existen, intenta los comandos directos
+          if npm run -s unseed:all >/dev/null 2>&1; then
+            npm run unseed:all
+          else
+            node --env-file=.env src/seeders/unseed.js --all || true
+          fi
+          if npm run -s seed >/dev/null 2>&1; then
+            npm run seed
+          else
+            node --env-file=.env src/seeders/seed.js || true
+          fi
+
+      - name: Start API
+        run: |
+          # Inicia tu servidor en background
+          nohup node src/server.js > server.log 2>&1 &
+          # Espera a que responda
+          for i in {1..60}; do
+            curl -fsS "http://localhost:${PORT}/api/docs" >/dev/null && break
+            sleep 2
+          done
+          curl -fsS "http://localhost:${PORT}/api/docs" >/dev/null || (echo "API no respondió a tiempo" && tail -n 200 server.log && exit 1)
+
+      - name: Install Newman + reporter
+        run: |
+          npm i -D newman newman-reporter-htmlextra
+
+      - name: Prepare environment (local baseUrl)
+        run: |
+          mkdir -p reports
+          TARGET_URL="http://localhost:${PORT}/api"
+          cat postman/Ecommerce.baseUrl.environment.json \
+            | node -e "let env=require('fs').readFileSync(0,'utf8'); env=JSON.parse(env); env.values=env.values.map(v=>v.key==='baseUrl'?({...v,value:'$TARGET_URL'}):v); console.log(JSON.stringify(env,null,2));" \
+            > reports/env.runtime.json
+          cat reports/env.runtime.json
+
+      - name: Run Newman
+        run: |
+          npx newman run "postman/Ecommerce.baseUrl.fullrunner.max.postman_collection.json" \
+            -e "reports/env.runtime.json" \
+            -r cli,htmlextra,json \
+            --reporter-htmlextra-export "reports/Ecommerce-api-report.html" \
+            --reporter-htmlextra-title "Ecommerce API Test Report" \
+            --reporter-json-export "reports/Ecommerce-api-report.json" \
+            --delay-request 200
+
+      - name: Generate Compliance
+        run: |
+          node scripts/generateCompliance.js "reports/Ecommerce-api-report.json"
+
+      - name: Upload reports artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-reports
+          path: reports/

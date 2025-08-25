@@ -1,0 +1,584 @@
+{
+  "info": {
+    "name": "Ecommerce API — Full Runner (baseUrl)",
+    "_postman_id": "7ea69c05-0939-4517-827f-d8a826bfdd08",
+    "description": "Runner integral alineado con el OpenAPI. Usa {{baseUrl}} y cambia {{token}} según cada flujo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register (random user)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"RunnerUser\",\n  \"email\": \"{{new_email}}\",\n  \"password\": \"password123\",\n  \"role\": \"customer\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('new_email', `runner+${Date.now()}@example.com`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 Created', function(){ pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "pm.expect(json).to.have.property('user');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login (new user)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{new_email}}\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "pm.expect(json).to.have.property('token');",
+                  "pm.environment.set('userToken', json.token);",
+                  "pm.environment.set('token', json.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login (admin)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "pm.expect(json).to.have.property('token');",
+                  "pm.environment.set('adminToken', json.token);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "GET /categories (public)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "header": []
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "let items = Array.isArray(json) ? json : (json.data || []);",
+                  "pm.environment.set('catId', (items[0] && (items[0]._id || items[0].id)) || '');",
+                  "pm.test('>= 10 categorías', function(){ pm.expect(items.length >= 10).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "GET /products (public)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "header": []
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "let items = Array.isArray(json) ? json : (json.data || []);",
+                  "pm.environment.set('prodId', (items[0] && (items[0]._id || items[0].id)) || '');",
+                  "pm.test('Array o paginado', function(){ pm.expect(Array.isArray(items)).to.be.true; });",
+                  "pm.test('>= 10 productos', function(){ pm.expect(items.length >= 10).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /products (admin)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Producto Runner\",\n  \"description\": \"Creado por runner\",\n  \"price\": 199.99,\n  \"stock\": 25,\n  \"category\": \"{{catId}}\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// for admin endpoints, switch bearer to adminToken",
+                  "pm.environment.set('token', pm.environment.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 Created', function(){ pm.response.to.have.status(201); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "const newId = json._id || json.id;",
+                  "if (newId) pm.environment.set('prodNewId', newId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /products/{id} (admin)",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/products/{{prodNewId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{prodNewId}}"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Producto Runner (edit)\",\n  \"description\": \"Editado por runner\",\n  \"price\": 149.99,\n  \"stock\": 20,\n  \"category\": \"{{catId}}\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('token', pm.environment.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /products/{id} (admin)",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/products/{{prodNewId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "{{prodNewId}}"
+              ]
+            },
+            "header": []
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('token', pm.environment.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('204 No Content', function(){ pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cart & Orders",
+      "item": [
+        {
+          "name": "GET /cart (user)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "header": []
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('token', pm.environment.get('userToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /cart (add item) (user)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product\": \"{{prodId}}\",\n  \"quantity\": 2\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('token', pm.environment.get('userToken'));",
+                  "// fallback: if no prodId yet, try to fetch products quickly",
+                  "if (!pm.environment.get('prodId')) {",
+                  "  pm.sendRequest({ url: pm.environment.get('baseUrl') + '/products', method: 'GET' }, function(err, res) {",
+                  "    try { var json = res.json(); var items = Array.isArray(json) ? json : (json.data || []); if (items[0]) { pm.environment.set('prodId', items[0]._id || items[0].id); } } catch(e) {}",
+                  "  });",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /orders (user)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            },
+            "header": []
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('token', pm.environment.get('userToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 Created', function(){ pm.response.to.have.status(201); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "pm.environment.set('orderId', json._id || json.id || '');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /orders (user)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            },
+            "header": []
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('token', pm.environment.get('userToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "pm.test('Array de órdenes', function(){ pm.expect(Array.isArray(json)).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users (admin)",
+      "item": [
+        {
+          "name": "GET /users?page=1&limit=10 (admin)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users?page=1&limit=10"
+              ]
+            },
+            "header": []
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('token', pm.environment.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function(){ pm.response.to.have.status(200); });",
+                  "let json={}; try{ json = pm.response.json(); }catch(e){}",
+                  "pm.test('Estructura paginada', function(){ pm.expect(json).to.have.keys(['page','limit','total','data']); });",
+                  "pm.test('>= 10 usuarios (si seed rubrica)', function(){ if (json.total !== undefined) pm.expect(json.total >= 10).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
