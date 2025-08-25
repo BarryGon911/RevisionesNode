@@ -1,0 +1,134 @@
+openapi: 3.0.3
+info:
+  title: E-commerce API
+  version: 1.0.0
+  description: API de e-commerce con autenticación, roles, validaciones y paginación.
+servers:
+  - url: http://localhost:4000/api
+paths:
+  /auth/register:
+    post:
+      summary: Registro de usuarios
+      responses:
+        "201": { description: Usuario creado }
+        "400": { description: Error de validación }
+  /auth/login:
+    post:
+      summary: Login
+      responses:
+        "200": { description: OK }
+        "400": { description: Credenciales inválidas }
+  /products:
+    get:
+      summary: Listar productos (paginado)
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer }
+        - in: query
+          name: limit
+          schema: { type: integer }
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Crear producto (admin)
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "201": { description: Creado }
+  /products/{id}:
+    get:
+      summary: Obtener producto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { description: No encontrado }
+    put:
+      summary: Actualizar producto (admin)
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+    delete:
+      summary: Eliminar producto (admin)
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+  /categories:
+    get:
+      summary: Listar categorías (paginado)
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Crear categoría (admin)
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "201": { description: Creado }
+  /users:
+    get:
+      summary: Listar usuarios (admin, paginado)
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "200": { description: OK }
+  /cart:
+    get:
+      summary: Ver mi carrito
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Agregar al carrito
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "201": { description: Creado }
+    put:
+      summary: Actualizar cantidad en carrito
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "200": { description: OK }
+  /cart/item/{productId}:
+    delete:
+      summary: Eliminar item de carrito
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+  /cart/clear:
+    delete:
+      summary: Vaciar carrito
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "200": { description: OK }
+  /orders:
+    get:
+      summary: Listar mis órdenes
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Crear orden (desde body o carrito)
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "201": { description: Creado }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

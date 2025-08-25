@@ -3,104 +3,346 @@ info:
   title: E-commerce API
   version: 1.0.0
   description: API de e-commerce con autenticación, roles, validaciones y paginación.
+
 servers:
-  - url: http://localhost:4000/api
+  - url: /api
+
+tags:
+  - name: Auth
+    description: Registro y autenticación
+  - name: Products
+    description: Gestión de productos
+  - name: Categories
+    description: Gestión de categorías
+  - name: Cart
+    description: Carrito de compras del usuario
+  - name: Orders
+    description: Órdenes de compra
+  - name: Users
+    description: Gestión de usuarios (admin)
+
 paths:
   /auth/register:
     post:
+      tags: [Auth]
       summary: Registro de usuarios
+      security: []  # público
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            examples:
+              ejemplo:
+                value:
+                  name: "Juan Pérez"
+                  email: "juan@test.com"
+                  password: "password123"
+                  role: "customer"
       responses:
-        "201": { description: Usuario creado }
-        "400": { description: Error de validación }
+        "201":
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
   /auth/login:
     post:
+      tags: [Auth]
       summary: Login
+      security: []  # público
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              ejemplo:
+                value:
+                  email: "admin@example.com"
+                  password: "password123"
       responses:
-        "200": { description: OK }
-        "400": { description: Credenciales inválidas }
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        "400":
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /products:
     get:
-      summary: Listar productos (paginado)
+      tags: [Products]
+      summary: Listar productos (público, paginado)
       parameters:
-        - in: query
-          name: page
-          schema: { type: integer }
-        - in: query
-          name: limit
-          schema: { type: integer }
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
       responses:
-        "200": { description: OK }
+        "200":
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/PaginatedProducts'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
     post:
+      tags: [Products]
       summary: Crear producto (admin)
       security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
       responses:
-        "201": { description: Creado }
+        "201":
+          description: Creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
   /products/{id}:
     get:
+      tags: [Products]
       summary: Obtener producto
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema: { type: string }
+        - $ref: '#/components/parameters/id'
       responses:
-        "200": { description: OK }
-        "404": { description: No encontrado }
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
+      tags: [Products]
       summary: Actualizar producto (admin)
       security: [ { bearerAuth: [] } ]
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema: { type: string }
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
       responses:
-        "200": { description: OK }
+        "200": { description: Actualizado }
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
+      tags: [Products]
       summary: Eliminar producto (admin)
       security: [ { bearerAuth: [] } ]
       parameters:
-        - in: path
-          name: id
-          required: true
-          schema: { type: string }
+        - $ref: '#/components/parameters/id'
       responses:
-        "200": { description: OK }
+        "204": { description: Eliminado }
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /categories:
     get:
-      summary: Listar categorías (paginado)
+      tags: [Categories]
+      summary: Listar categorías (público, paginado)
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
       responses:
-        "200": { description: OK }
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCategories'
     post:
+      tags: [Categories]
       summary: Crear categoría (admin)
       security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
       responses:
         "201": { description: Creado }
-  /users:
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /categories/{id}:
     get:
-      summary: Listar usuarios (admin, paginado)
-      security: [ { bearerAuth: [] } ]
+      tags: [Categories]
+      summary: Obtener categoría
+      parameters:
+        - $ref: '#/components/parameters/id'
       responses:
-        "200": { description: OK }
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags: [Categories]
+      summary: Actualizar categoría (admin)
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      responses:
+        "200": { description: Actualizado }
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Categories]
+      summary: Eliminar categoría (admin)
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "204": { description: Eliminado }
+        "404":
+          description: No encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /cart:
     get:
-      summary: Ver mi carrito
+      tags: [Cart]
+      summary: Obtener mi carrito
       security: [ { bearerAuth: [] } ]
       responses:
-        "200": { description: OK }
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
     post:
-      summary: Agregar al carrito
+      tags: [Cart]
+      summary: Agregar ítem al carrito
       security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartAddItem'
       responses:
-        "201": { description: Creado }
-    put:
-      summary: Actualizar cantidad en carrito
-      security: [ { bearerAuth: [] } ]
-      responses:
-        "200": { description: OK }
-  /cart/item/{productId}:
+        "200": { description: Ítem agregado }
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
     delete:
-      summary: Eliminar item de carrito
+      tags: [Cart]
+      summary: Vaciar mi carrito
+      security: [ { bearerAuth: [] } ]
+      responses:
+        "204": { description: Carrito vaciado }
+
+  /cart/items/{productId}:
+    patch:
+      tags: [Cart]
+      summary: Actualizar cantidad de un ítem
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity]
+              properties:
+                quantity:
+                  type: integer
+                  minimum: 1
+                  example: 2
+      responses:
+        "200": { description: Actualizado }
+    delete:
+      tags: [Cart]
+      summary: Eliminar ítem del carrito
       security: [ { bearerAuth: [] } ]
       parameters:
         - in: path
@@ -108,27 +350,253 @@ paths:
           required: true
           schema: { type: string }
       responses:
-        "200": { description: OK }
-  /cart/clear:
-    delete:
-      summary: Vaciar carrito
-      security: [ { bearerAuth: [] } ]
-      responses:
-        "200": { description: OK }
+        "204": { description: Eliminado }
+
   /orders:
     get:
+      tags: [Orders]
       summary: Listar mis órdenes
       security: [ { bearerAuth: [] } ]
       responses:
-        "200": { description: OK }
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
     post:
-      summary: Crear orden (desde body o carrito)
+      tags: [Orders]
+      summary: Crear orden desde mi carrito
       security: [ { bearerAuth: [] } ]
       responses:
-        "201": { description: Creado }
+        "201":
+          description: Orden creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /orders/{id}:
+    get:
+      tags: [Orders]
+      summary: Obtener orden por id
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        "404":
+          description: No encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users:
+    get:
+      tags: [Users]
+      summary: Listar usuarios (admin, paginado)
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsers'
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  parameters:
+    id:
+      in: path
+      name: id
+      required: true
+      schema: { type: string }
+    page:
+      in: query
+      name: page
+      required: false
+      schema: { type: integer, minimum: 1, default: 1 }
+    limit:
+      in: query
+      name: limit
+      required: false
+      schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+
+  schemas:
+    # Auth
+    RegisterRequest:
+      type: object
+      required: [name, email, password]
+      properties:
+        name: { type: string, example: "Juan Pérez" }
+        email: { type: string, format: email, example: "juan@test.com" }
+        password: { type: string, minLength: 6, example: "password123" }
+        role:
+          type: string
+          enum: [admin, customer]
+          example: customer
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email, example: "admin@example.com" }
+        password: { type: string, example: "password123" }
+    AuthUser:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string, enum: [admin, customer] }
+    AuthResponse:
+      type: object
+      properties:
+        user: { $ref: '#/components/schemas/AuthUser' }
+        token: { type: string }
+
+    # Users
+    User:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        role: { type: string, enum: [admin, customer] }
+
+    PaginatedUsers:
+      type: object
+      properties:
+        page: { type: integer, example: 1 }
+        limit: { type: integer, example: 10 }
+        total: { type: integer, example: 25 }
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/User' }
+
+    # Categories
+    Category:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+    CategoryInput:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+        description: { type: string }
+    PaginatedCategories:
+      type: object
+      properties:
+        page: { type: integer, example: 1 }
+        limit: { type: integer, example: 10 }
+        total: { type: integer, example: 10 }
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Category' }
+
+    # Products
+    Product:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        price: { type: number, format: float }
+        stock: { type: integer }
+        category: { type: string, description: "ObjectId de Category" }
+    ProductInput:
+      type: object
+      required: [name, price, stock, category]
+      properties:
+        name: { type: string }
+        description: { type: string }
+        price: { type: number, format: float, minimum: 0 }
+        stock: { type: integer, minimum: 0 }
+        category: { type: string }
+    PaginatedProducts:
+      type: object
+      properties:
+        page: { type: integer, example: 1 }
+        limit: { type: integer, example: 10 }
+        total: { type: integer, example: 20 }
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Product' }
+
+    # Cart
+    CartItem:
+      type: object
+      properties:
+        product: { type: string, description: "ObjectId de Product" }
+        quantity: { type: integer, minimum: 1 }
+    Cart:
+      type: object
+      properties:
+        id: { type: string }
+        user: { type: string, description: "ObjectId de User" }
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/CartItem' }
+    CartAddItem:
+      type: object
+      required: [product, quantity]
+      properties:
+        product: { type: string }
+        quantity: { type: integer, minimum: 1, example: 1 }
+
+    # Orders
+    OrderItem:
+      type: object
+      properties:
+        product: { type: string, description: "ObjectId de Product" }
+        quantity: { type: integer, minimum: 1 }
+        price: { type: number, format: float, minimum: 0 }
+    Order:
+      type: object
+      properties:
+        id: { type: string }
+        user: { type: string, description: "ObjectId de User" }
+        items:
+          type: array
+          items: { $ref: '#/components/schemas/OrderItem' }
+        total: { type: number, format: float, minimum: 0 }
+        status:
+          type: string
+          enum: [pending, paid, shipped, cancelled]
+          example: pending
+
+    # Errores
+    Error:
+      type: object
+      properties:
+        error: { type: string }
+    ValidationError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              msg: { type: string }
+              param: { type: string }
+              location: { type: string }
